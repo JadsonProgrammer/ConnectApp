@@ -1,0 +1,15 @@
+C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Domain\obj\Debug\net8.0\ConnectApp.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Domain\obj\Debug\net8.0\ConnectApp.Domain.AssemblyInfoInputs.cache
+C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Domain\obj\Debug\net8.0\ConnectApp.Domain.AssemblyInfo.cs
+C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Domain\obj\Debug\net8.0\ConnectApp.Domain.csproj.CoreCompileInputs.cache
+C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Domain\obj\Debug\net8.0\ConnectApp.Domain.csproj.AssemblyReference.cache
+C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Domain\bin\Debug\net8.0\ConnectApp.Domain.deps.json
+C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Domain\bin\Debug\net8.0\ConnectApp.Domain.dll
+C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Domain\bin\Debug\net8.0\ConnectApp.Domain.pdb
+C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Domain\bin\Debug\net8.0\ConnectApp.Shared.dll
+C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Domain\bin\Debug\net8.0\ConnectApp.Shared.pdb
+C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Domain\obj\Debug\net8.0\ConnectA.8CD8C2F8.Up2Date
+C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Domain\obj\Debug\net8.0\ConnectApp.Domain.dll
+C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Domain\obj\Debug\net8.0\refint\ConnectApp.Domain.dll
+C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Domain\obj\Debug\net8.0\ConnectApp.Domain.pdb
+C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Domain\obj\Debug\net8.0\ref\ConnectApp.Domain.dll

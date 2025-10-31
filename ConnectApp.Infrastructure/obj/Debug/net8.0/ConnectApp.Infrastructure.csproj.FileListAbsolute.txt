@@ -1,0 +1,5 @@
+C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Infrastructure\obj\Debug\net8.0\ConnectApp.Infrastructure.csproj.AssemblyReference.cache
+C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Infrastructure\obj\Debug\net8.0\ConnectApp.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Infrastructure\obj\Debug\net8.0\ConnectApp.Infrastructure.AssemblyInfoInputs.cache
+C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Infrastructure\obj\Debug\net8.0\ConnectApp.Infrastructure.AssemblyInfo.cs
+C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Infrastructure\obj\Debug\net8.0\ConnectApp.Infrastructure.csproj.CoreCompileInputs.cache
