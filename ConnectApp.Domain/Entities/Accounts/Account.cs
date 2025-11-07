@@ -4,39 +4,41 @@ namespace ConnectApp.Domain.Entities.Accounts
 {
     public class Account
     {
-        public Guid AccountId { get; private set; }
-        public string AccountName { get; private set; } = string.Empty;
-        public bool Ativa { get; private set; } = true;
-        public string? TemaPadrao { get; private set; }
-        public string? UrlLogo { get; private set; }
-        public string? UrlIcone { get; private set; }
-        public string? UrlImagemLogin { get; private set; }
-        public string? UrlImagemDashboard { get; private set; }
+        public Guid AccountId { get; set; } 
+        public string AccountName { get; set; } = string.Empty;
+        public bool Ativa { get; set; }
+
+        // Personalização
+        public string? TemaPadrao { get; set; }
+        public string? UrlLogo { get; set; }
+        public string? UrlIcone { get; set; }
+        public string? UrlImagemLogin { get; set; }
+        public string? UrlImagemDashboard { get; set; }
 
         // Auditoria
-        public DateTime CreationDate { get; private set; }
-        public Guid CreationUserId { get; private set; }
-        public string? CreationUserName { get; private set; }
-        public DateTime? ChangeDate { get; private set; }
-        public Guid? ChangeUserId { get; private set; }
-        public string? ChangeUserName { get; private set; }
-        public DateTime? ExclusionDate { get; private set; }
-        public Guid? ExclusionUserId { get; private set; }
-        public string? ExclusionUserName { get; private set; }
-        public bool RecordStatus { get; private set; } = true;
+        public DateTime? CreationDate { get; set; }
+        public Guid? CreationUserId { get; set; }
+        public string? CreationUserName { get; set; }
+        public DateTime? ChangeDate { get; set; }
+        public Guid? ChangeUserId { get; set; }
+        public string? ChangeUserName { get; set; }
+        public DateTime? ExclusionDate { get; set; }
+        public Guid? ExclusionUserId { get; set; }
+        public string? ExclusionUserName { get; set; }
+        public bool RecordStatus { get; set; }
 
-        private Account() { }
+        public Account() { }
 
-        // 🔹 Fábrica pura (sem Result)
+        
         public static Account Create(
             string accountName,
             Guid creationUserId,
-            string? creationUserName = null,
-            string? temaPadrao = null,
-            string? urlLogo = null,
-            string? urlIcone = null,
-            string? urlImagemLogin = null,
-            string? urlImagemDashboard = null)
+            string creationUserName,
+            string? temaPadrao,
+            string? urlLogo ,
+            string? urlIcone,
+            string? urlImagemLogin,
+            string? urlImagemDashboard)
         {
             if (string.IsNullOrWhiteSpace(accountName))
                 throw new ArgumentException("O nome da conta é obrigatório.");

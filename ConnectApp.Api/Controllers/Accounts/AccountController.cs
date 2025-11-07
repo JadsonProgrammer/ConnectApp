@@ -1,46 +1,32 @@
-﻿using ConnectApp.Application.DTOs.Accounts;
+﻿using ConnectApp.Api.Controllers.Base;
+using ConnectApp.Application.DTOs.Accounts;
+using ConnectApp.Application.Interfaces.Accounts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConnectApp.Api.Controllers.Accounts
 {
     [Route("sign-up")]
     [ApiController]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly IAccountService _accountService;
 
-        public AccountController(IAccountService _accountService)
+        public AccountController(IAccountService accountService)
         {
-            this._accountService = _accountService;
+            _accountService = accountService;
         }
-
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAccount(Guid id)
         {
             try
             {
-                // Service já retorna DTO (não Entity)
-                var accountDto = await _accountService.GetAccountByIdAsync(id);
-
-                if (accountDto == null)
-                {
-                    return NotFound(new ResponseMessage
-                    {
-                        Code = "404",
-                        Text = "Account não encontrada"
-                    });
-                }
-
-                return Ok(accountDto); // ✅ JSON seguro para frontend
+                var accountResult = await _accountService.GetAccountByIdAsync(id);
+                return await CreateGetResponse(accountResult, _accountService);
             }
             catch (Exception e)
             {
-                return BadRequest(new ResponseMessage
-                {
-                    Code = "500",
-                    Text = $"Erro Interno: {e.Message}"
-                });
+                return await CreateExceptionResponse(e);
             }
         }
 
@@ -49,276 +35,118 @@ namespace ConnectApp.Api.Controllers.Accounts
         {
             try
             {
-                // Service retorna lista de DTOs
                 var accounts = await _accountService.GetAllAccountsAsync();
-
-                if (accounts == null || accounts.Count == 0)
-                {
-                    return NotFound(new ResponseMessage
-                    {
-                        Code = "404",
-                        Text = "Nenhuma account encontrada"
-                    });
-                }
-
-                return Ok(accounts); // ✅ Lista de JSONs seguros
+                return await CreateGetResponse(accounts, _accountService);
             }
             catch (Exception e)
             {
-                return BadRequest(new ResponseMessage
-                {
-                    Code = "500",
-                    Text = $"Erro Interno: {e.Message}"
-                });
+                return await CreateExceptionResponse(e);
             }
         }
 
-
-        //[HttpGet("list")]
-        //public async Task<IActionResult> GetActionResultAsync()
-        //{
-        //    try
-        //    {
-        //        var accounts = await _accountService.GetAllAsync();
-
-        //        if (accounts == null || accounts.Count == 0)
-        //        {
-        //            return NotFound(new ResponseMessage
-        //            {
-        //                Code = "404",
-        //                Text = "Nenhum Usuário encontrado!"
-        //            });
-        //        }
-        //        var accountsDtos = AccountMapper.MapToList(accounts);
-
-
-        //        return Ok(accountsDtos);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return BadRequest(new ResponseMessage
-        //        {
-        //            Code = "404",
-        //            Text = $"Erro Interno {e}"
-        //        });
-        //    }
-        //}
-
-        //[HttpGet("{id}/edit")]
-        //public async Task<IActionResult> GetActionResultAsync(AccountParams account)
-        //{
-        //    try
-        //    {
-        //        var accounts = await _accountService.GetAccountByIdAsync(account);
-
-        //        if (accounts == null)
-        //        {
-        //            return NotFound(new ResponseMessage
-        //            {
-        //                Code = "404",
-        //                Text = "Nenhum Usuário encontrado!"
-        //            });
-        //        }
-        //        //var accountDtos = UserMapper.MapToSearch(accounts);                              
-
-
-        //        return Ok(accounts);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return BadRequest(new ResponseMessage
-        //        {
-        //            Code = "404",
-        //            Text = $"Erro Interno {e}"
-        //        });
-        //    }
-        //}
-
-
         [HttpPut("{id}/update")]
-        public async Task<IActionResult> UpdateActionResultAsync([FromBody] AccountParams account)
+        public async Task<IActionResult> UpdateAsync([FromBody] AccountParams account)
         {
             try
             {
-                var accounts = await _accountService.UpdateAccountByIdAsync(account);
-
-
-                //var accountDtos = UserMapper.MapToSearch(accounts);                              
-
-                if (accounts == false)
-                {
-                    return NotFound(new ResponseMessage
-                    {
-                        Code = "404",
-                        Text = "Nenhum Usuário Alterado!"
-                    });
-
-                }
-                return Ok(new ResponseMessage
-                {
-                    Code = "202",
-                    Text = "Conta alterada com sucesso",
-                    Id = account.AccountId,
-                    Status = accounts
-                });
+                var accountResult = await _accountService.UpdateAccountByIdAsync(account);
+                return await CreateGetResponse(accountResult, _accountService);
             }
             catch (Exception e)
             {
-                return BadRequest(new ResponseMessage
-                {
-                    Code = "404",
-                    Text = $"Erro Interno {e}"
-                });
+                return await CreateExceptionResponse(e);
             }
         }
+
         [HttpPost("create")]
         public async Task<IActionResult> CreateAccountAsync([FromBody] AccountParams account)
         {
             try
             {
-                var result = await _accountService.CreateAccountAsync(account);
-
-                if (result == null)
-                {
-                    return NotFound(new ResponseMessage
-                    {
-                        Code = "404",
-                        Text = "Erro ao criar account!"
-                    });
-                }
-
-                // ✅ Verifica se houve erro no service
-                if (result.Error)
-                {
-                    return BadRequest(new ResponseMessage
-                    {
-                        Code = "400",
-                        Text = result.Message ?? "Erro ao criar account!"
-                    });
-                }
-
-                // ✅ Busca a account criada para retornar os dados completos
-                //var accountCriada = await _accountService.GetAccountByIdAsync(account.AccountId);
-
-                //if (accountCriada == null)
-                //{
-                //    return Ok(new ResponseMessage
-                //    {
-                //        Code = "201",
-                //        Text = "Account criada com sucesso, mas não foi possível retornar os dados."
-                //    });
-                //}
-
-                // ✅ Usa o mapper para converter Entity → DTO
-                // var accountDto = AccountMapper.MapToParams(accountCriada);
-
-                return Ok(result); // ✅ Retorna DTO mapeado
+                var accountResult = await _accountService.CreateAccountAsync(account);
+                return await CreatePostResponse(accountResult, _accountService);
             }
             catch (Exception e)
             {
-                return BadRequest(new ResponseMessage
-                {
-                    Code = "500",
-                    Text = $"Erro Interno: {e.Message}"
-                });
+                return await CreateExceptionResponse(e);
+            }
+        }
+    }
+}
+/*
+using ConnectApp.Api.Controllers.Base;
+using ConnectApp.Application.DTOs.Accounts;
+using ConnectApp.Application.Interfaces.Accounts;
+using ConnectApp.Shared.Results;
+using Microsoft.AspNetCore.Mvc;
+
+namespace ConnectApp.Api.Controllers.Accounts
+{
+    [Route("sign-up")]
+    [ApiController]
+    public class AccountController : BaseController
+    {
+        private readonly IAccountService _accountService;
+
+        public AccountController(IAccountService accountService)
+        {
+            _accountService = accountService;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAccount(Guid id)
+        {
+            try
+            {
+                var accountResult = await _accountService.GetAccountByIdAsync(id);
+                return await CreateGetResponse(accountResult, _accountService);
+            }
+            catch (Exception e)
+            {
+                return await CreateExceptionResponse(e);
             }
         }
 
+        [HttpGet("list")]
+        public async Task<IActionResult> GetAllAccounts()
+        {
+            try
+            {
+                var accountResult = await _accountService.GetAllAccountsAsync();
+                return await CreateGetResponse(accountResult, _accountService);
+            }
+            catch (Exception e)
+            {
+                return await CreateExceptionResponse(e);
+            }
+        }
 
+        [HttpPut("{id}/update")]
+        public async Task<IActionResult> UpdateAsync([FromBody] AccountParams account)
+        {
+            try
+            {
+                var accountResult = await _accountService.UpdateAccountByIdAsync(account);
+                return await CreateGetResponse(accountResult, _accountService);
+            }
+            catch (Exception e)
+            {
+                return await CreateExceptionResponse(e);
+            }
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //    [HttpPost("{id}/create")]
-        //    public async Task<IActionResult> CreateActionResultAsync([FromBody] Account account)
-        //    {
-        //        try
-        //        {
-        //            var accounts = await _accountService.CreateAccountAsync(account);
-
-        //            if (accounts == null)
-        //            {
-        //                return NotFound(new ResponseMessage
-        //                {
-        //                    Code = "404",
-        //                    Text = "Nenhum Usuário selecionado!"
-        //                });
-        //            }
-        //            var accountDtos = AccountMapper.MapToSearch(accounts);                              
-
-        //            if (accounts.Erro == true)
-        //            {
-        //                return NotFound(new ResponseMessage
-        //                {
-        //                    Code = "404",
-        //                    Text = "Nenhum Usuário Alterado!"
-        //                });
-
-        //            }
-        //            return Ok(accounts);
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            return BadRequest(new ResponseMessage
-        //            {
-        //                Code = "404",
-        //                Text = $"Erro Interno {e}"
-        //            });
-        //        }
-        //    }      
-        //}
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateAccountAsync([FromBody] AccountParams account)
+        {
+            try
+            {
+                var accountResult = await _accountService.CreateAccountAsync(account);
+                return await CreatePostResponse(accountResult, _accountService);
+            }
+            catch (Exception e)
+            {
+                return await CreateExceptionResponse(e);
+            }
+        }
     }
-}
+}*/

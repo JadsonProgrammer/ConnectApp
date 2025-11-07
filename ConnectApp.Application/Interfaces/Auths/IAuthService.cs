@@ -10,5 +10,16 @@ namespace ConnectApp.Application.Interfaces.Auths
         Task<AuthResult> SignUpAsync(AuthParams @params);
         Task<AuthResult> SignInAsync(AuthParams @params);
 
+
+
+        /* Task<bool> LoginExistsAsync(AuthParams @params);
+
+
+         Task<AuthResult> SignUpAsync(AuthParams @params);
+
+
+         Task<AuthResult> SignInAsync(AuthParams @params);
+        */
+
     }
 }

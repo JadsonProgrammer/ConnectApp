@@ -3,149 +3,98 @@
   "WorkspaceRootPath": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{1D4169DA-3B29-4284-A4F2-7EABEE95D6FF}|ConnectApp.Infrastructure\\ConnectApp.Infrastructure.csproj|c:\\jadson\\projetos\\connectapp\\connectapp\\connectapp.infrastructure\\accounts\\accountrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1D4169DA-3B29-4284-A4F2-7EABEE95D6FF}|ConnectApp.Infrastructure\\ConnectApp.Infrastructure.csproj|solutionrelative:connectapp.infrastructure\\accounts\\accountrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4001845D-5DAF-457F-9F3A-71AB54E9D6ED}|ConnectApp.Domain\\ConnectApp.Domain.csproj|c:\\jadson\\projetos\\connectapp\\connectapp\\connectapp.domain\\entities\\users\\userdomainparams.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4001845D-5DAF-457F-9F3A-71AB54E9D6ED}|ConnectApp.Domain\\ConnectApp.Domain.csproj|solutionrelative:connectapp.domain\\entities\\users\\userdomainparams.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CDE9829E-560D-439C-A34C-E958C1BA57F5}|ConnectApp.Application\\ConnectApp.Application.csproj|c:\\jadson\\projetos\\connectapp\\connectapp\\connectapp.application\\dtos\\accounts\\accountresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CDE9829E-560D-439C-A34C-E958C1BA57F5}|ConnectApp.Application\\ConnectApp.Application.csproj|solutionrelative:connectapp.application\\dtos\\accounts\\accountresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4001845D-5DAF-457F-9F3A-71AB54E9D6ED}|ConnectApp.Domain\\ConnectApp.Domain.csproj|c:\\jadson\\projetos\\connectapp\\connectapp\\connectapp.domain\\entities\\users\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4001845D-5DAF-457F-9F3A-71AB54E9D6ED}|ConnectApp.Domain\\ConnectApp.Domain.csproj|solutionrelative:connectapp.domain\\entities\\users\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4001845D-5DAF-457F-9F3A-71AB54E9D6ED}|ConnectApp.Domain\\ConnectApp.Domain.csproj|c:\\jadson\\projetos\\connectapp\\connectapp\\connectapp.domain\\interfaces\\accounts\\iaccountrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4001845D-5DAF-457F-9F3A-71AB54E9D6ED}|ConnectApp.Domain\\ConnectApp.Domain.csproj|solutionrelative:connectapp.domain\\interfaces\\accounts\\iaccountrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CDE9829E-560D-439C-A34C-E958C1BA57F5}|ConnectApp.Application\\ConnectApp.Application.csproj|c:\\jadson\\projetos\\connectapp\\connectapp\\connectapp.application\\dtos\\users\\userparams.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CDE9829E-560D-439C-A34C-E958C1BA57F5}|ConnectApp.Application\\ConnectApp.Application.csproj|solutionrelative:connectapp.application\\dtos\\users\\userparams.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CDE9829E-560D-439C-A34C-E958C1BA57F5}|ConnectApp.Application\\ConnectApp.Application.csproj|c:\\jadson\\projetos\\connectapp\\connectapp\\connectapp.application\\dtos\\accounts\\accountparams.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CDE9829E-560D-439C-A34C-E958C1BA57F5}|ConnectApp.Application\\ConnectApp.Application.csproj|solutionrelative:connectapp.application\\dtos\\accounts\\accountparams.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4001845D-5DAF-457F-9F3A-71AB54E9D6ED}|ConnectApp.Domain\\ConnectApp.Domain.csproj|c:\\jadson\\projetos\\connectapp\\connectapp\\connectapp.domain\\entities\\users\\usermapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4001845D-5DAF-457F-9F3A-71AB54E9D6ED}|ConnectApp.Domain\\ConnectApp.Domain.csproj|solutionrelative:connectapp.domain\\entities\\users\\usermapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CDE9829E-560D-439C-A34C-E958C1BA57F5}|ConnectApp.Application\\ConnectApp.Application.csproj|c:\\jadson\\projetos\\connectapp\\connectapp\\connectapp.application\\interfaces\\accounts\\iaccountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CDE9829E-560D-439C-A34C-E958C1BA57F5}|ConnectApp.Application\\ConnectApp.Application.csproj|solutionrelative:connectapp.application\\interfaces\\accounts\\iaccountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CDE9829E-560D-439C-A34C-E958C1BA57F5}|ConnectApp.Application\\ConnectApp.Application.csproj|c:\\jadson\\projetos\\connectapp\\connectapp\\connectapp.application\\services\\accounts\\accountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CDE9829E-560D-439C-A34C-E958C1BA57F5}|ConnectApp.Application\\ConnectApp.Application.csproj|solutionrelative:connectapp.application\\services\\accounts\\accountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4001845D-5DAF-457F-9F3A-71AB54E9D6ED}|ConnectApp.Domain\\ConnectApp.Domain.csproj|c:\\jadson\\projetos\\connectapp\\connectapp\\connectapp.domain\\entities\\accounts\\account.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4001845D-5DAF-457F-9F3A-71AB54E9D6ED}|ConnectApp.Domain\\ConnectApp.Domain.csproj|solutionrelative:connectapp.domain\\entities\\accounts\\account.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CF7BBB13-6294-47ED-B0F5-291C671FB072}|ConnectApp.Shared\\ConnectApp.Shared.csproj|c:\\jadson\\projetos\\connectapp\\connectapp\\connectapp.shared\\results\\result.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CF7BBB13-6294-47ED-B0F5-291C671FB072}|ConnectApp.Shared\\ConnectApp.Shared.csproj|solutionrelative:connectapp.shared\\results\\result.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4001845D-5DAF-457F-9F3A-71AB54E9D6ED}|ConnectApp.Domain\\ConnectApp.Domain.csproj|c:\\jadson\\projetos\\connectapp\\connectapp\\connectapp.domain\\entities\\users\\usercreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4001845D-5DAF-457F-9F3A-71AB54E9D6ED}|ConnectApp.Domain\\ConnectApp.Domain.csproj|solutionrelative:connectapp.domain\\entities\\users\\usercreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
-      "VerticalTabListWidth": 256,
+      "VerticalTabListWidth": 224,
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "IAccountRepository.cs",
-              "DocumentMoniker": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Domain\\Interfaces\\Accounts\\IAccountRepository.cs",
-              "RelativeDocumentMoniker": "ConnectApp.Domain\\Interfaces\\Accounts\\IAccountRepository.cs",
-              "ToolTip": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Domain\\Interfaces\\Accounts\\IAccountRepository.cs",
-              "RelativeToolTip": "ConnectApp.Domain\\Interfaces\\Accounts\\IAccountRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAUAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-31T21:01:40.118Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "AccountRepository.cs",
-              "DocumentMoniker": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Infrastructure\\Accounts\\AccountRepository.cs",
-              "RelativeDocumentMoniker": "ConnectApp.Infrastructure\\Accounts\\AccountRepository.cs",
-              "ToolTip": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Infrastructure\\Accounts\\AccountRepository.cs",
-              "RelativeToolTip": "ConnectApp.Infrastructure\\Accounts\\AccountRepository.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAWwBQAAAAhAAAAAAAAAA==",
+              "Title": "UserDomainParams.cs",
+              "DocumentMoniker": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Domain\\Entities\\Users\\UserDomainParams.cs",
+              "RelativeDocumentMoniker": "ConnectApp.Domain\\Entities\\Users\\UserDomainParams.cs",
+              "ToolTip": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Domain\\Entities\\Users\\UserDomainParams.cs",
+              "RelativeToolTip": "ConnectApp.Domain\\Entities\\Users\\UserDomainParams.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-31T20:57:49.335Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "IAccountService.cs",
-              "DocumentMoniker": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Application\\Interfaces\\Accounts\\IAccountService.cs",
-              "RelativeDocumentMoniker": "ConnectApp.Application\\Interfaces\\Accounts\\IAccountService.cs",
-              "ToolTip": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Application\\Interfaces\\Accounts\\IAccountService.cs",
-              "RelativeToolTip": "ConnectApp.Application\\Interfaces\\Accounts\\IAccountService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABWAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-31T20:06:17.516Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "AccountService.cs",
-              "DocumentMoniker": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Application\\Services\\Accounts\\AccountService.cs",
-              "RelativeDocumentMoniker": "ConnectApp.Application\\Services\\Accounts\\AccountService.cs",
-              "ToolTip": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Application\\Services\\Accounts\\AccountService.cs",
-              "RelativeToolTip": "ConnectApp.Application\\Services\\Accounts\\AccountService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-31T19:36:33.262Z",
+              "WhenOpened": "2025-11-07T20:48:43.724Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "AccountParams.cs",
-              "DocumentMoniker": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Application\\DTOs\\Accounts\\AccountParams.cs",
-              "RelativeDocumentMoniker": "ConnectApp.Application\\DTOs\\Accounts\\AccountParams.cs",
-              "ToolTip": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Application\\DTOs\\Accounts\\AccountParams.cs",
-              "RelativeToolTip": "ConnectApp.Application\\DTOs\\Accounts\\AccountParams.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Title": "UserMapper.cs",
+              "DocumentMoniker": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Domain\\Entities\\Users\\UserMapper.cs",
+              "RelativeDocumentMoniker": "ConnectApp.Domain\\Entities\\Users\\UserMapper.cs",
+              "ToolTip": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Domain\\Entities\\Users\\UserMapper.cs",
+              "RelativeToolTip": "ConnectApp.Domain\\Entities\\Users\\UserMapper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-31T19:18:39.339Z",
+              "WhenOpened": "2025-11-07T20:23:48.973Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UserParams.cs",
+              "DocumentMoniker": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Application\\DTOs\\Users\\UserParams.cs",
+              "RelativeDocumentMoniker": "ConnectApp.Application\\DTOs\\Users\\UserParams.cs",
+              "ToolTip": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Application\\DTOs\\Users\\UserParams.cs",
+              "RelativeToolTip": "ConnectApp.Application\\DTOs\\Users\\UserParams.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-07T20:21:20.983Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "UserCreate.cs",
+              "DocumentMoniker": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Domain\\Entities\\Users\\UserCreate.cs",
+              "RelativeDocumentMoniker": "ConnectApp.Domain\\Entities\\Users\\UserCreate.cs",
+              "ToolTip": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Domain\\Entities\\Users\\UserCreate.cs",
+              "RelativeToolTip": "ConnectApp.Domain\\Entities\\Users\\UserCreate.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-07T20:19:43.987Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "AccountResult.cs",
-              "DocumentMoniker": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Application\\DTOs\\Accounts\\AccountResult.cs",
-              "RelativeDocumentMoniker": "ConnectApp.Application\\DTOs\\Accounts\\AccountResult.cs",
-              "ToolTip": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Application\\DTOs\\Accounts\\AccountResult.cs",
-              "RelativeToolTip": "ConnectApp.Application\\DTOs\\Accounts\\AccountResult.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAAAAAAAAAAAA==",
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Domain\\Entities\\Users\\User.cs",
+              "RelativeDocumentMoniker": "ConnectApp.Domain\\Entities\\Users\\User.cs",
+              "ToolTip": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Domain\\Entities\\Users\\User.cs",
+              "RelativeToolTip": "ConnectApp.Domain\\Entities\\Users\\User.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAgwHoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-31T19:18:38.62Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Result.cs",
-              "DocumentMoniker": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Shared\\Results\\Result.cs",
-              "RelativeDocumentMoniker": "ConnectApp.Shared\\Results\\Result.cs",
-              "ToolTip": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Shared\\Results\\Result.cs",
-              "RelativeToolTip": "ConnectApp.Shared\\Results\\Result.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-31T19:15:32.303Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Account.cs",
-              "DocumentMoniker": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Domain\\Entities\\Accounts\\Account.cs",
-              "RelativeDocumentMoniker": "ConnectApp.Domain\\Entities\\Accounts\\Account.cs",
-              "ToolTip": "C:\\Jadson\\Projetos\\ConnectApp\\ConnectApp\\ConnectApp.Domain\\Entities\\Accounts\\Account.cs",
-              "RelativeToolTip": "ConnectApp.Domain\\Entities\\Accounts\\Account.cs",
-              "ViewState": "AgIAAEkAAAAAAAAAAAAIwGQAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-31T18:59:19.072Z",
+              "WhenOpened": "2025-11-07T20:18:51.169Z",
               "EditorCaption": ""
             }
           ]

@@ -1,9 +1,11 @@
-﻿using ConnectApp.Application.DTOs.Auths;
-using ConnectApp.Domain.Entities.Users;
+﻿using ConnectApp.Domain.Entities.Users;
 using ConnectApp.Domain.Interfaces.Auths;
 using ConnectApp.Infrastructure.Sql;
 using Microsoft.Data.SqlClient;
 using System.Text;
+using ConnectApp.Shared.SqlDataReaderShared;
+using System.Data;
+using ConnectApp.Application.DTOs.Auths;
 
 namespace ConnectApp.Infrastructure.Repositories.Auths
 {
@@ -27,15 +29,15 @@ namespace ConnectApp.Infrastructure.Repositories.Auths
             await cn.OpenAsync();
             await using var cm = cn.CreateCommand();
             cm.CommandText = commandText.ToString();
-            cm.Parameters.AddWithValue("@access_key", login);
+            cm.Parameters.AddWithValue("@AccessKey", login);
 
             await using var reader = await cm.ExecuteReaderAsync();
             return await reader.ReadAsync();
         }
-        public async Task<User> GetByUserAsync(AuthParams authParams)
+        public async Task<User> GetByUserAsync(Auth auth)
         {
 
-            var verification = authParams.AccessKey;
+            var verification = AuthParams.AccessKey;
             var commandText = new StringBuilder()
                 .AppendLine("SELECT")
                 .AppendLine("    [Id],")
@@ -70,7 +72,7 @@ namespace ConnectApp.Infrastructure.Repositories.Auths
                 .AppendLine("    [CPF],")
                 .AppendLine("    [IS_ACTIVE]")
                 .AppendLine(" FROM [JAYTECHAPPDB].[DBO].[USER]")
-                .AppendLine("WHERE [AccessKey] = @AccessKey");
+                .AppendLine("WHERE [AccessKey] COLLATE SQL_Latin1_General_CP1_CS_AS  = @AccessKey  ");
 
 
             await using var cn = _connectionProvider.GetConnection();
@@ -111,44 +113,68 @@ namespace ConnectApp.Infrastructure.Repositories.Auths
         private static User GetDataRecord(SqlDataReader reader)
         {
 
-            var x = new User();
-
-
-            x.Id = reader.GetGuidValue("Id");
-            x.Code = reader.GetInt32("Code");
-            x.Name = reader.GetStringValue("Name");
-            x.AccessKey = reader.GetStringValue("AccessKey");
-            x.Password = reader.GetStringValue("Password");
-            x.Email = reader.GetStringValue("Email");
-            x.Phone = reader.GetStringValue("Phone");
-            x.TypeCode = reader.GetNullableInt("TypeCode");
-            x.TypeName = reader.GetStringValue("TypeName");
-            x.ProfileCode = reader.GetNullableInt("ProfileCode");
-            x.ProfileName = reader.GetStringValue("ProfileName");
-            x.StatusCode = reader.GetNullableInt("StatusCode");
-            x.StatusName = reader.GetStringValue("StatusName");
-            x.LastAccess = reader.GetNullableDateTime("LastAccess");
-            x.AccessCount = reader.GetNullableInt("AccessCount");
-            x.Avatar = reader.GetStringValue("Avatar");
-            x.Note = reader.GetStringValue("Note");
-            x.BrokerId = reader.GetNullableGuid("BrokerId");
-            x.AccountId = reader.GetNullableGuid("AccountId");
-            x.CreationDate = reader.GetNullableDateTime("CreationDate");
-            x.CreationUserId = reader.GetNullableGuid("CreationUserId");
-            x.CreationUserName = reader.GetStringValue("CreationUserName");
-            x.ChangeDate = reader.GetNullableDateTime("ChangeDate");
-            x.ChangeUserId = reader.GetNullableGuid("ChangeUserId");
-            x.ChangeUserName = reader.GetStringValue("ChangeUserName");
-            x.ExclusionDate = reader.GetNullableDateTime("ExclusionDate");
-            x.ExclusionUserId = reader.GetNullableGuid("ExclusionUserId");
-            x.ExclusionUserName = reader.GetStringValue("ExclusionUserName");
-            x.RecordStatus = reader.GetBoolean("RecordStatus");
-            x.CPF = reader.GetStringValue("CPF");
-            x.IsActive = reader.GetInt32("IS_ACTIVE");
+            var x = new User
+            {
+                Id = reader.GetGuidValue("Id"),
+                Code = reader.GetInt32("Code"),
+                Name = reader.GetStringValue("Name"),
+                AccessKey = reader.GetStringValue("AccessKey"),
+                Password = reader.GetStringValue("Password"),
+                //Emails = reader.GetStringValue("Email"),
+                //Phone = reader.GetStringValue("Phone"),
+                TypeCode = reader.GetNullableInt("TypeCode"),
+                TypeName = reader.GetStringValue("TypeName"),
+                ProfileCode = reader.GetNullableInt("ProfileCode"),
+                ProfileName = reader.GetStringValue("ProfileName"),
+                StatusCode = reader.GetNullableInt("StatusCode"),
+                StatusName = reader.GetStringValue("StatusName"),
+                LastAccess = reader.GetNullableDateTime("LastAccess"),
+                AccessCount = reader.GetNullableInt("AccessCount"),
+                Avatar = reader.GetStringValue("Avatar"),
+                Note = reader.GetStringValue("Note"),
+                BrokerId = reader.GetNullableGuid("BrokerId"),
+                AccountId = reader.GetNullableGuid("AccountId"),
+                CreationDate = reader.GetNullableDateTime("CreationDate"),
+                CreationUserId = reader.GetNullableGuid("CreationUserId"),
+                CreationUserName = reader.GetStringValue("CreationUserName"),
+                ChangeDate = reader.GetNullableDateTime("ChangeDate"),
+                ChangeUserId = reader.GetNullableGuid("ChangeUserId"),
+                ChangeUserName = reader.GetStringValue("ChangeUserName"),
+                ExclusionDate = reader.GetNullableDateTime("ExclusionDate"),
+                ExclusionUserId = reader.GetNullableGuid("ExclusionUserId"),
+                ExclusionUserName = reader.GetStringValue("ExclusionUserName"),
+                RecordStatus = reader.GetBoolean("RecordStatus"),
+                CPF = reader.GetStringValue("CPF"),
+                IsActive = reader.GetBoolean("IS_ACTIVE")
+            };
 
 
             return x;
 
         }
+
+        
+        
+
+
+
+
+
+
+        /*
+        public Task<User?> GetByUserAsync(string login, string password)
+
+
+
+
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<User?> GetByUserAsync(Auth auth)
+        {
+            throw new NotImplementedException();
+        }
+        */
     }
 }

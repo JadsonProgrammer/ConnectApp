@@ -2,14 +2,19 @@ using ConnectApp.Application.Interfaces.Auths;
 using ConnectApp.Application.Interfaces.Users;
 using ConnectApp.Application.Services.Auths;
 using ConnectApp.Application.Services.Users;
+using ConnectApp.Domain.Interfaces.Auths;
 using ConnectApp.Domain.Interfaces.Auths.Tokens;
 using ConnectApp.Domain.Interfaces.Users;
-using ConnectApp.Infrastructure.Auth;
 using ConnectApp.Infrastructure.Auth.Token;
+using ConnectApp.Infrastructure.Auths.ConnectApp.Infrastructure.Auths;
+using ConnectApp.Infrastructure.Auths.Token;
+using ConnectApp.Infrastructure.Repositories.Auths;
 using ConnectApp.Infrastructure.Repositories.Users;
 using ConnectApp.Infrastructure.Sql;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -29,14 +34,23 @@ public class Program
         builder.Services.AddSingleton(jwtSettings);
 
         // Gera a chave de segurança para validação do token
+
+
+
+        //builder.Services.AddHttpContextAccessor();
+        //builder.Services.AddScoped<IGetCredential, GetCredential>();
+        //builder.Services.AddScoped<IJwtTokenService, TokenService>();
+
         var key = Encoding.ASCII.GetBytes(jwtSettings.Secret);
         var securityKey = new SymmetricSecurityKey(key);
         builder.Services.AddSingleton(securityKey);
         builder.Services.Configure<JwtSettings>(
+            
         builder.Configuration.GetSection("JwtSettings"));
 
         builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
+
         // Registro de serviços da aplicação
 
 
@@ -47,7 +61,7 @@ public class Program
         builder.Services.Configure<JwtSettings>(
             builder.Configuration.GetSection("JwtSettings"));
 
-        builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+       builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
 
 
@@ -57,8 +71,6 @@ public class Program
         //builder.Services.AddScoped<IDespesaRepository, DespesaRepository>();
         //builder.Services.AddScoped<ISubCategoriaRepository, SubCategoriaRepository>();
         //builder.Services.AddScoped<ITipoRepository, TipoRepository>();
-
-
         ////builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
         //IServiceCollection serviceCollection = builder.Services.AddScoped<ICartaoCreditoRepository, CartaoCreditoRepository1>();
         //builder.Services.AddScoped<IContaBancariaRepository, ContaBancariaRepository>();

@@ -1,31 +1,61 @@
 ﻿using ConnectApp.Application.DTOs.Users;
+using ConnectApp.Application.Interfaces.Auths;
 using ConnectApp.Application.Interfaces.Users;
 using ConnectApp.Domain.Entities.Users;
+using ConnectApp.Domain.Interfaces.Auths.Tokens;
 using ConnectApp.Domain.Interfaces.Users;
 using ConnectApp.Shared.Credential;
 using ConnectApp.Shared.Results;
+using Microsoft.AspNetCore.Http;
 
 namespace ConnectApp.Application.Services.Users
 {
     public class UserService : ResultService, IUserService
     {
         private readonly IUserRepository _userRepository;
-
-        public UserService(IUserRepository userRepository)
+        private readonly IJwtTokenService _tokenService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public UserService(IUserRepository userRepository, IJwtTokenService tokenService, IHttpContextAccessor httpContextAccessor)
         {
             _userRepository = userRepository;
+            _tokenService = tokenService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<ResultMessage> CreatesUserAsync(UserParams user)
+
+        //-----------------------CREATE USER-----------------------//
+        public async Task<UserResult> CreatesUserAsync(UserParams userParams)
         {
+            var userId = _httpContextAccessor.GetUserId();
+            var userName = _httpContextAccessor.GetUserName();
+            var accountId = _httpContextAccessor.GetAccountId();
+            var accountName = _httpContextAccessor.GetAccountName();
+
             try
             {
-                var _user = await this._userRepository.CreateUserAsync(user);
-                return new ResultMessage
+                var user = User.Create(
+                    name: userParams.Name,
+                    cpf: userParams.CPF!,
+                    accessKey: userParams.AccessKey,
+                    password: _tokenService.HashPassword(userParams.Password),
+                    phones: userParams.Phones,
+                    addresses: userParams.Addresses,
+                    emails: userParams.Emails,
+                    roles: userParams.Roles,
+                    creationUserId: userId,
+                    creationUserName: userName,
+                    accountId: accountId,
+                    accountName: accountName
+                );
+
+                var createdUser = await _userRepository.CreateUserAsync(user);
+
+                return new UserResult
                 {
-                    Code = "200",
-                    Text = "Usuário criado com sucesso",
-                    Type = ResultMessageTypes.Success
+                    Id = createdUser.Id,
+                    Nome = createdUser.Name,
+                    Erro = false,
+                    Message = "Usuário criado com sucesso"
                 };
             }
             catch (Exception ex)
@@ -36,51 +66,22 @@ namespace ConnectApp.Application.Services.Users
                     Text = "Erro ao criar usuário",
                     Type = ResultMessageTypes.Error
                 });
-                return new ResultMessage
+
+                return new UserResult
                 {
-                    Code = "400",
-                    Text = $"{ex.Message}",
-                    Type = ResultMessageTypes.Error
+                    Id = CreateUserAsync(userParams).Result.Id,
+                    Nome = CreateUserAsync(userParams).Result.Nome,
+                    Erro = false,
+                    Message = ex.Message
                 };
             }
         }
-        public async Task<UserResult> CreateAsync(User user)
-        {
-            try
-            {
-
-                var _user = await this._userRepository.CreateUserAsync(user);
-
-                return _user;
-            }
-            catch (Exception)
-            {
-                AddMessage(new ResultMessage
-                {
-                    Code = "400",
-                    Text = "Nenhum usuário localizado nessa conta",
-                    Type = ResultMessageTypes.Error
-                });
-                //var userResult = new UserResult
-                //{
-                //    Erro = false,
-                //    Message = $"{ex}"
-                //};
-                var userResult = new UserResult
-                {
-
-                };
-
-                return userResult;
 
 
-            }
-        }
-        public Task<UserResult> LoginAsync(string accessKey, string password)
-        {
-            throw new NotImplementedException();
-        }
-        public async Task<List<User>> GetAllAsync()
+     
+
+        //-----------------------GET USERS-----------------------//
+        public async Task<IList<UserResult?>> GetAllusersAsync()
         {
             try
             {
@@ -99,12 +100,37 @@ namespace ConnectApp.Application.Services.Users
                 return [];
             }
         }
-        public async Task<User> GetUserByIdAsync(UserParams userParams)
+        public async Task<IList<UserResult?>> GetUserByIdAsync(Guid id)
         {
             try
             {
+                var results = new List<UserResult?>();
+                var users = await this._userRepository.GetUserByIdAsync(id);
+                return results.Add(users);
+            }
+            catch (Exception)
+            {
+                AddMessage(new ResultMessage
+                {
+                    Code = "400",
+                    Text = "Nenhum usuário localizado nessa conta",
+                    Type = ResultMessageTypes.Error
+                });
+                return null!;
+            }
+        }
 
-                var users = await this._userRepository.GetUserByIdAsync(userParams.Id);
+
+
+        //-----------------------UPDATE USER-----------------------//
+
+        public async Task<UserResult> UpdateUserByIdAsync(UserParams userParams, Guid? id =null)
+        {
+
+            try
+            {
+                //mapeando os dados do userParams para a entidade User
+                var users = await this._userRepository.UpdateAsync(userParams);
                 return users;
             }
             catch (Exception)
@@ -121,33 +147,53 @@ namespace ConnectApp.Application.Services.Users
 
 
 
-        public async Task<bool> UpdateUserByIdAsync(User user)
+        //-----------------------DELETE USER-----------------------//
+
+
+        public async Task<Result<bool>> DeleteUserAsync(Guid userId)
         {
+            var currentUserId = _httpContextAccessor.GetUserId();
+            var currentUserName = _httpContextAccessor.GetUserName();
 
             try
             {
 
-                var users = await this._userRepository.UpdateAsync(user);
-                return users;
-            }
-            catch (Exception)
-            {
-                AddMessage(new ResultMessage
+                var existingUser = await _userRepository.GetUserByIdAsync(userId);
+                if (existingUser == null)
                 {
-                    Code = "400",
-                    Text = "Nenhum usuário localizado nessa conta",
-                    Type = ResultMessageTypes.Error
-                });
-                return false;
+                    return Result<bool>.Failure("Usuário não encontrado");
+                }
+
+
+                if (!existingUser.RecordStatus)
+                {
+                    return Result<bool>.Failure("Usuário já está excluído");
+                }
+
+
+                existingUser.Deactivate(currentUserId, currentUserName);
+
+
+                var success = await _userRepository.UpdateUserAsync(existingUser);
+
+                if (success is null)
+                {
+                    return Result<bool>.Failure(false, "Falha ao excluir usuário");
+                }
+
+                return Result<bool>.Success(true, "Usuário excluído com sucesso");
+            }
+            catch (Exception ex)
+            {
+
+                return Result<bool>.Failure(false, $"Erro interno: {ex.Message}");
             }
         }
 
 
 
-
-
-
-        public async Task<Credentials> GetCredentialByIdAsync(Guid userId)
+        //-----------------------CREDENTIAL USER-----------------------//
+        public async Task<Credentials?> GetCredentialByIdAsync(Guid userId)
         {
 
             var user = await _userRepository.GetUserByIdAsync(userId);
@@ -162,5 +208,7 @@ namespace ConnectApp.Application.Services.Users
                 AccountName = user.AccountName,
             };
         }
+
+
     }
 }

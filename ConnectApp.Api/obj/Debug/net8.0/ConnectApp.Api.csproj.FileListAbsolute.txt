@@ -33,10 +33,3 @@ C:\Jadson\Projetos\ConnectApp\ConnectApp\WebApplication1\obj\Debug\net8.0\refint
 C:\Jadson\Projetos\ConnectApp\ConnectApp\WebApplication1\obj\Debug\net8.0\ConnectApp.Api.pdb
 C:\Jadson\Projetos\ConnectApp\ConnectApp\WebApplication1\obj\Debug\net8.0\ConnectApp.Api.genruntimeconfig.cache
 C:\Jadson\Projetos\ConnectApp\ConnectApp\WebApplication1\obj\Debug\net8.0\ref\ConnectApp.Api.dll
-C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Api\obj\Debug\net8.0\ConnectApp.Api.csproj.AssemblyReference.cache
-C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Api\obj\Debug\net8.0\rpswa.dswa.cache.json
-C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Api\obj\Debug\net8.0\ConnectApp.Api.GeneratedMSBuildEditorConfig.editorconfig
-C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Api\obj\Debug\net8.0\ConnectApp.Api.AssemblyInfoInputs.cache
-C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Api\obj\Debug\net8.0\ConnectApp.Api.AssemblyInfo.cs
-C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Api\obj\Debug\net8.0\ConnectApp.Api.csproj.CoreCompileInputs.cache
-C:\Jadson\Projetos\ConnectApp\ConnectApp\ConnectApp.Api\obj\Debug\net8.0\ConnectApp.Api.MvcApplicationPartsAssemblyInfo.cache

@@ -4,10 +4,21 @@ namespace ConnectApp.Domain.Interfaces.Users
 {
     public interface IUserRepository
     {
+
+        //--------------Get------------------//
         Task<User?> GetUserByIdAsync(Guid id);
-        Task<List<User>> GetAllUsersAsync();
-        Task<User?> GetUserByUsernameAsync(string username);       
+        Task<IList<User>> GetAllUserAsync();
+        Task<User?> GetUserByUsernameAsync(string username);
+
+        //--------------Create------------------//
         Task<User> CreateUserAsync(User user);
-        Task<User?> UpdateAsync(User user);
+
+        //--------------Update------------------//
+        Task<User?> UpdateUserAsync(User user);
+
+
+
+        //--------------Delete------------------//
+        //Task<bool> DeleteUserAsync(User user);
     }
 }

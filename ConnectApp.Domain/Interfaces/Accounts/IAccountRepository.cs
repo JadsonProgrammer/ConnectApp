@@ -11,12 +11,21 @@ namespace ConnectApp.Domain.Interfaces.Accounts
 
     public interface IAccountRepository
     {
-        Task<Account> GetByIdAsync(Guid id);
-        Task<Account> GetByIdAsync(AccountParams id);
+        //---------------READ-----------------------
+        Task<Account?> GetByIdAsync(Guid id);
+        
         Task<List<Account>> GetAllAsync();
-        Task<AccountResult> CreateAsync(AccountParams account);
-        //Task<bool> UpdateAsync(Account account);
-        Task<bool> UpdateAsync(AccountParams account);
+
+
+        //---------------CREATE----------------------
+        Task<Account> CreateAsync(Account account);
+
+
+        //---------------UPDATE-------------------
+        Task<bool> UpdateAsync(Account account);
+
+
+        //---------------DELETE-------------------
         Task<bool> DeleteAsync(Guid id);
     }
 

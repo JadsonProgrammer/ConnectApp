@@ -1,10 +1,14 @@
-﻿namespace ConnectApp.Application.Interfaces.Auths
+﻿using ConnectApp.Domain.Entities.Users;
+
+namespace ConnectApp.Application.Interfaces.Auths
 {
     public interface IGetCredential
     {
-        Guid GetUserId();
-        string GetUserName();
-        Guid GetAccountId();
-        string GetAccountName();
+        Task<Guid> GetUserId();
+        Task<string> GetUserName();
+        Task<Guid> GetAccountId();
+        Task<string> GetAccountName();
+
+
     }
 }

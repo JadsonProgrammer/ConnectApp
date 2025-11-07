@@ -7,11 +7,25 @@ namespace ConnectApp.Application.Interfaces.Users
 {
     public interface IUserService
     {
-        Task<UserResult> CreateAsync(UserParams userParams);
-        //Task<UserResult> LoginAsync(string accessKey, string password);
-        Task<List<UserResult?>> GetAllusersAsync();
-        Task<UserResult?> GetUserByIdAsync(UserParams userParams);
-        Task<UserResult?> UpdateUserByIdAsync(UserParams userParams);
+
+        //-----------------------CREATE USER-----------------------//
+        Task<UserResult> CreatesUserAsync(UserParams userParams);
+
+       
+
+        //-----------------------GET USERS-----------------------//
+        Task<IList<UserResult?>> GetAllusersAsync();
+        Task<IList<UserResult?>> GetUserByIdAsync(Guid id);
+
+        //-----------------------UPDATE USER-----------------------//
+        Task<UserResult> UpdateUserByIdAsync(UserParams userParams);
+
+
+        //-----------------------DELETE USER-----------------------//
+
+        Task<Result<bool>> DeleteUserByIdAsync(Guid userId);
+
+        //-----------------------GET CREDENTIALS-----------------------//
         Task<Credentials?> GetCredentialByIdAsync(Guid userId);
     }
 }

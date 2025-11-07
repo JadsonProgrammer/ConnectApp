@@ -9,29 +9,35 @@ using ConnectApp.Shared.Results;
 
 namespace ConnectApp.Application.Services.Auths
 {
+
     public class AuthService(
-        IJwtTokenService tokenService,
-        IUserRepository userRepository,
-        IAuthRepository authRepository)
-        : ResultService, IAuthService
+            IJwtTokenService tokenService,
+            IUserRepository userRepository,
+           
+            IAuthRepository authRepository) : ResultService, IAuthService
     {
         private readonly IJwtTokenService _tokenService = tokenService;
         private readonly IUserRepository _userRepository = userRepository;
+        //private readonly string _salt = jwtSettings.Salt;
+        //private readonly string _secret = jwtSettings.Secret;
         private readonly IAuthRepository _authRepository = authRepository;
 
         public async Task<bool> LoginExistsAsync(AuthParams @params)
         {
             var existingUser = await _userRepository.GetUserByUsernameAsync(@params.AccessKey);
-            return existingUser.Error == false;
+            if (existingUser == null)
+            {
+                return false;
+            }
+            return true;
         }
-
-        public async Task<AuthResult> SignUpAsync(UserParams @params)
+        public async Task<AuthResult> SignUpAsync(AuthParams @params)
         {
             try
             {
                 var existingUser = await _userRepository.GetUserByUsernameAsync(@params.AccessKey);
 
-                if (existingUser.Error == true)
+                if (existingUser.AccessKey == @params.AccessKey)
                 {
                     AddMessage(new ResultMessage
                     {
@@ -140,5 +146,8 @@ namespace ConnectApp.Application.Services.Auths
                 Expires = DateTime.UtcNow.AddHours(2)
             };
         }
+
+      
     }
+    
 }

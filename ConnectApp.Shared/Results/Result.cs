@@ -3,34 +3,50 @@
     public class Result<T>
     {
         public T? Value { get; set; }
-        public bool HasErrors => Errors.Count != 0;
-        public List<string> Errors { get; } = [];
-        public List<string> Successes { get; } = [];
+        public bool HasErrors { get; set; } = true;
 
-        public void AddError(string message)
+        public bool HasSucess { get; set; } = false;
+        public IList<string> Messages { get; } = [];
+
+
+        //public void AddError(string message)
+        //{
+        //    if (!string.IsNullOrWhiteSpace(message))
+        //        Messages.Add(message);
+        //}
+
+        public void AddMessages(string message)
         {
             if (!string.IsNullOrWhiteSpace(message))
-                Errors.Add(message);
+                Messages.Add(message);
+
         }
 
-        public void AddSuccess(string message)
+        public static Result<T> Success(string message = "")
         {
-            if (!string.IsNullOrWhiteSpace(message))
-                Successes.Add(message);
-        }
+            var result = new Result<T> { HasSucess = true, HasErrors = false };
+            result.AddMessages(message);
 
+            return result;
+        }
         public static Result<T> Success(T value, string message = "")
         {
-            var result = new Result<T> { Value = value };
-            if (!string.IsNullOrWhiteSpace(message))
-                result.AddSuccess(message);
+            var result = new Result<T> { Value = value, HasSucess = true, HasErrors = false };
+            result.AddMessages(message);
+
             return result;
         }
 
         public static Result<T> Failure(string message)
         {
             var result = new Result<T>();
-            result.AddError(message);
+            result.AddMessages(message);
+            return result;
+        }
+        public static Result<T> Failure(T value, string message)
+        {
+            var result = new Result<T>();
+            result.AddMessages(message);
             return result;
         }
     }

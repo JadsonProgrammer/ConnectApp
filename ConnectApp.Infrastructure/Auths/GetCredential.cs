@@ -4,62 +4,115 @@ using ConnectApp.Domain.Interfaces.Users;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
-namespace ConnectApp.Infrastructure.Auth
+namespace ConnectApp.Infrastructure.Auths
 {
-    public class GetCredential : IGetCredential
+
+    namespace ConnectApp.Infrastructure.Auths
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IUserRepository _userRepository;
-
-        private User? _cachedUser; // cache local para não bater no banco várias vezes
-
-        public GetCredential(IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
+        public class GetCredential : IGetCredential
         {
-            _httpContextAccessor = httpContextAccessor;
-            _userRepository = userRepository;
-        }
+            private readonly IHttpContextAccessor _httpContextAccessor;
+            private readonly IUserRepository _userRepository;
 
-        private async Task<User?> GetCurrentUserAsync()
-        {
-            if (_cachedUser != null) return _cachedUser;
+            private User? _cached; // Cache para requisição atual
 
-            var userIdClaim = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value
-                              ?? _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value;
+            public GetCredential(IHttpContextAccessor accessor, IUserRepository userRepository)
+            {
+                _httpContextAccessor = accessor;
+                _userRepository = userRepository;
+            }
 
-            if (string.IsNullOrEmpty(userIdClaim)) return null;
+            private async Task<User?> GetUserFromDbAsync()
+            {
+                if (_cached != null)
+                    return _cached;
 
-            if (!Guid.TryParse(userIdClaim, out var userId)) return null;
+                var userIdClaim = _httpContextAccessor.HttpContext?.User?.FindFirst("userId")?.Value;
 
-            _cachedUser = await _userRepository.GetUserByIdAsync(userId);
-            return _cachedUser;
-        }
+                if (!Guid.TryParse(userIdClaim, out var userId))
+                    return null;
 
-        public Guid GetUserId()
-        {
-            var userTask = GetCurrentUserAsync();
-            userTask.Wait();
-            return userTask.Result?.Id ?? Guid.Empty;
-        }
+                _cached = await _userRepository.GetUserByIdAsync(userId);
+                return _cached;
+            }
 
-        public string GetUserName()
-        {
-            var userTask = GetCurrentUserAsync();
-            userTask.Wait();
-            return userTask.Result?.Name ?? string.Empty;
-        }
+            public async Task<Guid> GetUserIdAsync()
+                => (await GetUserFromDbAsync())?.Id ?? Guid.Empty;
 
-        public Guid GetAccountId()
-        {
-            var userTask = GetCurrentUserAsync();
-            userTask.Wait();
-            return userTask.Result?.AccountId ?? Guid.Empty;
-        }
+            public async Task<Guid> GetAccountIdAsync()
+                => (await GetUserFromDbAsync())?.AccountId ?? Guid.Empty;
 
-        public string GetAccountName()
-        {
-            var userTask = GetCurrentUserAsync();
-            userTask.Wait();
-            return userTask.Result?.AccountName ?? string.Empty;
+            public async Task<string> GetUserNameAsync()
+                => (await GetUserFromDbAsync())?.Name ?? string.Empty;
+
+            public async Task<string> GetAccountNameAsync()
+                => (await GetUserFromDbAsync())?.AccountName ?? string.Empty;
+
+            public Task<User?> GetUserAsync()
+            {
+                throw new NotImplementedException();
+            }
         }
     }
+
+
+
+    /*
+     public class GetCredential : IGetCredential
+     {
+         private readonly IHttpContextAccessor _httpContextAccessor;
+         private readonly IUserRepository _userRepository;
+
+         private User? _cachedUser; // cache local para não bater no banco várias vezes
+
+         public GetCredential(IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
+         {
+             _httpContextAccessor = httpContextAccessor;
+             _userRepository = userRepository;
+         }
+
+         private async Task<User?> GetCurrentUserAsync()
+         {
+             if (_cachedUser != null) return _cachedUser;
+
+             var userIdClaim = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                               ?? _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value;
+
+             if (string.IsNullOrEmpty(userIdClaim)) return null;
+
+             if (!Guid.TryParse(userIdClaim, out var userId)) return null;
+
+             _cachedUser = await _userRepository.GetUserByIdAsync(userId);
+             return _cachedUser;
+         }
+
+         public Guid GetUserId()
+         {
+             var userTask = GetCurrentUserAsync();
+             userTask.Wait();
+             return userTask.Result?.Id ?? Guid.Empty;
+         }
+
+         public string GetUserName()
+         {
+             var userTask = GetCurrentUserAsync();
+             userTask.Wait();
+             return userTask.Result?.Name ?? string.Empty;
+         }
+
+         public Guid GetAccountId()
+         {
+             var userTask = GetCurrentUserAsync();
+             userTask.Wait();
+             return userTask.Result?.AccountId ?? Guid.Empty;
+         }
+
+         public string GetAccountName()
+         {
+             var userTask = GetCurrentUserAsync();
+             userTask.Wait();
+             return userTask.Result?.AccountName ?? string.Empty;
+         }
+     }
+    */
 }

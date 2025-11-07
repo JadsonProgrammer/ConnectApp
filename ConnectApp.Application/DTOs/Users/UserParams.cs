@@ -4,17 +4,25 @@ namespace ConnectApp.Application.DTOs.Users
 {
     public class UserParams
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
-        public string FirstName { get; set; } = null!;
-        public string LastName { get; set; } = null!;
-        public string CPF { get; set; } = null!;
+
+        public Guid? Id { get; set; } // somente no update
+
+        public string Name { get; set; } = null!;
+        public string? CPF { get; set; }
         public string AccessKey { get; set; } = null!;
-        public string PasswordHash { get; set; } = null!;
-        public List<string> Roles { get; set; } = ["User"];
-        public List<Phone> Phones { get; set; } = [];
-        public List<Address> Addresses { get; set; } = [];
-        public List<Email> Emails { get; set; } = [];
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public int IsActive { get; set; }
+        public string Password { get; set; } = null!;
+
+        public IList<Phone>? Phones { get; set; }
+        public IList<Address>? Addresses { get; set; }
+        public IList<Email>? Emails { get; set; }
+
+        public string? Avatar { get; set; }
+        public string? Note { get; set; }
+
+        // Opcional: roles se usuário pode alterar perfil dele (senão remover)
+        public IList<string>? Roles { get; set; }
     }
 }
+
+
+

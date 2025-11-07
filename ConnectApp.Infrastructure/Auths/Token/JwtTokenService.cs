@@ -1,21 +1,17 @@
 ﻿using ConnectApp.Domain.Entities.Users;
 using ConnectApp.Domain.Interfaces.Auths.Tokens;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
+using ConnectApp.Infrastructure.Auth.Token;
+using Microsoft.Extensions.Options;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace ConnectApp.Infrastructure.Auth
+namespace ConnectApp.Infrastructure.Auths.Token
 {
 
 
-    public class JwtTokenService : IJwtTokenService
+    public class JwtTokenService
     {
+        /*
         private readonly JwtSettings _settings;
 
         public JwtTokenService(IOptions<JwtSettings> options)
@@ -91,21 +87,22 @@ namespace ConnectApp.Infrastructure.Auth
     //        }
     //        */
 
-    //        var tokenDescriptor = new SecurityTokenDescriptor
-    //        {
-    //            Subject = new ClaimsIdentity(claims),
-    //            NotBefore = now,
-    //            Expires = now.AddHours(_jwtSettings.ExpiryInHours),
+        //        var tokenDescriptor = new SecurityTokenDescriptor
+        //        {
+        //            Subject = new ClaimsIdentity(claims),
+        //            NotBefore = now,
+        //            Expires = now.AddHours(_jwtSettings.ExpiryInHours),
 
-    //            Issuer = _jwtSettings.Issuer,
-    //            Audience = _jwtSettings.Audience,
-    //            SigningCredentials = new SigningCredentials(
-    //                new SymmetricSecurityKey(key),
-    //                SecurityAlgorithms.HmacSha512Signature)
-    //        };
+        //            Issuer = _jwtSettings.Issuer,
+        //            Audience = _jwtSettings.Audience,
+        //            SigningCredentials = new SigningCredentials(
+        //                new SymmetricSecurityKey(key),
+        //                SecurityAlgorithms.HmacSha512Signature)
+        //        };
 
-    //        var token = tokenHandler.CreateToken(tokenDescriptor);
-    //        return tokenHandler.WriteToken(token);
-    //    }
-    //}
+        //        var token = tokenHandler.CreateToken(tokenDescriptor);
+        //        return tokenHandler.WriteToken(token);
+        //    }
+        //}
+    }
 }

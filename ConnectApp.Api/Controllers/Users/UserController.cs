@@ -1,161 +1,95 @@
-﻿using ConnectApp.Application.DTOs.Users;
+﻿using ConnectApp.Api.Controllers.Base;
+using ConnectApp.Application.DTOs.Users;
 using ConnectApp.Application.Interfaces.Users;
-using ConnectApp.Domain.Entities.Users;
-using ConnectApp.Shared.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConnectApp.Api.Controllers.Users
 {
-
     [Authorize]
     [Route("users")]
     [ApiController]
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private readonly IUserService _userService;
 
         public UserController(IUserService userService)
         {
-            this._userService = userService;
+            _userService = userService;
         }
 
 
-        [HttpGet("list")]
-        public async Task<IActionResult> GetActionResultAsync()
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUserById(Guid id)
         {
             try
             {
-                var users = await _userService.GetAllAsync();
-
-                if (users == null || users.Count == 0)
-                {
-                    return NotFound(new ResultMessage
-                    {
-                        Code = "404",
-                        Text = "Nenhum Usuário encontrado!"
-                    });
-                }
-                var userDtos = UserMapper.MapToList(users);
-
-
-                return Ok(userDtos);
+                var userResult = await _userService.GetUserByIdAsync(id);
+                return await CreateGetResponse(userResult, _userService);
             }
             catch (Exception e)
             {
-                return BadRequest(new ResultMessage
-                {
-                    Code = "404",
-                    Text = $"Erro Interno {e}"
-                });
+                return await CreateExceptionResponse(e);
             }
         }
 
-        [HttpGet("{id}/edit")]
-        public async Task<IActionResult> GetActionResultAsync(UserParams userParams)
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllUsers()
         {
             try
             {
-                var users = await _userService.GetUserByIdAsync(userParams);
-
-                if (users == null)
-                {
-                    return NotFound(new ResultMessage
-                    {
-                        Code = "404",
-                        Text = "Nenhum Usuário encontrado!"
-                    });
-                }
-                //var userDtos = UserMapper.MapToSearch(users);                              
-
-
-                return Ok(users);
+                var users = await _userService.GetAllusersAsync();
+                return await CreateGetResponse(users, _userService);
             }
             catch (Exception e)
             {
-                return BadRequest(new ResultMessage
-                {
-                    Code = "404",
-                    Text = $"Erro Interno {e}"
-                });
+                return await CreateExceptionResponse(e);
             }
         }
 
-        [HttpPut("{id}/update")]
-        public async Task<IActionResult> UpdateActionResultAsync([FromBody] User user)
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAsync([FromBody] UserParams userParams , Guid id)
         {
             try
             {
-                var users = await _userService.UpdateUserByIdAsync(user);
-
-                if (users == null)
-                {
-                    return NotFound(new ResultMessage
-                    {
-                        Code = "404",
-                        Text = "Nenhum Usuário selecionado!"
-                    });
-                }
-                //var userDtos = UserMapper.MapToSearch(users);                              
-
-                if (users == false)
-                {
-                    return NotFound(new ResultMessage
-                    {
-                        Code = "404",
-                        Text = "Nenhum Usuário Alterado!"
-                    });
-
-                }
-                return Ok(users);
+                var result = await _userService.UpdateUserByIdAsync(userParams);
+                return await CreateGetResponse(result, _userService);
             }
             catch (Exception e)
             {
-                return BadRequest(new ResultMessage
-                {
-                    Code = "404",
-                    Text = $"Erro Interno {e}"
-                });
+                return await CreateExceptionResponse(e);
+            }
+        }
+       
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync([FromRoute] Guid id)
+        {
+            try
+            {
+                var result = await _userService.DeleteUserByIdAsync(id);
+                return await CreateGetResponse(result, _userService);
+            }
+            catch (Exception e)
+            {
+                return await CreateExceptionResponse(e);
             }
         }
 
-        [HttpPost("{id}/create")]
-        public async Task<IActionResult> CreateActionResultAsync([FromBody] User user)
+
+        [HttpPost]
+        public async Task<IActionResult> CreateUserAsync([FromBody] UserParams userParams)
         {
             try
             {
-                var users = await _userService.CreateAsync(user);
-
-                if (users == null)
-                {
-                    return NotFound(new ResultMessage
-                    {
-                        Code = "404",
-                        Text = "Nenhum Usuário selecionado!"
-                    });
-                }
-                //var userDtos = UserMapper.MapToSearch(users);                              
-
-                if (users.Erro == true)
-                {
-                    return NotFound(new ResultMessage
-                    {
-                        Code = "404",
-                        Text = "Nenhum Usuário Alterado!"
-                    });
-
-                }
-                return Ok(users);
+                var result = await _userService.CreatesUserAsync(userParams);
+                return await CreatePostResponse(result, _userService);
             }
             catch (Exception e)
             {
-                return BadRequest(new ResultMessage
-                {
-                    Code = "404",
-                    Text = $"Erro Interno {e}"
-                });
+                return await CreateExceptionResponse(e);
             }
         }
     }
 }
-

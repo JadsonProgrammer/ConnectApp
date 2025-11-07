@@ -10,8 +10,9 @@ namespace ConnectApp.Application.DTOs.Accounts
         public Guid? AccountId { get; set; }
         public string? AccountName { get; set; }
         public bool? Ativa { get; set; }
+        public int Code { get; set; }
 
-        public static AccountResult Success(string message, Account? entity = null)
+        public static AccountResult Success(string message, AccountResult? entity = null)
         {
             return new AccountResult
             {

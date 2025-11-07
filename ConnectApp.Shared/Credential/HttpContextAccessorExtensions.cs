@@ -48,7 +48,7 @@ namespace ConnectApp.Shared.Credential
                 .Select(c => c.Value)
                 .ToList();
 
-            return roles ?? new List<string>();
+            return roles ?? [];
         }
 
         // Métodos opcionais para acesso individual (no mesmo estilo)

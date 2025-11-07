@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConnectApp.Infrastructure.Auth
+namespace ConnectApp.Infrastructure.Auths
 {
     public static class Settings
     {
