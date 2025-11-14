@@ -22,11 +22,12 @@ namespace ConnectApp.Domain.Interfaces.Accounts
 
 
         //---------------UPDATE-------------------
-        Task<bool> UpdateAsync(Account account);
+        Task<bool> UpdateAsync(Account account, Guid id);
 
 
         //---------------DELETE-------------------
         Task<bool> DeleteAsync(Guid id);
+        //Task UpdateAsync(Guid id);
     }
 
 }

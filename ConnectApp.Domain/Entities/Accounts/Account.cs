@@ -1,11 +1,9 @@
-﻿using ConnectApp.Shared.Results;
-
-namespace ConnectApp.Domain.Entities.Accounts
+﻿namespace ConnectApp.Domain.Entities.Accounts
 {
-    public class Account
+    public partial class Account
     {
-        public Guid AccountId { get; set; } 
-        public string AccountName { get; set; } = string.Empty;
+        public Guid Id { get; set; } 
+        public string Name { get; set; } = string.Empty;
         public bool Ativa { get; set; }
 
         // Personalização
@@ -30,73 +28,86 @@ namespace ConnectApp.Domain.Entities.Accounts
         public Account() { }
 
         
-        public static Account Create(
-            string accountName,
-            Guid creationUserId,
-            string creationUserName,
-            string? temaPadrao,
-            string? urlLogo ,
-            string? urlIcone,
-            string? urlImagemLogin,
-            string? urlImagemDashboard)
-        {
-            if (string.IsNullOrWhiteSpace(accountName))
-                throw new ArgumentException("O nome da conta é obrigatório.");
+        //public static Account Create(
+        //    string Name,
+        //    Guid creationUserId,
+        //    string? creationUserName,
+        //    string? temaPadrao,
+        //    string? urlLogo ,
+        //    string? urlIcone,
+        //    string? urlImagemLogin,
+        //    string? urlImagemDashboard)
+        //{
+        //    if (string.IsNullOrWhiteSpace(Name))
+        //        throw new ArgumentException("O nome da conta é obrigatório.");
 
-            if (creationUserId == Guid.Empty)
-                throw new ArgumentException("O usuário de criação é obrigatório.");
+        //    //if (creationUserId == Guid.Empty)
+        //    //    throw new ArgumentException("O usuário de criação é obrigatório.");
 
-            return new Account
-            {
-                AccountId = Guid.NewGuid(),
-                AccountName = accountName.Trim(),
-                Ativa = true,
-                TemaPadrao = string.IsNullOrWhiteSpace(temaPadrao) ? "default" : temaPadrao,
-                UrlLogo = urlLogo,
-                UrlIcone = urlIcone,
-                UrlImagemLogin = urlImagemLogin,
-                UrlImagemDashboard = urlImagemDashboard,
-                CreationDate = DateTime.UtcNow,
-                CreationUserId = creationUserId,
-                CreationUserName = creationUserName ?? "Sistema",
-                RecordStatus = true
-            };
-        }
+        //    return new Account
+        //    {
+        //        Id = Guid.NewGuid(),
+        //        Name =Name.Trim(),
+        //        Ativa = true,
+        //        TemaPadrao = string.IsNullOrWhiteSpace(temaPadrao) ? "default" : temaPadrao,
+        //        UrlLogo = urlLogo,
+        //        UrlIcone = urlIcone,
+        //        UrlImagemLogin = urlImagemLogin,
+        //        UrlImagemDashboard = urlImagemDashboard,
+        //        CreationDate = DateTime.UtcNow,
+        //        CreationUserId = creationUserId != Guid.Empty ? creationUserId : GetSystemUserId(),
+        //        CreationUserName = GetCreationUserName(creationUserName),
+        //        RecordStatus = true
 
-        public void Update(
-            string accountName,
-            string? temaPadrao,
-            string? urlLogo,
-            string? urlIcone,
-            string? urlImagemLogin,
-            string? urlImagemDashboard,
-            Guid changeUserId,
-            string? changeUserName)
-        {
-            if (string.IsNullOrWhiteSpace(accountName))
-                throw new ArgumentException("O nome da conta é obrigatório para atualização.");
+        //    };
+        //}
+        //private static Guid GetSystemUserId()
+        //{
+            
+        //    return Guid.Parse("00000000-0000-0000-0000-000000000000");
+        //}
+        //private static string GetCreationUserName(string? creationUserName)
+        //{
+        //    if (string.IsNullOrWhiteSpace(creationUserName))
+        //        return "Sistema";
 
-            AccountName = accountName.Trim();
-            TemaPadrao = temaPadrao;
-            UrlLogo = urlLogo;
-            UrlIcone = urlIcone;
-            UrlImagemLogin = urlImagemLogin;
-            UrlImagemDashboard = urlImagemDashboard;
-            ChangeDate = DateTime.UtcNow;
-            ChangeUserId = changeUserId;
-            ChangeUserName = changeUserName;
-        }
+        //    return creationUserName.Trim();
+        //}
 
-        public void Deactivate(Guid userId, string userName)
-        {
-            if (userId == Guid.Empty)
-                throw new ArgumentException("Usuário inválido para exclusão.");
+        //public void Update(
+        //    string Name,
+        //    string? temaPadrao,
+        //    string? urlLogo,
+        //    string? urlIcone,
+        //    string? urlImagemLogin,
+        //    string? urlImagemDashboard,
+        //    Guid changeUserId,
+        //    string? changeUserName)
+        //{
+        //    if (string.IsNullOrWhiteSpace(Name))
+        //        throw new ArgumentException("O nome da conta é obrigatório para atualização.");
 
-            Ativa = false;
-            RecordStatus = false;
-            ExclusionDate = DateTime.UtcNow;
-            ExclusionUserId = userId;
-            ExclusionUserName = userName;
-        }
+        //    Name = Name.Trim();
+        //    TemaPadrao = temaPadrao;
+        //    UrlLogo = urlLogo;
+        //    UrlIcone = urlIcone;
+        //    UrlImagemLogin = urlImagemLogin;
+        //    UrlImagemDashboard = urlImagemDashboard;
+        //    ChangeDate = DateTime.UtcNow;
+        //    ChangeUserId = changeUserId;
+        //    ChangeUserName = changeUserName;
+        //}
+
+        //public void Deactivate(Guid userId, string userName)
+        //{
+        //    if (userId == Guid.Empty)
+        //        throw new ArgumentException("Usuário inválido para exclusão.");
+
+        //    Ativa = false;
+        //    RecordStatus = false;
+        //    ExclusionDate = DateTime.UtcNow;
+        //    ExclusionUserId = userId;
+        //    ExclusionUserName = userName;
+        //}
     }
 }

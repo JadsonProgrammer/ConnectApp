@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ConnectApp.Shared.Results
+﻿namespace ConnectApp.Shared.Results
 {
-    public class ResultService : IResultService
+    public class ResultService 
     {
         public IList<ResultMessage> AllMessages { get; set; }
         public IList<ResultMessage> Errors { get; set; }
@@ -110,6 +104,9 @@ namespace ConnectApp.Shared.Results
         {
             return !this.HasErrors();
         }
+
+        protected static Result<T> Success<T>(T data, string message = "Sucesso") => Result<T>.Ok(data, message);
+        protected static Result<T> Failure<T>(string message, params string[] errors) => Result<T>.Failure(message, errors);
 
     }
 }

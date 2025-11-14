@@ -5,8 +5,7 @@ using ConnectApp.Application.Services.Users;
 using ConnectApp.Domain.Interfaces.Auths;
 using ConnectApp.Domain.Interfaces.Auths.Tokens;
 using ConnectApp.Domain.Interfaces.Users;
-using ConnectApp.Infrastructure.Auth.Token;
-using ConnectApp.Infrastructure.Auths.ConnectApp.Infrastructure.Auths;
+using ConnectApp.Infrastructure.Auths;
 using ConnectApp.Infrastructure.Auths.Token;
 using ConnectApp.Infrastructure.Repositories.Auths;
 using ConnectApp.Infrastructure.Repositories.Users;
@@ -45,14 +44,13 @@ public class Program
         var securityKey = new SymmetricSecurityKey(key);
         builder.Services.AddSingleton(securityKey);
         builder.Services.Configure<JwtSettings>(
-            
+
         builder.Configuration.GetSection("JwtSettings"));
 
-        builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+        //builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
 
-        // Registro de serviços da aplicação
-
+      
 
         // -----------------User-------------------
         builder.Services.AddScoped<IUserService, UserService>();
@@ -61,7 +59,7 @@ public class Program
         builder.Services.Configure<JwtSettings>(
             builder.Configuration.GetSection("JwtSettings"));
 
-       builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+       // builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
 
 
@@ -91,7 +89,7 @@ public class Program
 
         //-------------------Auth------------------
         builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-        builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+       builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<IGetCredential, GetCredential>();
@@ -141,7 +139,7 @@ public class Program
     {
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     });
-        // CORS
+        
         builder.Services.AddCors(options =>
         {
             options.AddPolicy("MyPolicy", policy =>
@@ -161,7 +159,6 @@ public class Program
 
 
 
-        // Autenticação JWT
         builder.Services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -181,16 +178,23 @@ public class Program
                 ValidAudience = jwtSettings.Audience,
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero,
-                RoleClaimType = ClaimTypes.Role, // garante que o [Authorize(Roles="...")] funcione
+                RoleClaimType = ClaimTypes.Role, // garante que o [Authorize(Roles="...")] funcionez    
                 NameClaimType = ClaimTypes.NameIdentifier // garante que User.Identity.NameId funcione
             };
         });
 
-
+        builder.Services.AddAuthorization(options =>
+        {
+            // Define que a política padrão exige um usuário autenticado.
+            // Isso aplica [Authorize] globalmente.
+            options.FallbackPolicy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+        });
 
         {
 
-            // Autorização por roles
+       
             builder.Services.AddAuthorizationBuilder()
                 .AddPolicy("Admin", policy => policy.RequireRole("manager"))
                 .AddPolicy("Employee", policy => policy.RequireRole("employee"));

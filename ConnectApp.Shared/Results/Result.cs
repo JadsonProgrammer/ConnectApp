@@ -1,53 +1,37 @@
 ﻿namespace ConnectApp.Shared.Results
 {
+
     public class Result<T>
     {
+
+
         public T? Value { get; set; }
         public bool HasErrors { get; set; } = true;
-
         public bool HasSucess { get; set; } = false;
         public IList<string> Messages { get; } = [];
 
+        public void AddMessages(string message) { }
 
-        //public void AddError(string message)
-        //{
-        //    if (!string.IsNullOrWhiteSpace(message))
-        //        Messages.Add(message);
-        //}
+        //public static Result<T> Success(string message = "") { ... }
+        //public static Result<T> Success(T value, string message = "") { ... }
+        //public static Result<T> Failure(string message) { ... }
+        //public static Result<T> Failure(T value, string message) { ... }
 
-        public void AddMessages(string message)
-        {
-            if (!string.IsNullOrWhiteSpace(message))
-                Messages.Add(message);
 
-        }
+        //-------------------------------// PROPERTIES //-------------------------------//
+        public bool Success { get; private set; }
+        public string Message { get; private set; } = string.Empty;
+        public T? Data { get; private set; }
+        public List<string> Errors { get; private set; } = [];
 
-        public static Result<T> Success(string message = "")
-        {
-            var result = new Result<T> { HasSucess = true, HasErrors = false };
-            result.AddMessages(message);
+        private Result() { }
 
-            return result;
-        }
-        public static Result<T> Success(T value, string message = "")
-        {
-            var result = new Result<T> { Value = value, HasSucess = true, HasErrors = false };
-            result.AddMessages(message);
+        public static Result<T> Ok(T data, string message = "")
+            => new() { Success = true, Data = data, Message = message };
 
-            return result;
-        }
-
-        public static Result<T> Failure(string message)
-        {
-            var result = new Result<T>();
-            result.AddMessages(message);
-            return result;
-        }
-        public static Result<T> Failure(T value, string message)
-        {
-            var result = new Result<T>();
-            result.AddMessages(message);
-            return result;
-        }
+        public static Result<T> Failure(string message, params string[] errors)
+            => new() { Success = false, Message = message, Errors = errors?.ToList() ?? new List<string>() };
     }
 }
+
+

@@ -1,6 +1,8 @@
-﻿namespace ConnectApp.Application.DTOs.Users
+﻿using ConnectApp.Shared.Results;
+
+namespace ConnectApp.Application.DTOs.Users
 {
-    public class UserResult
+    public class UserResult 
     {
         public Guid Id { get; set; }
         public string? Nome { get; set; } = null!;

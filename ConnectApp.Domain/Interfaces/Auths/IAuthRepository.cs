@@ -1,5 +1,5 @@
-﻿using ConnectApp.Domain.Entities.Users;
-using ConnectApp.Domain.Entities.Auths;
+﻿using ConnectApp.Domain.Entities.Auths;
+using ConnectApp.Domain.Entities.Users;
 
 namespace ConnectApp.Domain.Interfaces.Auths
 {

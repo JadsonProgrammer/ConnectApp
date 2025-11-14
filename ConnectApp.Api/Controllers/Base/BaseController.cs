@@ -1,148 +1,78 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 using ConnectApp.Shared.Results;
 
 namespace ConnectApp.Api.Controllers.Base
 {
     public abstract class BaseController : ControllerBase
     {
+        protected async Task<IActionResult> CreateGetResponse<T>(Result<T> result)
+            => await CreateResponse(result, "200");
 
-        protected async Task<IActionResult> CreateGetResponse(object? result, object? service = null)
-        {
-            return await CreateResponse(result, "202", "Operação concluída com sucesso.");
-        }
+        protected async Task<IActionResult> CreatePostResponse<T>(Result<T> result)
+            => await CreateResponse(result, "201");
 
-
-        protected async Task<IActionResult> CreatePostResponse(object? result, object? service = null)
-        {
-            return await CreateResponse(result, "201", "Registro criado com sucesso.");
-        }
-
-
-        private async Task<IActionResult> CreateResponse(object? result, string successCode, string successMessage)
+        protected async Task<IActionResult> CreateResponse<T>(Result<T> result, string successCode)
         {
             if (result == null)
             {
-                return NotFound(new ResponseMessage
-                {
-                    Code = "404",
-                    Message = "Nenhum registro encontrado."
-                });
+                return NotFound(new ResponseMessage { Code = "404", Message = "Nenhum registro encontrado." });
             }
 
-            // Verifica se é um Result<T> com erros
-            if (IsGenericResultWithErrors(result))
+            if (!result.Success)
             {
-                var errors = GetErrorsFromResult(result);
-                return BadRequest(new ResponseMessage
-                {
-                    Code = "400",
-                    Message = string.Join("; ", errors)
-                });
+                return BadRequest(new ResponseMessage { Code = "400", Message = result.Message, Data = result.Errors });
             }
-
-            
-            if (result is bool b && !b)
-            {
-                return NotFound(new ResponseMessage
-                {
-                    Code = "404",
-                    Message = "Operação não realizada."
-                });
-            }
-
-            // Extrai o valor se for Result<T>
-            var finalResult = ExtractValueFromResult(result);
-
-            if (finalResult == null)
-            {
-                return NotFound(new ResponseMessage
-                {
-                    Code = "404",
-                    Message = "Nenhum registro encontrado."
-                });
-            }
+            var foundId = TryGetIdFromResult(result.Data);
+            // sucesso
+            var message = string.IsNullOrWhiteSpace(result.Message) ? GetDefaultMessageFromAction() : result.Message;
 
             return Ok(new ResponseMessage
             {
                 Code = successCode,
-                Message = successMessage,
-                Id = (Guid)TryGetIdFromResult(finalResult)!
+                Message = message,
+                Data = result.Data,
+                Id = foundId
             });
         }
 
+        private string GetDefaultMessageFromAction()
+        {
+            var controllerName = ControllerContext.ActionDescriptor.ControllerName;
+            var actionName = ControllerContext.ActionDescriptor.ActionName;
+
+            // normaliza (UserController -> User)
+            string entity = controllerName.EndsWith("Controller")
+                ? controllerName.Substring(0, controllerName.Length - "Controller".Length)
+                : controllerName;
+
+            var verb = actionName.ToLowerInvariant();
+
+            if (verb.Contains("create") || verb.Contains("post"))
+                return $"{entity} criado com sucesso.";
+            if (verb.Contains("update") || verb.Contains("put") || verb.Contains("edit"))
+                return $"{entity} atualizado com sucesso.";
+            if (verb.Contains("delete") || verb.Contains("remove"))
+                return $"{entity} excluído com sucesso.";
+            if (verb.Contains("get") || verb.Contains("list"))
+                return $"{entity} encontrado com sucesso.";
+
+            return $"{entity} processado com sucesso.";
+        }
+
+        private static Guid? TryGetIdFromResult(object? finalResult)
+        {
+            if (finalResult == null) return null;
+            var prop = finalResult.GetType().GetProperty("Id");
+            if (prop == null) return null;
+            var value = prop.GetValue(finalResult);
+            
+            return value is Guid g ? g : null;
+        }
 
         protected async Task<IActionResult> CreateExceptionResponse(Exception e)
         {
-            return BadRequest(new ResponseMessage
-            {
-                Code = "500",
-                Message = $"Erro interno: {e.Message}"
-            });
-        }
-
-
-        private static bool IsGenericResultWithErrors(object result)
-        {
-            var type = result.GetType();
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Result<>))
-            {
-                var hasErrorsProperty = type.GetProperty("HasErrors");
-                if (hasErrorsProperty != null)
-                {
-                    return (bool)hasErrorsProperty.GetValue(result)!;
-                }
-            }
-            return false;
-        }
-
-
-        private static string[] GetErrorsFromResult(object result)
-        {
-            var type = result.GetType();
-            var errorsProperty = type.GetProperty("Errors");
-            if (errorsProperty != null)
-            {
-                var errors = errorsProperty.GetValue(result) as List<string>;
-                return errors?.ToArray() ?? [];
-            }
-            return [];
-        }
-
-
-        private static object? ExtractValueFromResult(object result)
-        {
-            var type = result.GetType();
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Result<>))
-            {
-                var valueProperty = type.GetProperty("Value");
-                return valueProperty?.GetValue(result);
-            }
-            return result;
-        }
-
-
-        private static Guid? TryGetIdFromResult(object result)
-        {
-
-            var prop = result.GetType().GetProperty("AccountId");
-            if (prop != null)
-            {
-                var value = prop.GetValue(result);
-                if (value is Guid guid)
-                    return guid;
-            }
-
-            prop = result.GetType().GetProperty("Id");
-            if (prop != null)
-            {
-                var value = prop.GetValue(result);
-                if (value is Guid guid)
-                    return guid;
-            }
-
-            return null;
+            return BadRequest(new ResponseMessage { Code = "500", Message = $"Erro interno: {e.Message}" });
         }
     }
+
 }

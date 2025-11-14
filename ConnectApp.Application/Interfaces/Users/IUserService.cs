@@ -8,24 +8,61 @@ namespace ConnectApp.Application.Interfaces.Users
     public interface IUserService
     {
 
-        //-----------------------CREATE USER-----------------------//
-        Task<UserResult> CreatesUserAsync(UserParams userParams);
 
-       
-
-        //-----------------------GET USERS-----------------------//
-        Task<IList<UserResult?>> GetAllusersAsync();
-        Task<IList<UserResult?>> GetUserByIdAsync(Guid id);
-
-        //-----------------------UPDATE USER-----------------------//
-        Task<UserResult> UpdateUserByIdAsync(UserParams userParams);
+        Task<Result<UserResult>> CreatesUserAsync(UserParams userParams);
+        Task<Result<IList<UserResult>>> GetAllusersAsync();
+        Task<Result<UserResult>> GetUserByIdAsync(Guid id);
+        Task<Result<UserResult>> UpdateUserByIdAsync(UserParams userParams, Guid id);
+        Task<Result<bool>> DeleteUserByIdAsync(Guid id);
 
 
-        //-----------------------DELETE USER-----------------------//
 
-        Task<Result<bool>> DeleteUserByIdAsync(Guid userId);
 
-        //-----------------------GET CREDENTIALS-----------------------//
-        Task<Credentials?> GetCredentialByIdAsync(Guid userId);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        ////-----------------------CREATE USER-----------------------//
+        //Task<UserResult> CreatesUserAsync(UserParams userParams);
+
+
+
+        ////-----------------------GET USERS-----------------------//
+        //Task<IList<UserResult?>> GetAllusersAsync();
+        //Task<IList<UserResult?>> GetUserByIdAsync(Guid id);
+
+        ////-----------------------UPDATE USER-----------------------//
+        ////Task<UserResult> UpdateUserByIdAsync(UserParams userParams);
+        //Task<UserResult> UpdateUserByIdAsync(UserParams userParams, Guid? id);
+
+
+        ////-----------------------DELETE USER-----------------------//
+
+        //Task<Result<bool>> DeleteUserByIdAsync(Guid userId);
+
+        ////-----------------------GET CREDENTIALS-----------------------//
+        //Task<Credentials?> GetCredentialByIdAsync(Guid userId);
     }
 }

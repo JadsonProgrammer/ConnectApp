@@ -8,46 +8,46 @@ using System.Text;
 namespace ConnectApp.Infrastructure.Auths
 {
 
-    public class JwtTokenService : IJwtTokenService
+    public class TokenService 
     {
-        public string GenerateToken(User user)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(Settings.Secret);
+        //public static string GenerateToken(User user)
+        //{
+        //    var tokenHandler = new JwtSecurityTokenHandler();
+        //    var key = Encoding.ASCII.GetBytes(Settings.Secret);
 
-            var claims = new List<Claim>
-            {
-                new ("userId", user.Id.ToString()),
-                new ("sessionId", Guid.NewGuid().ToString())
-            };
+        //    var claims = new List<Claim>
+        //    {
+        //        new ("userId", user.Id.ToString()),
+        //        new ("sessionId", Guid.NewGuid().ToString())
+        //    };
 
-            var descriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddDays(1),
-                SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha256Signature
-                )
-            };
+        //    var descriptor = new SecurityTokenDescriptor
+        //    {
+        //        Subject = new ClaimsIdentity(claims),
+        //        Expires = DateTime.UtcNow.AddDays(1),
+        //        SigningCredentials = new SigningCredentials(
+        //            new SymmetricSecurityKey(key),
+        //            SecurityAlgorithms.HmacSha256Signature
+        //        )
+        //    };
 
-            var token = tokenHandler.CreateToken(descriptor);
-            return tokenHandler.WriteToken(token);
-        }
+        //    var token = tokenHandler.CreateToken(descriptor);
+        //    return tokenHandler.WriteToken(token);
+        //}
 
-        // concatena password + Salt + Secret e aplica BCrypt (recomendado evitar secret global, mas faço conforme pediu)
-        public string HashPassword(string password)
-        {
-            var composite = string.Concat(password ?? string.Empty, Settings.Salt, Settings.Secret);
-            return BCrypt.Net.BCrypt.HashPassword(composite);
-        }
+        //// concatena password + Salt + Secret e aplica BCrypt (recomendado evitar secret global, mas faço conforme pediu)
+        //public static string HashPassword(string password)
+        //{
+        //    var composite = string.Concat(password ?? string.Empty, Settings.Salt, Settings.Secret);
+        //    return BCrypt.Net.BCrypt.HashPassword(composite);
+        //}
 
-        // verifica recebendo a senha em texto; concatena, aplica Verify
-        public bool VerifyPassword(string password, string storedHash)
-        {
-            var composite = string.Concat(password ?? string.Empty, Settings.Salt, Settings.Secret);
-            return BCrypt.Net.BCrypt.Verify(composite, storedHash);
-        }
+        //// verifica recebendo a senha em texto; concatena, aplica Verify
+        //public bool VerifyPassword(string password, string storedHash)
+        //{
+        //    var composite = string.Concat(password ?? string.Empty, Settings.Salt, Settings.Secret);
+        //    return BCrypt.Net.BCrypt.Verify(composite, storedHash);
+        //}
     }
 }
 

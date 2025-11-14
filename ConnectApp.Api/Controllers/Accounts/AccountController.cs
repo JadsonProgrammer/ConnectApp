@@ -22,7 +22,7 @@ namespace ConnectApp.Api.Controllers.Accounts
             try
             {
                 var accountResult = await _accountService.GetAccountByIdAsync(id);
-                return await CreateGetResponse(accountResult, _accountService);
+                return await CreateGetResponse(accountResult);
             }
             catch (Exception e)
             {
@@ -30,13 +30,13 @@ namespace ConnectApp.Api.Controllers.Accounts
             }
         }
 
-        [HttpGet("list")]
+        [HttpGet]
         public async Task<IActionResult> GetAllAccounts()
         {
             try
             {
-                var accounts = await _accountService.GetAllAccountsAsync();
-                return await CreateGetResponse(accounts, _accountService);
+                var accountResult = await _accountService.GetAllAccountsAsync();
+                return await CreateGetResponse(accountResult);
             }
             catch (Exception e)
             {
@@ -44,13 +44,13 @@ namespace ConnectApp.Api.Controllers.Accounts
             }
         }
 
-        [HttpPut("{id}/update")]
-        public async Task<IActionResult> UpdateAsync([FromBody] AccountParams account)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAsync([FromBody] AccountParams account, Guid id)
         {
             try
             {
-                var accountResult = await _accountService.UpdateAccountByIdAsync(account);
-                return await CreateGetResponse(accountResult, _accountService);
+                var accountResult = await _accountService.UpdateAccountByIdAsync(account, id);
+                return await    CreateGetResponse(accountResult);
             }
             catch (Exception e)
             {
@@ -58,13 +58,13 @@ namespace ConnectApp.Api.Controllers.Accounts
             }
         }
 
-        [HttpPost("create")]
+        [HttpPost("")]
         public async Task<IActionResult> CreateAccountAsync([FromBody] AccountParams account)
         {
             try
             {
-                var accountResult = await _accountService.CreateAccountAsync(account);
-                return await CreatePostResponse(accountResult, _accountService);
+                var accountResult = await _accountService.CreatesAccountAsync(account);
+                return await CreatePostResponse(accountResult);
             }
             catch (Exception e)
             {
@@ -136,11 +136,11 @@ namespace ConnectApp.Api.Controllers.Accounts
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateAccountAsync([FromBody] AccountParams account)
+        public async Task<IActionResult> CreatesAccountAsync([FromBody] AccountParams account)
         {
             try
             {
-                var accountResult = await _accountService.CreateAccountAsync(account);
+                var accountResult = await _accountService.CreatesAccountAsync(account);
                 return await CreatePostResponse(accountResult, _accountService);
             }
             catch (Exception e)

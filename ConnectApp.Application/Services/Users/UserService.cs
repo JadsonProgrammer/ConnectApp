@@ -1,5 +1,4 @@
 ﻿using ConnectApp.Application.DTOs.Users;
-using ConnectApp.Application.Interfaces.Auths;
 using ConnectApp.Application.Interfaces.Users;
 using ConnectApp.Domain.Entities.Users;
 using ConnectApp.Domain.Interfaces.Auths.Tokens;
@@ -10,21 +9,20 @@ using Microsoft.AspNetCore.Http;
 
 namespace ConnectApp.Application.Services.Users
 {
-    public class UserService : ResultService, IUserService
+    public class UserService : ResultService2, IUserService
     {
         private readonly IUserRepository _userRepository;
         private readonly IJwtTokenService _tokenService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+
         public UserService(IUserRepository userRepository, IJwtTokenService tokenService, IHttpContextAccessor httpContextAccessor)
         {
             _userRepository = userRepository;
             _tokenService = tokenService;
             _httpContextAccessor = httpContextAccessor;
         }
-
-
         //-----------------------CREATE USER-----------------------//
-        public async Task<UserResult> CreatesUserAsync(UserParams userParams)
+        public async Task<Result<UserResult>> CreatesUserAsync(UserParams userParams)
         {
             var userId = _httpContextAccessor.GetUserId();
             var userName = _httpContextAccessor.GetUserName();
@@ -50,143 +48,93 @@ namespace ConnectApp.Application.Services.Users
 
                 var createdUser = await _userRepository.CreateUserAsync(user);
 
-                return new UserResult
-                {
-                    Id = createdUser.Id,
-                    Nome = createdUser.Name,
-                    Erro = false,
-                    Message = "Usuário criado com sucesso"
-                };
+                var dto = new UserResult { Id = createdUser.Id, Nome = createdUser.Name };
+                return Success(dto, ""); // mensagem em branco => BaseController irá gerar padrão
             }
             catch (Exception ex)
             {
-                AddMessage(new ResultMessage
-                {
-                    Code = "400",
-                    Text = "Erro ao criar usuário",
-                    Type = ResultMessageTypes.Error
-                });
-
-                return new UserResult
-                {
-                    Id = CreateUserAsync(userParams).Result.Id,
-                    Nome = CreateUserAsync(userParams).Result.Nome,
-                    Erro = false,
-                    Message = ex.Message
-                };
+                return Failure<UserResult>("Erro ao criar usuário", ex.Message);
             }
+
         }
-
-
-     
 
         //-----------------------GET USERS-----------------------//
-        public async Task<IList<UserResult?>> GetAllusersAsync()
+        public async Task<Result<IList<UserResult>>> GetAllusersAsync()
         {
             try
             {
-
-                var users = await this._userRepository.GetAllUserAsync();
-                return users;
-            }
-            catch (Exception)
-            {
-                AddMessage(new ResultMessage
-                {
-                    Code = "400",
-                    Text = "Nenhum ussário localizado nessa conta",
-                    Type = ResultMessageTypes.Error
-                });
-                return [];
-            }
-        }
-        public async Task<IList<UserResult?>> GetUserByIdAsync(Guid id)
-        {
-            try
-            {
-                var results = new List<UserResult?>();
-                var users = await this._userRepository.GetUserByIdAsync(id);
-                return results.Add(users);
-            }
-            catch (Exception)
-            {
-                AddMessage(new ResultMessage
-                {
-                    Code = "400",
-                    Text = "Nenhum usuário localizado nessa conta",
-                    Type = ResultMessageTypes.Error
-                });
-                return null!;
-            }
-        }
-
-
-
-        //-----------------------UPDATE USER-----------------------//
-
-        public async Task<UserResult> UpdateUserByIdAsync(UserParams userParams, Guid? id =null)
-        {
-
-            try
-            {
-                //mapeando os dados do userParams para a entidade User
-                var users = await this._userRepository.UpdateAsync(userParams);
-                return users;
-            }
-            catch (Exception)
-            {
-                AddMessage(new ResultMessage
-                {
-                    Code = "400",
-                    Text = "Nenhum usuário localizado nessa conta",
-                    Type = ResultMessageTypes.Error
-                });
-                return null!;
-            }
-        }
-
-
-
-        //-----------------------DELETE USER-----------------------//
-
-
-        public async Task<Result<bool>> DeleteUserAsync(Guid userId)
-        {
-            var currentUserId = _httpContextAccessor.GetUserId();
-            var currentUserName = _httpContextAccessor.GetUserName();
-
-            try
-            {
-
-                var existingUser = await _userRepository.GetUserByIdAsync(userId);
-                if (existingUser == null)
-                {
-                    return Result<bool>.Failure("Usuário não encontrado");
-                }
-
-
-                if (!existingUser.RecordStatus)
-                {
-                    return Result<bool>.Failure("Usuário já está excluído");
-                }
-
-
-                existingUser.Deactivate(currentUserId, currentUserName);
-
-
-                var success = await _userRepository.UpdateUserAsync(existingUser);
-
-                if (success is null)
-                {
-                    return Result<bool>.Failure(false, "Falha ao excluir usuário");
-                }
-
-                return Result<bool>.Success(true, "Usuário excluído com sucesso");
+                var users = await _userRepository.GetAllUserAsync();
+                var dtos = users.Select(u => new UserResult { Id = u.Id, Nome = u.Name }).ToList();
+                return Success<IList<UserResult>>(dtos, "");
             }
             catch (Exception ex)
             {
+                return Failure<IList<UserResult>>("Erro ao listar usuários", ex.Message);
+            }
+        }
 
-                return Result<bool>.Failure(false, $"Erro interno: {ex.Message}");
+        public async Task<Result<UserResult>> GetUserByIdAsync(Guid id)
+        {
+            try
+            {
+                var user = await _userRepository.GetUserByIdAsync(id);
+                if (user == null) return Failure<UserResult>("Usuário não encontrado");
+                return Success(new UserResult { Id = user.Id, Nome = user.Name }, "");
+            }
+            catch (Exception ex)
+            {
+                return Failure<UserResult>("Erro ao buscar usuário", ex.Message);
+            }
+        }
+
+        //-----------------------UPDATE USER-----------------------//
+        
+        public async Task<Result<UserResult>> UpdateUserByIdAsync(UserParams userParams, Guid id )
+        {
+            try
+            {
+                var existing = await _userRepository.GetUserByIdAsync((Guid)id!);
+                if (existing == null) return Failure<UserResult>("Usuário não encontrado");
+
+                existing.Update(
+                    name: userParams.Name,
+                    cpf: userParams.CPF,
+                    phones: userParams.Phones,
+                    addresses: userParams.Addresses,
+                    emails: userParams.Emails,
+                    avatar: userParams.Avatar,
+                    note: userParams.Note,
+                    changeUserId: _httpContextAccessor.GetUserId(),
+                    changeUserName: _httpContextAccessor.GetUserName()
+                );
+
+                if (!string.IsNullOrWhiteSpace(userParams.Password))
+                    existing.Password = _tokenService.HashPassword(userParams.Password);
+
+                var updated = await _userRepository.UpdateUserAsync(existing);
+                return Success(new UserResult { Id = updated!.Id, Nome = updated.Name }, "");
+            }
+            catch (Exception ex)
+            {
+                return Failure<UserResult>("Erro ao atualizar usuário", ex.Message);
+            }
+        }
+
+        //-----------------------DELETE USER-----------------------//
+        public async Task<Result<bool>> DeleteUserByIdAsync(Guid id)
+        {
+            try
+            {
+                var existing = await _userRepository.GetUserByIdAsync(id);
+                if (existing == null) return Failure<bool>("Usuário não encontrado");
+
+                existing.Deactivate(_httpContextAccessor.GetUserId(), _httpContextAccessor.GetUserName());
+                await _userRepository.UpdateUserAsync(existing);
+                return Success(true, "");
+            }
+            catch (Exception ex)
+            {
+                return Failure<bool>("Erro ao excluir usuário", ex.Message);
             }
         }
 
@@ -195,20 +143,25 @@ namespace ConnectApp.Application.Services.Users
         //-----------------------CREDENTIAL USER-----------------------//
         public async Task<Credentials?> GetCredentialByIdAsync(Guid userId)
         {
-
-            var user = await _userRepository.GetUserByIdAsync(userId);
-            if (user == null) return null;
-
-
-            return new Credentials
+            try
             {
-                UserId = user.Id,
-                UserName = user.Name,
-                AccountId = user.AccountId,
-                AccountName = user.AccountName,
-            };
+                var user = await _userRepository.GetUserByIdAsync(userId);
+                if (user == null) return null;
+
+                return new Credentials
+                {
+                    UserId = user.Id,
+                    UserName = user.Name,
+                    AccountId = user.AccountId,
+                    AccountName = user.AccountName,
+                };
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
-
+        
     }
 }

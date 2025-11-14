@@ -1,94 +1,73 @@
-﻿using ConnectApp.Api.Controllers.Base;
+﻿using Microsoft.AspNetCore.Mvc;
 using ConnectApp.Application.DTOs.Users;
 using ConnectApp.Application.Interfaces.Users;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+using ConnectApp.Shared.Results;
+using ConnectApp.Api.Controllers.Base;
 
 namespace ConnectApp.Api.Controllers.Users
 {
-    [Authorize]
+    
     [Route("users")]
-    [ApiController]
     public class UserController : BaseController
     {
         private readonly IUserService _userService;
-
         public UserController(IUserService userService)
         {
             _userService = userService;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateUserAsync([FromBody] UserParams userParams)
+        {
+            var result = await _userService.CreatesUserAsync(userParams);
+            return await CreatePostResponse(result);
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(Guid id)
         {
-            try
-            {
-                var userResult = await _userService.GetUserByIdAsync(id);
-                return await CreateGetResponse(userResult, _userService);
-            }
-            catch (Exception e)
-            {
-                return await CreateExceptionResponse(e);
-            }
+            var result = await _userService.GetUserByIdAsync(id);
+            return await CreateGetResponse(result);
         }
-
-
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {
             try
             {
-                var users = await _userService.GetAllusersAsync();
-                return await CreateGetResponse(users, _userService);
+                var result = await _userService.GetAllusersAsync();
+                return await CreateGetResponse(result);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return await CreateExceptionResponse(e);
+
+                return await CreateExceptionResponse(ex);
             }
         }
-
-
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync([FromBody] UserParams userParams , Guid id)
+        public async Task<IActionResult> UpdateUserById([FromBody] UserParams userParams, Guid id)
         {
             try
             {
-                var result = await _userService.UpdateUserByIdAsync(userParams);
-                return await CreateGetResponse(result, _userService);
+                var result = await _userService.UpdateUserByIdAsync(userParams, id);
+                return await CreateGetResponse(result);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return await CreateExceptionResponse(e);
+                return await CreateExceptionResponse(ex);
             }
+
         }
-       
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync([FromRoute] Guid id)
+        public async Task<IActionResult> DeleteUserById(Guid id)
         {
             try
             {
                 var result = await _userService.DeleteUserByIdAsync(id);
-                return await CreateGetResponse(result, _userService);
+                return await CreateGetResponse(result);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return await CreateExceptionResponse(e);
-            }
-        }
-
-
-        [HttpPost]
-        public async Task<IActionResult> CreateUserAsync([FromBody] UserParams userParams)
-        {
-            try
-            {
-                var result = await _userService.CreatesUserAsync(userParams);
-                return await CreatePostResponse(result, _userService);
-            }
-            catch (Exception e)
-            {
-                return await CreateExceptionResponse(e);
+                return await CreateExceptionResponse(ex);
             }
         }
     }

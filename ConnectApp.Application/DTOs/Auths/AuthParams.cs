@@ -8,7 +8,7 @@ namespace ConnectApp.Application.DTOs.Auths
 {
     public class AuthParams
     {
-        public string AccessKey { get; set; } = "Jadson";
-        public string Password { get; set; } = "Duj171629";
+        public string AccessKey { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
     }
 }

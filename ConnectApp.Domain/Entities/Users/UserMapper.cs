@@ -41,7 +41,7 @@
 
             user.RecordStatus = true;
 
-            user.IsActive = 1;
+            user.IsActive = true;
 
 
 
@@ -57,8 +57,8 @@
                 CPF = user.CPF!,
                 Name = user.Name,
                 AccessKey = user.AccessKey,
-                Email = user.Email!,
-                Phone = user.Phone!,
+                //Emails = user.Emails!,
+                //Phones = user.Phones!,
 
                 TypeCode = user.TypeCode ?? 0,
                 TypeName = user.TypeName!,

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConnectApp.Infrastructure.Auth.Token
+namespace ConnectApp.Infrastructure.Auths.Token
 {
     public class JwtSettings
     {

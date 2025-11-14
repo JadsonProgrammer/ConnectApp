@@ -34,10 +34,10 @@ namespace ConnectApp.Infrastructure.Repositories.Auths
             await using var reader = await cm.ExecuteReaderAsync();
             return await reader.ReadAsync();
         }
-        public async Task<User> GetByUserAsync(Auth auth)
+        public async Task<User?> GetByUserAsync(string auth)
         {
 
-            var verification = AuthParams.AccessKey;
+            var verification = auth;
             var commandText = new StringBuilder()
                 .AppendLine("SELECT")
                 .AppendLine("    [Id],")
@@ -58,7 +58,7 @@ namespace ConnectApp.Infrastructure.Repositories.Auths
                 .AppendLine("    [Avatar],")
                 .AppendLine("    [Note],")
                 .AppendLine("    [BrokerId],")
-                .AppendLine("    [AccountId],")
+                .AppendLine("    [Id],")
                 .AppendLine("    [CreationDate],")
                 .AppendLine("    [CreationUserId],")
                 .AppendLine("    [CreationUserName],")
@@ -133,7 +133,7 @@ namespace ConnectApp.Infrastructure.Repositories.Auths
                 Avatar = reader.GetStringValue("Avatar"),
                 Note = reader.GetStringValue("Note"),
                 BrokerId = reader.GetNullableGuid("BrokerId"),
-                AccountId = reader.GetNullableGuid("AccountId"),
+                AccountId = reader.GetNullableGuid("Id"),
                 CreationDate = reader.GetNullableDateTime("CreationDate"),
                 CreationUserId = reader.GetNullableGuid("CreationUserId"),
                 CreationUserName = reader.GetStringValue("CreationUserName"),
@@ -153,8 +153,10 @@ namespace ConnectApp.Infrastructure.Repositories.Auths
 
         }
 
-        
-        
+       
+
+
+
 
 
 

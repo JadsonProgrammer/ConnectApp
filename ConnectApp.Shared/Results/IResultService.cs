@@ -8,6 +8,7 @@ namespace ConnectApp.Shared.Results
 {
     public interface IResultService
     {
+        IReadOnlyCollection<ResultMessage> GetMessages();
         IList<ResultMessage> AllMessages { get; set; }
         IList<ResultMessage> Errors { get; set; }
         IList<ResultMessage> Successes { get; set; }
@@ -20,7 +21,8 @@ namespace ConnectApp.Shared.Results
         bool HasErrors();
         bool HasSuccesses();
         bool HasWarnings();
-        void ClearMessages();
         bool IsValid();
+        void ClearMessages();
+        void AddMessage2(ResultMessage message);
     }
 }

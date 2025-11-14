@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ConnectApp.Application\ConnectApp.Application.csproj" />
     <ProjectReference Include="..\ConnectApp.Infrastructure\ConnectApp.Infrastructure.csproj" />
+    <ProjectReference Include="..\ConnectApp.Shared\ConnectApp.Shared.csproj" />
   </ItemGroup>
 
 </Project>

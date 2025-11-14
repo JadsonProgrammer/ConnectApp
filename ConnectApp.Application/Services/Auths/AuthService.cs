@@ -1,153 +1,210 @@
 ﻿using ConnectApp.Application.DTOs.Auths;
-using ConnectApp.Application.DTOs.Users;
 using ConnectApp.Application.Interfaces.Auths;
-using ConnectApp.Domain.Entities.Users;
+using ConnectApp.Application.Results;
 using ConnectApp.Domain.Interfaces.Auths;
 using ConnectApp.Domain.Interfaces.Auths.Tokens;
 using ConnectApp.Domain.Interfaces.Users;
 using ConnectApp.Shared.Results;
+using Microsoft.AspNetCore.Http;
 
 namespace ConnectApp.Application.Services.Auths
 {
+    public class AuthService : ResultService, IAuthService
+    {
+        private readonly IJwtTokenService _tokenService;
+        private readonly IUserRepository _userRepository;
+        private readonly IAuthRepository _authRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public class AuthService(
+        public AuthService(
             IJwtTokenService tokenService,
             IUserRepository userRepository,
-           
-            IAuthRepository authRepository) : ResultService, IAuthService
-    {
-        private readonly IJwtTokenService _tokenService = tokenService;
-        private readonly IUserRepository _userRepository = userRepository;
-        //private readonly string _salt = jwtSettings.Salt;
-        //private readonly string _secret = jwtSettings.Secret;
-        private readonly IAuthRepository _authRepository = authRepository;
-
-        public async Task<bool> LoginExistsAsync(AuthParams @params)
+            IAuthRepository authRepository,
+            IHttpContextAccessor httpContextAccessor)
         {
-            var existingUser = await _userRepository.GetUserByUsernameAsync(@params.AccessKey);
-            if (existingUser == null)
-            {
-                return false;
-            }
-            return true;
+            _tokenService = tokenService;
+            _userRepository = userRepository;
+            _authRepository = authRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
-        public async Task<AuthResult> SignUpAsync(AuthParams @params)
+
+        public async Task<Result<bool>> LoginExistsAsync(AuthCheck @params)
         {
             try
             {
-                var existingUser = await _userRepository.GetUserByUsernameAsync(@params.AccessKey);
+                var existingUser = await _userRepository.GetUserByAccessKeyAsync(@params.AccessKey);
 
-                if (existingUser.AccessKey == @params.AccessKey)
+                //if (existingUser is false) return Result<bool>.Ok((Boolean)existingUser, "Login Disponivel");
+                if (!existingUser == true)
                 {
-                    AddMessage(new ResultMessage
-                    {
-                        Text = "Usuário já existe.",
-                        Code = "400",
-                        Type = ResultMessageTypes.Error
-                    });
-
-                    return new AuthResult
-                    {
-                        Error = true,
-                        Message = "Login já pertence a outro usuário"
-                    };
+                    return Success(false, "Login Disponivel. ");
                 }
 
-                // O Hash agora é feito via _tokenService
-                var userReady = UserMapper.MapForInsert(userCreate, _tokenService.HashPassword);
-
-                var result = await _userRepository.CreatesUserAsync(userReady);
-                return result;
+                return Success(true, "Login Já Existe. ");
             }
             catch (Exception ex)
             {
-                AddMessage(new ResultMessage
-                {
-                    Code = "500",
-                    Text = $"Erro ao criar usuário: {ex.Message}",
-                    Type = ResultMessageTypes.Error
-                });
-                return new AuthResult
-                {
-                    Error = true,
-                    Message = "Erro interno ao criar usuário"
-                };
+                return Failure<bool>("Erro localizar o login", ex.Message);
             }
         }
 
-        public async Task<AuthResult> SignInAsync(AuthParams @params)
+        //public async Task<AuthResult> SignUpAsync(AuthParams @params)
+        //{
+        //    try
+        //    {
+
+        //        var existingUser = await _userRepository.GetUserByAccessKeyAsync(@params.AccessKey);
+        //        if (existingUser != null)
+        //        {
+        //            AddMessage(new ResultMessage
+        //            {
+        //                Text = "Usuário já existe.",
+        //                Code = "400",
+        //                Type = ResultMessageTypes.Error
+        //            });
+
+        //            return AuthResult.Failure("Login já pertence a outro usuário");
+        //        }
+        //        var creationUserId = _httpContextAccessor.GetUserId();
+        //        var creationUserName = _httpContextAccessor.GetUserName();
+        //        var accountId = _httpContextAccessor.GetAccountId();
+        //        var accountName = _httpContextAccessor.GetAccountName();
+
+        //        // Se não estiver autenticado, usar valores padrão
+        //        if (creationUserId == Guid.Empty)
+        //        {
+        //            creationUserId = Guid.NewGuid();
+        //            creationUserName = "System";
+        //            accountId = Guid.NewGuid();
+        //            accountName = "Default Account";
+        //        }
+        //        // Gerar um nome baseado no AccessKey
+        //        //var userName = GenerateUserNameFromAccessKey(@params.AccessKey);
+
+        //        // Criar novo usuário
+        //        var user = User.Create(
+        //            name: @params.Name, // Usar nome gerado
+        //            cpf: @params.CPF,
+        //            accessKey: @params.AccessKey,
+        //            password: _tokenService.HashPassword(@params.Password),
+        //            phones: null,
+        //            addresses: null,
+        //            emails: null,
+        //            roles: new List<string> { "User" },
+        //            creationUserId: Guid.NewGuid(),
+        //            creationUserName: "System",
+        //            accountId: Guid.NewGuid(),
+        //            accountName: "Default Account"
+        //        );
+
+        //        var createdUser = await _userRepository.CreateUserAsync(user);
+
+        //        if (createdUser != null)
+        //        {
+        //            AddMessage(new ResultMessage
+        //            {
+        //                Code = "201",
+        //                Text = "Usuário criado com sucesso.",
+        //                Type = ResultMessageTypes.Success
+        //            });
+
+        //            return AuthResult.SignUpSuccess(
+        //                createdUser.Id,
+        //                createdUser.Name,
+        //                "Usuário criado com sucesso"
+        //            );
+        //        }
+        //        else
+        //        {
+        //            throw new Exception("Falha ao criar usuário no repositório");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        AddMessage(new ResultMessage
+        //        {
+        //            Code = "500",
+        //            Text = $"Erro ao criar usuário: {ex.Message}",
+        //            Type = ResultMessageTypes.Error
+        //        });
+
+        //        return AuthResult.Failure($"Erro interno ao criar usuário: {ex.Message}");
+        //    }
+        //}
+
+        public async Task<Result<AuthResult>> SignInAsync(AuthParams @params)
         {
             try
             {
-                var user = await _authRepository.GetByUserAsync(@params);
+                var existingUser = await _authRepository.GetByUserAsync(@params.AccessKey);
 
-                if (user == null)
-                    return InvalidLogin("Usuário ou senha inválidos.");
+                if (existingUser is null)
+                    return Failure<AuthResult>("Usuário ou senha inválidos.");
 
-                // Valida via service
-                if (!_tokenService.VerifyPassword(@params.Password, user.Password))
-                    return InvalidLogin("Usuário ou senha inválidos.");
+                // Valida a senha
+                if (!_tokenService.VerifyPassword(@params.Password, existingUser.Password))
+                    return Failure<AuthResult>("Usuário ou senha inválidos.");
 
-                var authResult = GenerateAuthResult(user);
+                // Verificar se o usuário está ativo
+                if (!existingUser.IsActive || !existingUser.RecordStatus)
+                    return Failure<AuthResult>("Usuário inativo ou excluído.");
 
-                AddMessage(new ResultMessage
-                {
-                    Code = "200",
-                    Text = "Usuário autenticado com sucesso.",
-                    Type = ResultMessageTypes.Success
-                });
+                var token = _tokenService.GenerateToken(existingUser);
+                var expires = DateTime.UtcNow.AddHours(2);
 
-                return new AuthResult
-                {
-                    Token = authResult.Token,
-                    Expires = authResult.Expires,
-                    Message = "Usuário logado com sucesso!"
-                };
+                // Atualizar último acesso
+                await UpdateLastAccess(existingUser.Id);
+
+
+
+                return Success(AuthResult.Success(token: token,
+                                          expires: expires,
+                                          userId: existingUser.Id,
+                                          userName: existingUser.Name,
+                                          accountId: existingUser.AccountId,
+                                          accountName: existingUser.AccountName,
+                                          message: "Usuário logado com sucesso!"));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                AddMessage(new ResultMessage
-                {
-                    Code = "500",
-                    Text = $"Erro inesperado: {ex.Message}",
-                    Type = ResultMessageTypes.Error
-                });
-
-                return new AuthResult
-                {
-                    Error = true,
-                    Message = "Ocorreu um erro ao tentar autenticar. Tente novamente."
-                };
+                return Failure<AuthResult>("Ocorreu um erro ao tentar autenticar. Tente novamente.");
             }
         }
 
-        private AuthResult InvalidLogin(string message)
+        private async Task UpdateLastAccess(Guid userId)
         {
-            AddMessage(new ResultMessage
+            try
             {
-                Code = "403",
-                Text = message,
-                Type = ResultMessageTypes.Error
-            });
+                var user = await _userRepository.GetUserByIdAsync(userId);
+                if (user != null)
+                {
+                    user.LastAccess = DateTime.UtcNow;
+                    user.AccessCount = (user.AccessCount ?? 0) + 1;
+                    await _userRepository.UpdateUserAsync(user);
+                }
+            }
+            catch (Exception)
+            {
+                Failure<AuthResult>("Ocorreu um erro ao atualizar o último acesso do usuário.");
 
-            return new AuthResult
-            {
-                Error = true,
-                Message = message
-            };
+            }
         }
 
-        private AuthResult GenerateAuthResult(User user)
-        {
-            var token = _tokenService.GenerateToken(user);
-            return new AuthResult
-            {
-                Token = token,
-                Expires = DateTime.UtcNow.AddHours(2)
-            };
-        }
 
-      
+        private static string GenerateUserNameFromAccessKey(string accessKey)
+        {
+
+            if (accessKey.Contains('@'))
+            {
+
+                return accessKey.Split('@')[0];
+            }
+
+            else
+            {
+
+                return $"User_{accessKey}";
+            }
+        }
     }
-    
 }

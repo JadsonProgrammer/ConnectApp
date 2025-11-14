@@ -1,7 +1,9 @@
 ﻿using ConnectApp.Domain.Entities.Users;
 using ConnectApp.Domain.Interfaces.Auths.Tokens;
-using ConnectApp.Infrastructure.Auth.Token;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -9,9 +11,9 @@ namespace ConnectApp.Infrastructure.Auths.Token
 {
 
 
-    public class JwtTokenService
+    public class JwtTokenService : IJwtTokenService
     {
-        /*
+
         private readonly JwtSettings _settings;
 
         public JwtTokenService(IOptions<JwtSettings> options)
@@ -21,14 +23,65 @@ namespace ConnectApp.Infrastructure.Auths.Token
 
         public string GenerateToken(User user)
         {
-            // usa _settings.Secret, _settings.Issuer, etc
-            return "jwt-token-gerado";
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var now = DateTime.UtcNow;
+
+            var key = Encoding.UTF8.GetBytes(_settings.Secret);
+
+            var claims = new List<Claim>
+        {
+
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new Claim("userId", user.Id.ToString()),
+
+
+
+
+
+
+        };
+            if (user.AccountId.HasValue)
+            {
+                claims.Add(new Claim("accountId", user.AccountId.Value.ToString()));
+            }
+
+            if (!string.IsNullOrEmpty(user.AccountName))
+            {
+                claims.Add(new Claim("accountName", user.AccountName));
+            }
+
+            /*if (user.Roles != null && user.Roles.Any())
+            {
+                foreach (var role in user.Roles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role));
+                }
+            }
+            */
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                NotBefore = now,
+                Expires = now.AddHours(_settings.ExpiryInHours),
+
+                Issuer = _settings.Issuer,
+                Audience = _settings.Audience,
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha512Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
+    
+
 
         public string HashPassword(string password)
         {
             using var sha256 = SHA256.Create();
-            var input = $"{password}{_settings.Salt}{_settings.Secret}";
+            var input = $"{password}{_settings.Salt}";
             var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(input));
             return Convert.ToBase64String(bytes);
         }
@@ -68,14 +121,14 @@ namespace ConnectApp.Infrastructure.Auths.Token
 
 
     //    };
-    //        if (user.AccountId.HasValue)
+    //        if (user.Id.HasValue)
     //        {
-    //            claims.Add(new Claim("accountId", user.AccountId.Value.ToString()));
+    //            claims.Add(new Claim("accountId", user.Id.Value.ToString()));
     //        }
 
-    //        if (!string.IsNullOrEmpty(user.AccountName))
+    //        if (!string.IsNullOrEmpty(user.Name))
     //        {
-    //            claims.Add(new Claim("accountName", user.AccountName));
+    //            claims.Add(new Claim("accountName", user.Name));
     //        }
 
     //        /*if (user.Roles != null && user.Roles.Any())
@@ -87,22 +140,21 @@ namespace ConnectApp.Infrastructure.Auths.Token
     //        }
     //        */
 
-        //        var tokenDescriptor = new SecurityTokenDescriptor
-        //        {
-        //            Subject = new ClaimsIdentity(claims),
-        //            NotBefore = now,
-        //            Expires = now.AddHours(_jwtSettings.ExpiryInHours),
+    //        var tokenDescriptor = new SecurityTokenDescriptor
+    //        {
+    //            Subject = new ClaimsIdentity(claims),
+    //            NotBefore = now,
+    //            Expires = now.AddHours(_jwtSettings.ExpiryInHours),
 
-        //            Issuer = _jwtSettings.Issuer,
-        //            Audience = _jwtSettings.Audience,
-        //            SigningCredentials = new SigningCredentials(
-        //                new SymmetricSecurityKey(key),
-        //                SecurityAlgorithms.HmacSha512Signature)
-        //        };
+    //            Issuer = _jwtSettings.Issuer,
+    //            Audience = _jwtSettings.Audience,
+    //            SigningCredentials = new SigningCredentials(
+    //                new SymmetricSecurityKey(key),
+    //                SecurityAlgorithms.HmacSha512Signature)
+    //        };
 
-        //        var token = tokenHandler.CreateToken(tokenDescriptor);
-        //        return tokenHandler.WriteToken(token);
-        //    }
-        //}
-    }
+    //        var token = tokenHandler.CreateToken(tokenDescriptor);
+    //        return tokenHandler.WriteToken(token);
+    //    }
+    //}
 }

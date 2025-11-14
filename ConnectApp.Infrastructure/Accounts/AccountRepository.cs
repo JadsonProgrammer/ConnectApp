@@ -25,8 +25,8 @@ namespace ConnectApp.Infrastructure.Accounts
             {
                 await cn.OpenAsync();
                 var query = new StringBuilder()
-                    .AppendLine("SELECT AccountId")
-                    .AppendLine("  ,AccountName")
+                    .AppendLine("SELECT Id")
+                    .AppendLine("  ,Name")
                     .AppendLine("  ,Ativa")
                     .AppendLine("  ,TemaPadrao")
                     .AppendLine("  ,UrlLogo")
@@ -44,10 +44,10 @@ namespace ConnectApp.Infrastructure.Accounts
                     .AppendLine("  ,ExclusionUserName")
                     .AppendLine("  ,RecordStatus")
                     .AppendLine("FROM [JAYTECHAPPDB].[DBO].[Account]")
-                    .AppendLine("WHERE AccountId = @AccountId");
+                    .AppendLine("WHERE Id = @Id");
 
                 using var command = new SqlCommand(query.ToString(), cn);
-                command.Parameters.AddWithValue("@AccountId", id);
+                command.Parameters.AddWithValue("@Id", id);
                 using var reader = await command.ExecuteReaderAsync();
                 if (await reader.ReadAsync())
                 {
@@ -64,8 +64,8 @@ namespace ConnectApp.Infrastructure.Accounts
             {
                 await cn.OpenAsync();
                 var query = new StringBuilder()
-                    .AppendLine("SELECT AccountId")
-                    .AppendLine("  ,AccountName")
+                    .AppendLine("SELECT Id")
+                    .AppendLine("  ,Name")
                     .AppendLine("  ,Ativa")
                     .AppendLine("  ,TemaPadrao")
                     .AppendLine("  ,UrlLogo")
@@ -105,8 +105,8 @@ namespace ConnectApp.Infrastructure.Accounts
                 await cn.OpenAsync();
                 var query = new StringBuilder()
                     .AppendLine("INSERT INTO [JAYTECHAPPDB].[DBO].[AccountResult] (")
-                    .AppendLine("    AccountId")
-                    .AppendLine("  , AccountName")
+                    .AppendLine("    Id")
+                    .AppendLine("  , Name")
                     .AppendLine("  , Ativa")
                     .AppendLine("  , TemaPadrao")
                     .AppendLine("  , UrlLogo")
@@ -124,8 +124,8 @@ namespace ConnectApp.Infrastructure.Accounts
                     .AppendLine("  , ExclusionUserName")
                     .AppendLine("  , RecordStatus")
                     .AppendLine(") VALUES (")
-                    .AppendLine("    @AccountId")
-                    .AppendLine("  , @AccountName")
+                    .AppendLine("    @Id")
+                    .AppendLine("  , @Name")
                     .AppendLine("  , @Ativa")
                     .AppendLine("  , @TemaPadrao")
                     .AppendLine("  , @UrlLogo")
@@ -151,14 +151,30 @@ namespace ConnectApp.Infrastructure.Accounts
                 try
                 {
                     await command.ExecuteNonQueryAsync();
-                    return AccountResult(account);
+                    return new Account
+                    {
+                        Id = account.Id,
+                        Name = account.Name,
+
+                        Ativa = account.Ativa,
+                        TemaPadrao = account.TemaPadrao,
+                        UrlLogo = account.UrlLogo,
+                        UrlIcone = account.UrlIcone,
+                        UrlImagemLogin = account.UrlImagemLogin,
+                        UrlImagemDashboard = account.UrlImagemDashboard,
+
+                        CreationDate = account.CreationDate,
+                        ChangeUserId = account.CreationUserId,
+                        CreationUserName = account.CreationUserName
+                    };
+
                 }
                 catch (Exception ex)
                 {
                     return new Account
                     {
-                        AccountId = Guid.Empty,
-                        AccountName = string.Empty,
+                        Id = Guid.Empty,
+                        Name = string.Empty,
                         Ativa = false,
                         TemaPadrao = string.Empty,
                         UrlLogo = string.Empty,
@@ -176,14 +192,14 @@ namespace ConnectApp.Infrastructure.Accounts
 
 
         //---------------------UPDATE---------------------//
-        public async Task<bool> UpdateAsync(Account account)
+        public async Task<bool> UpdateAsync(Account account, Guid id)
         {
             await using var cn = _connectionProvider.GetConnection();
             {
                 await cn.OpenAsync();
                 var query = new StringBuilder()
                     .AppendLine("UPDATE [JAYTECHAPPDB].[DBO].[AccountResult] SET")
-                    .AppendLine("    AccountName = @AccountName")
+                    .AppendLine("    Name = @Name")
                     .AppendLine("  , Ativa = @Ativa")
                     .AppendLine("  , TemaPadrao = @TemaPadrao")
                     .AppendLine("  , UrlLogo = @UrlLogo")
@@ -200,12 +216,12 @@ namespace ConnectApp.Infrastructure.Accounts
                     .AppendLine("  , ExclusionUserId = @ExclusionUserId")
                     .AppendLine("  , ExclusionUserName = @ExclusionUserName")
                     .AppendLine("  , RecordStatus = @RecordStatus")
-                    .AppendLine("WHERE AccountId = @AccountId");
+                    .AppendLine("WHERE Id = @Id");
 
                 using var command = new SqlCommand(query.ToString(), cn);
 
-                command.Parameters.AddWithValue("@AccountId", account.AccountId);
-                command.Parameters.AddWithValue("@AccountName", account.AccountName);
+                command.Parameters.AddWithValue("@Id", account.Id);
+                command.Parameters.AddWithValue("@Name", account.Name);
                 command.Parameters.AddWithValue("@Ativa", account.Ativa);
                 command.Parameters.AddWithValue("@TemaPadrao", account.TemaPadrao);
                 command.Parameters.AddWithValue("@UrlLogo", (object)account.UrlLogo ?? DBNull.Value);
@@ -244,10 +260,10 @@ namespace ConnectApp.Infrastructure.Accounts
                 var query = new StringBuilder()
                     .AppendLine("UPDATE [JAYTECHAPPDB].[DBO].[AccountResult] SET")
                     .AppendLine("    RecordStatus = 0")
-                    .AppendLine("WHERE AccountId = @AccountId");
+                    .AppendLine("WHERE Id = @Id");
 
                 using var command = new SqlCommand(query.ToString(), cn);
-                command.Parameters.AddWithValue("@AccountId", accountId);
+                command.Parameters.AddWithValue("@Id", accountId);
                 return await command.ExecuteNonQueryAsync() > 0;
             }
         }
@@ -256,13 +272,13 @@ namespace ConnectApp.Infrastructure.Accounts
 
 
         //---------------------METODOS---------------------//
-        
+
         private static Account ReaderAccount(SqlDataReader reader)
         {
             return new Account
             {
-                AccountId = reader.GetGuidValue("AccountId"),
-                AccountName = reader.GetStringValue("AccountName"),
+                Id = reader.GetGuidValue("Id"),
+                Name = reader.GetStringValue("Name"),
                 Ativa = reader.GetBoolean("Ativa"),
                 TemaPadrao = reader.GetNullableString("TemaPadrao"),
                 UrlLogo = reader.GetNullableString("UrlLogo"),
@@ -281,10 +297,10 @@ namespace ConnectApp.Infrastructure.Accounts
 
             };
         }
-         private static void SetCommand(Account account, SqlCommand command)
+        private static void SetCommand(Account account, SqlCommand command)
         {
-            command.Parameters.AddWithValue("@AccountId", account.AccountId);
-            command.Parameters.AddWithValue("@AccountName", account.AccountName);
+            command.Parameters.AddWithValue("@Id", account.Id);
+            command.Parameters.AddWithValue("@Name", account.Name);
             command.Parameters.AddWithValue("@Ativa", account.Ativa);
             command.Parameters.AddWithValue("@TemaPadrao", (object)account.TemaPadrao ?? DBNull.Value);
             command.Parameters.AddWithValue("@UrlLogo", (object)account.UrlLogo ?? DBNull.Value);
@@ -303,8 +319,8 @@ namespace ConnectApp.Infrastructure.Accounts
             command.Parameters.AddWithValue("@RecordStatus", account.RecordStatus);
         }
 
-
-
+       
+        
     }
 }
 
@@ -320,8 +336,8 @@ namespace ConnectApp.Infrastructure.Accounts
 //        // ✅ Usando exatamente a mesma estrutura do seu INSERT
 //        var query = new StringBuilder()
 //            .AppendLine("INSERT INTO [JaytechAppDB].[dbo].[AccountResult]")
-//            .AppendLine("           ([AccountId]")
-//            .AppendLine("           ,[AccountName]")
+//            .AppendLine("           ([Id]")
+//            .AppendLine("           ,[Name]")
 //            .AppendLine("           ,[Ativa]")
 //            .AppendLine("           ,[TemaPadrao]")
 //            .AppendLine("           ,[UrlLogo]")
@@ -339,8 +355,8 @@ namespace ConnectApp.Infrastructure.Accounts
 //            .AppendLine("           ,[ExclusionUserName]")
 //            .AppendLine("           ,[RecordStatus])")
 //            .AppendLine("     VALUES")
-//            .AppendLine("           (@AccountId")
-//            .AppendLine("           ,@AccountName")
+//            .AppendLine("           (@Id")
+//            .AppendLine("           ,@Name")
 //            .AppendLine("           ,@Ativa")
 //            .AppendLine("           ,@TemaPadrao")
 //            .AppendLine("           ,@UrlLogo")
@@ -369,8 +385,8 @@ namespace ConnectApp.Infrastructure.Accounts
 
 //            return new AccountResult
 //            {
-//                AccountId = account.AccountId,
-//                AccountName = account.AccountName,
+//                Id = account.Id,
+//                Name = account.Name,
 //                Ativa = account.Ativa,
 //                TemaPadrao = account.TemaPadrao ?? "Default",
 //                UrlLogo = account.UrlLogo ?? string.Empty,
@@ -422,8 +438,8 @@ namespace ConnectApp.Infrastructure.Accounts
                 // ✅ Usando exatamente a mesma estrutura do seu INSERT
                 var query = new StringBuilder()
                     .AppendLine("INSERT INTO [JaytechAppDB].[dbo].[AccountResult]")
-                    .AppendLine("           ([AccountId]")
-                    .AppendLine("           ,[AccountName]")
+                    .AppendLine("           ([Id]")
+                    .AppendLine("           ,[Name]")
                     .AppendLine("           ,[Ativa]")
                     .AppendLine("           ,[TemaPadrao]")
                     .AppendLine("           ,[UrlLogo]")
@@ -441,8 +457,8 @@ namespace ConnectApp.Infrastructure.Accounts
                     .AppendLine("           ,[ExclusionUserName]")
                     .AppendLine("           ,[RecordStatus])")
                     .AppendLine("     VALUES")
-                    .AppendLine("           (@AccountId")
-                    .AppendLine("           ,@AccountName")
+                    .AppendLine("           (@Id")
+                    .AppendLine("           ,@Name")
                     .AppendLine("           ,@Ativa")
                     .AppendLine("           ,@TemaPadrao")
                     .AppendLine("           ,@UrlLogo")
@@ -463,8 +479,8 @@ namespace ConnectApp.Infrastructure.Accounts
                 using var command = new SqlCommand(query.ToString(), cn);
 
                 // ✅ Parâmetros com tipos específicos conforme sua tabela
-                command.Parameters.Add("@AccountId", SqlDbType.UniqueIdentifier).Value = account.AccountId;
-                command.Parameters.Add("@AccountName", SqlDbType.NVarChar, 255).Value = account.AccountName;
+                command.Parameters.Add("@Id", SqlDbType.UniqueIdentifier).Value = account.Id;
+                command.Parameters.Add("@Name", SqlDbType.NVarChar, 255).Value = account.Name;
                 command.Parameters.Add("@Ativa", SqlDbType.Bit).Value = account.Ativa;
                 command.Parameters.Add("@TemaPadrao", SqlDbType.NVarChar, 50).Value = account.TemaPadrao ?? (object)DBNull.Value;
                 command.Parameters.Add("@UrlLogo", SqlDbType.NVarChar, -1).Value = account.UrlLogo ?? (object)DBNull.Value; // -1 = MAX
@@ -489,8 +505,8 @@ namespace ConnectApp.Infrastructure.Accounts
                     // ✅ Retorno com tratamento para valores nulos
                     return new Account
                     {
-                        AccountId = account.AccountId,
-                        AccountName = account.AccountName,
+                        Id = account.Id,
+                        Name = account.Name,
                         Ativa = account.Ativa,
                         TemaPadrao = account.TemaPadrao ?? "Default",
                         UrlLogo = account.UrlLogo ?? string.Empty,
@@ -538,8 +554,8 @@ namespace ConnectApp.Infrastructure.Accounts
         {
             accounts.Add(new Account
             {
-                AccountId = reader.GetGuidValue("AccountId"),
-                AccountName = reader.GetStringValue("AccountName"),
+                Id = reader.GetGuidValue("Id"),
+                Name = reader.GetStringValue("Name"),
                 Ativa = reader.GetBoolean("Ativa"),
                 TemaPadrao = reader.GetNullableString("TemaPadrao"),
                 UrlLogo = reader.GetNullableString("UrlLogo"),
@@ -560,8 +576,8 @@ namespace ConnectApp.Infrastructure.Accounts
         }
         private static void RecordCommandParams(Account account, SqlCommand command)
         {
-            command.Parameters.Add("@AccountId", SqlDbType.UniqueIdentifier).Value = account.AccountId;
-            command.Parameters.Add("@AccountName", SqlDbType.NVarChar, 255).Value = account.AccountName;
+            command.Parameters.Add("@Id", SqlDbType.UniqueIdentifier).Value = account.Id;
+            command.Parameters.Add("@Name", SqlDbType.NVarChar, 255).Value = account.Name;
             command.Parameters.Add("@Ativa", SqlDbType.Bit).Value = account.Ativa;
             command.Parameters.Add("@TemaPadrao", SqlDbType.NVarChar, 50).Value = account.TemaPadrao ?? (object)DBNull.Value;
             command.Parameters.Add("@UrlLogo", SqlDbType.NVarChar, -1).Value = account.UrlLogo ?? (object)DBNull.Value; // -1 = MAX
@@ -588,8 +604,8 @@ namespace ConnectApp.Infrastructure.Accounts
         {
             return new Account
             {
-                AccountId = account.AccountId,
-                AccountName = account.AccountName,
+                Id = account.Id,
+                Name = account.Name,
                 Ativa = account.Ativa,
                 TemaPadrao = account.TemaPadrao,
                 UrlLogo = account.UrlLogo,

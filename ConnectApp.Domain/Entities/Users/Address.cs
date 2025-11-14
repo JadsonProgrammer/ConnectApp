@@ -10,14 +10,26 @@ namespace ConnectApp.Domain.Entities.Users
     {
         public Guid Id { get; set; } = new Guid();
         public string? Tipo { get; set; }
-        public string Endereco { get; set; }
-        public string Street { get; set; }         
-        public string Number { get; set; }         
-        public string? Complement { get; set; }     
-        public string City { get; set; }           
-        public string State { get; set; }          
-        public string ZipCode { get; set; }        
-        public string Country { get; set; }        
-        public bool IsPrimary { get; set; }        
+        public string? Endereco { get; set; }
+        public string? Street { get; set; }
+        public string? Number { get; set; }
+        public string? Complement { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string ZipCode { get; set; }
+        public string Country { get; set; }
+        public bool IsPrimary { get; set; }
+
+
+        public string Value { get; private set; }
+
+        public Address(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException("Endereço é obrigatório.");
+
+            Value = value.Trim();
+        }
+
     }
 }

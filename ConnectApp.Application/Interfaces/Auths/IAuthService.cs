@@ -4,22 +4,16 @@ using ConnectApp.Shared.Results;
 
 namespace ConnectApp.Application.Interfaces.Auths
 {
-    public interface IAuthService : IResultService
+    public interface IAuthService 
     {
-        Task<bool> LoginExistsAsync(AuthParams @params);
-        Task<AuthResult> SignUpAsync(AuthParams @params);
-        Task<AuthResult> SignInAsync(AuthParams @params);
+        Task<Result<bool>> LoginExistsAsync(AuthCheck @params);        
+        Task<Result<AuthResult>> SignInAsync(AuthParams @params);
 
 
-
-        /* Task<bool> LoginExistsAsync(AuthParams @params);
-
-
-         Task<AuthResult> SignUpAsync(AuthParams @params);
-
-
-         Task<AuthResult> SignInAsync(AuthParams @params);
+        //Task<AuthResult> SignUpAsync(AuthParams @params);
+        /* Task<bool> LoginExistsAsync(AuthCheck @params);
+         Task<AuthResult> SignUpAsync(AuthCheck @params);
+         Task<AuthResult> SignInAsync(AuthCheck @params);
         */
-
     }
 }
