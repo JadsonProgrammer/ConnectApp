@@ -11,6 +11,6 @@ namespace ConnectApp.Application.Interfaces.Accounts
         Task<Result<AccountResult>> GetAccountByIdAsync(Guid id);
         Task<Result<AccountResult>> UpdateAccountByIdAsync(AccountParams account, Guid id);
 
-        Task<Result<AccountResult>> DeleteAccountAsync(Guid id);
+        Task<Result<AccountResult>> DeleteAccountByIdAsync(Guid id);
     }
 }

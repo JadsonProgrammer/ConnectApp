@@ -5,6 +5,7 @@ using ConnectApp.Infrastructure.Sql;
 using ConnectApp.Shared.SqlDataReaderShared;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Data.Common;
 using System.Text;
 
 namespace ConnectApp.Infrastructure.Accounts
@@ -25,29 +26,30 @@ namespace ConnectApp.Infrastructure.Accounts
             {
                 await cn.OpenAsync();
                 var query = new StringBuilder()
-                    .AppendLine("SELECT Id")
-                    .AppendLine("  ,Name")
-                    .AppendLine("  ,Ativa")
-                    .AppendLine("  ,TemaPadrao")
-                    .AppendLine("  ,UrlLogo")
-                    .AppendLine("  ,UrlIcone")
-                    .AppendLine("  ,UrlImagemLogin")
-                    .AppendLine("  ,UrlImagemDashboard")
-                    .AppendLine("  ,CreationDate")
-                    .AppendLine("  ,CreationUserId")
-                    .AppendLine("  ,CreationUserName")
-                    .AppendLine("  ,ChangeDate")
-                    .AppendLine("  ,ChangeUserId")
-                    .AppendLine("  ,ChangeUserName")
-                    .AppendLine("  ,ExclusionDate")
-                    .AppendLine("  ,ExclusionUserId")
-                    .AppendLine("  ,ExclusionUserName")
-                    .AppendLine("  ,RecordStatus")
+                    .AppendLine("SELECT ")
+                    .AppendLine("   [AccountId]")
+                    .AppendLine("  ,[AccountName]")
+                    .AppendLine("  ,[Ativa]")
+                    .AppendLine("  ,[TemaPadrao]")
+                    .AppendLine("  ,[UrlLogo]")
+                    .AppendLine("  ,[UrlIcone]")
+                    .AppendLine("  ,[UrlImagemLogin]")
+                    .AppendLine("  ,[UrlImagemDashboard]")
+                    .AppendLine("  ,[CreationDate]")
+                    .AppendLine("  ,[CreationUserId]")
+                    .AppendLine("  ,[CreationUserName]")
+                    .AppendLine("  ,[ChangeDate]")
+                    .AppendLine("  ,[ChangeUserId]")
+                    .AppendLine("  ,[ChangeUserName]")
+                    .AppendLine("  ,[ExclusionDate]")
+                    .AppendLine("  ,[ExclusionUserId]")
+                    .AppendLine("  ,[ExclusionUserName]")
+                    .AppendLine("  ,[RecordStatus]")
                     .AppendLine("FROM [JAYTECHAPPDB].[DBO].[Account]")
-                    .AppendLine("WHERE Id = @Id");
+                    .AppendLine("WHERE [AccountId] = @AccountId");
 
                 using var command = new SqlCommand(query.ToString(), cn);
-                command.Parameters.AddWithValue("@Id", id);
+                command.Parameters.AddWithValue("@AccountId", id);
                 using var reader = await command.ExecuteReaderAsync();
                 if (await reader.ReadAsync())
                 {
@@ -64,26 +66,28 @@ namespace ConnectApp.Infrastructure.Accounts
             {
                 await cn.OpenAsync();
                 var query = new StringBuilder()
-                    .AppendLine("SELECT Id")
-                    .AppendLine("  ,Name")
-                    .AppendLine("  ,Ativa")
-                    .AppendLine("  ,TemaPadrao")
-                    .AppendLine("  ,UrlLogo")
-                    .AppendLine("  ,UrlIcone")
-                    .AppendLine("  ,UrlImagemLogin")
-                    .AppendLine("  ,UrlImagemDashboard")
-                    .AppendLine("  ,CreationDate")
-                    .AppendLine("  ,CreationUserId")
-                    .AppendLine("  ,CreationUserName")
-                    .AppendLine("  ,ChangeDate")
-                    .AppendLine("  ,ChangeUserId")
-                    .AppendLine("  ,ChangeUserName")
-                    .AppendLine("  ,ExclusionDate")
-                    .AppendLine("  ,ExclusionUserId")
-                    .AppendLine("  ,ExclusionUserName")
-                    .AppendLine("  ,RecordStatus")
-                    .AppendLine("FROM [JAYTECHAPPDB].[DBO].[AccountResult]")
-                    .AppendLine("WHERE 1 = 1");
+                   .AppendLine("SELECT ")
+                    .AppendLine("   [AccountId]")
+                    .AppendLine("  ,[AccountName]")
+                    .AppendLine("  ,[Ativa]")
+                    .AppendLine("  ,[TemaPadrao]")
+                    .AppendLine("  ,[UrlLogo]")
+                    .AppendLine("  ,[UrlIcone]")
+                    .AppendLine("  ,[UrlImagemLogin]")
+                    .AppendLine("  ,[UrlImagemDashboard]")
+                    .AppendLine("  ,[CreationDate]")
+                    .AppendLine("  ,[CreationUserId]")
+                    .AppendLine("  ,[CreationUserName]")
+                    .AppendLine("  ,[ChangeDate]")
+                    .AppendLine("  ,[ChangeUserId]")
+                    .AppendLine("  ,[ChangeUserName]")
+                    .AppendLine("  ,[ExclusionDate]")
+                    .AppendLine("  ,[ExclusionUserId]")
+                    .AppendLine("  ,[ExclusionUserName]")
+                    .AppendLine("  ,[RecordStatus]")
+                    .AppendLine("FROM [JAYTECHAPPDB].[DBO].[Account]")
+                    .AppendLine("WHERE 1 = 1")
+                    .AppendLine(" AND  [RecordStatus] = 1");
 
                 using var command = new SqlCommand(query.ToString(), cn);
 
@@ -100,92 +104,72 @@ namespace ConnectApp.Infrastructure.Accounts
         //---------------------CREATE---------------------//
         public async Task<Account> CreateAsync(Account account)
         {
-            await using var cn = _connectionProvider.GetConnection();
-            {
-                await cn.OpenAsync();
-                var query = new StringBuilder()
-                    .AppendLine("INSERT INTO [JAYTECHAPPDB].[DBO].[AccountResult] (")
-                    .AppendLine("    Id")
-                    .AppendLine("  , Name")
-                    .AppendLine("  , Ativa")
-                    .AppendLine("  , TemaPadrao")
-                    .AppendLine("  , UrlLogo")
-                    .AppendLine("  , UrlIcone")
-                    .AppendLine("  , UrlImagemLogin")
-                    .AppendLine("  , UrlImagemDashboard")
-                    .AppendLine("  , CreationDate")
-                    .AppendLine("  , CreationUserId")
-                    .AppendLine("  , CreationUserName")
-                    .AppendLine("  , ChangeDate")
-                    .AppendLine("  , ChangeUserId")
-                    .AppendLine("  , ChangeUserName")
-                    .AppendLine("  , ExclusionDate")
-                    .AppendLine("  , ExclusionUserId")
-                    .AppendLine("  , ExclusionUserName")
-                    .AppendLine("  , RecordStatus")
-                    .AppendLine(") VALUES (")
-                    .AppendLine("    @Id")
-                    .AppendLine("  , @Name")
-                    .AppendLine("  , @Ativa")
-                    .AppendLine("  , @TemaPadrao")
-                    .AppendLine("  , @UrlLogo")
-                    .AppendLine("  , @UrlIcone")
-                    .AppendLine("  , @UrlImagemLogin")
-                    .AppendLine("  , @UrlImagemDashboard")
-                    .AppendLine("  , @CreationDate")
-                    .AppendLine("  , @CreationUserId")
-                    .AppendLine("  , @CreationUserName")
-                    .AppendLine("  , @ChangeDate")
-                    .AppendLine("  , @ChangeUserId")
-                    .AppendLine("  , @ChangeUserName")
-                    .AppendLine("  , @ExclusionDate")
-                    .AppendLine("  , @ExclusionUserId")
-                    .AppendLine("  , @ExclusionUserName")
-                    .AppendLine("  , @RecordStatus")
-                    .AppendLine(")");
+            var query = new StringBuilder()
+                .AppendLine("INSERT INTO [JAYTECHAPPDB].[DBO].[Account] (")
+                .AppendLine("    [AccountId]")
+                .AppendLine("  , [AccountName]")
+                .AppendLine("  , [Ativa]")
+                .AppendLine("  , [TemaPadrao]")
+                .AppendLine("  , [UrlLogo]")
+                .AppendLine("  , [UrlIcone]")
+                .AppendLine("  , [UrlImagemLogin]")
+                .AppendLine("  , [UrlImagemDashboard]")
+                .AppendLine("  , [CreationDate]")
+                .AppendLine("  , [CreationUserId]")
+                .AppendLine("  , [CreationUserName]")
+                .AppendLine("  , [ChangeDate]")
+                .AppendLine("  , [ChangeUserId]")
+                .AppendLine("  , [ChangeUserName]")
+                .AppendLine("  , [ExclusionDate]")
+                .AppendLine("  , [ExclusionUserId]")
+                .AppendLine("  , [ExclusionUserName]")
+                .AppendLine("  , [RecordStatus]")
+                .AppendLine(") VALUES (")
+                .AppendLine("    @AccountId")
+                .AppendLine("  , @AccountName")
+                .AppendLine("  , @Ativa")
+                .AppendLine("  , @TemaPadrao")
+                .AppendLine("  , @UrlLogo")
+                .AppendLine("  , @UrlIcone")
+                .AppendLine("  , @UrlImagemLogin")
+                .AppendLine("  , @UrlImagemDashboard")
+                .AppendLine("  , @CreationDate")
+                .AppendLine("  , @CreationUserId")
+                .AppendLine("  , @CreationUserName")
+                .AppendLine("  , @ChangeDate")
+                .AppendLine("  , @ChangeUserId")
+                .AppendLine("  , @ChangeUserName")
+                .AppendLine("  , @ExclusionDate")
+                .AppendLine("  , @ExclusionUserId")
+                .AppendLine("  , @ExclusionUserName")
+                .AppendLine("  , @RecordStatus")
+                .AppendLine(")");
 
-                using var command = new SqlCommand(query.ToString(), cn);
+            try
+            {
+                await using var cn = _connectionProvider.GetConnection();
+                await cn.OpenAsync();
+
+                await using var command = new SqlCommand(query.ToString(), cn);
 
                 SetCommand(account, command);
 
-                try
+                var rowsAffected = await command.ExecuteNonQueryAsync();
+
+                if (rowsAffected > 0)
                 {
-                    await command.ExecuteNonQueryAsync();
-                    return new Account
-                    {
-                        Id = account.Id,
-                        Name = account.Name,
-
-                        Ativa = account.Ativa,
-                        TemaPadrao = account.TemaPadrao,
-                        UrlLogo = account.UrlLogo,
-                        UrlIcone = account.UrlIcone,
-                        UrlImagemLogin = account.UrlImagemLogin,
-                        UrlImagemDashboard = account.UrlImagemDashboard,
-
-                        CreationDate = account.CreationDate,
-                        ChangeUserId = account.CreationUserId,
-                        CreationUserName = account.CreationUserName
-                    };
-
-                }
-                catch (Exception ex)
-                {
-                    return new Account
-                    {
-                        Id = Guid.Empty,
-                        Name = string.Empty,
-                        Ativa = false,
-                        TemaPadrao = string.Empty,
-                        UrlLogo = string.Empty,
-                        UrlIcone = string.Empty,
-                        UrlImagemLogin = string.Empty,
-                        UrlImagemDashboard = string.Empty
-
-                    };
-
+                    return account;
                 }
 
+                throw new Exception("Nenhuma linha foi afetada durante a inserção da Account.");
+            }
+            catch (DbException ex)
+            {
+                throw new Exception($"Erro de banco de dados ao criar Account: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro ao criar Account: {ex.Message}", ex);
             }
         }
 
@@ -194,77 +178,92 @@ namespace ConnectApp.Infrastructure.Accounts
         //---------------------UPDATE---------------------//
         public async Task<bool> UpdateAsync(Account account, Guid id)
         {
-            await using var cn = _connectionProvider.GetConnection();
+
+
+            var query = new StringBuilder()
+                .AppendLine(" UPDATE [JAYTECHAPPDB].[DBO].[Account] SET") 
+                .AppendLine("    [AccountName] = @AccountName") 
+                .AppendLine("  , [Ativa] = @Ativa")
+                .AppendLine("  , [TemaPadrao] = @TemaPadrao")
+                .AppendLine("  , [UrlLogo] = @UrlLogo")
+                .AppendLine("  , [UrlIcone] = @UrlIcone")
+                .AppendLine("  , [UrlImagemLogin] = @UrlImagemLogin")
+                .AppendLine("  , [UrlImagemDashboard] = @UrlImagemDashboard")
+                .AppendLine("  , [CreationDate] = @CreationDate")
+                .AppendLine("  , [CreationUserId] = @CreationUserId")
+                .AppendLine("  , [CreationUserName] = @CreationUserName")
+                .AppendLine("  , [ChangeDate] = @ChangeDate")
+                .AppendLine("  , [ChangeUserId] = @ChangeUserId")
+                .AppendLine("  , [ChangeUserName] = @ChangeUserName")
+                .AppendLine("  , [ExclusionDate] = @ExclusionDate")
+                .AppendLine("  , [ExclusionUserId] = @ExclusionUserId")
+                .AppendLine("  , [ExclusionUserName] = @ExclusionUserName")
+                .AppendLine("  , [RecordStatus] = @RecordStatus")
+                .AppendLine("WHERE [AccountId] = @AccountId"); 
+
+            try
             {
+                await using var cn = _connectionProvider.GetConnection();
                 await cn.OpenAsync();
-                var query = new StringBuilder()
-                    .AppendLine("UPDATE [JAYTECHAPPDB].[DBO].[AccountResult] SET")
-                    .AppendLine("    Name = @Name")
-                    .AppendLine("  , Ativa = @Ativa")
-                    .AppendLine("  , TemaPadrao = @TemaPadrao")
-                    .AppendLine("  , UrlLogo = @UrlLogo")
-                    .AppendLine("  , UrlIcone = @UrlIcone")
-                    .AppendLine("  , UrlImagemLogin = @UrlImagemLogin")
-                    .AppendLine("  , UrlImagemDashboard = @UrlImagemDashboard")
-                    .AppendLine("  , CreationDate = @CreationDate")
-                    .AppendLine("  , CreationUserId = @CreationUserId")
-                    .AppendLine("  , CreationUserName = @CreationUserName")
-                    .AppendLine("  , ChangeDate = @ChangeDate")
-                    .AppendLine("  , ChangeUserId = @ChangeUserId")
-                    .AppendLine("  , ChangeUserName = @ChangeUserName")
-                    .AppendLine("  , ExclusionDate = @ExclusionDate")
-                    .AppendLine("  , ExclusionUserId = @ExclusionUserId")
-                    .AppendLine("  , ExclusionUserName = @ExclusionUserName")
-                    .AppendLine("  , RecordStatus = @RecordStatus")
-                    .AppendLine("WHERE Id = @Id");
+                await using var command = new SqlCommand(query.ToString(), cn);
 
-                using var command = new SqlCommand(query.ToString(), cn);
 
-                command.Parameters.AddWithValue("@Id", account.Id);
-                command.Parameters.AddWithValue("@Name", account.Name);
-                command.Parameters.AddWithValue("@Ativa", account.Ativa);
-                command.Parameters.AddWithValue("@TemaPadrao", account.TemaPadrao);
-                command.Parameters.AddWithValue("@UrlLogo", (object)account.UrlLogo ?? DBNull.Value);
-                command.Parameters.AddWithValue("@UrlIcone", (object)account.UrlIcone ?? DBNull.Value);
-                command.Parameters.AddWithValue("@UrlImagemLogin", (object)account.UrlImagemLogin ?? DBNull.Value);
-                command.Parameters.AddWithValue("@UrlImagemDashboard", (object)account.UrlImagemDashboard ?? DBNull.Value);
+                SetCommand(account, command);
+                command.Parameters.AddWithValue("@AccountId", id);
+                
+                var rowsAffected = await command.ExecuteNonQueryAsync();
 
-                //-----------------------------CREATE-----------------------------------------
-                command.Parameters.AddWithValue("@CreationDate", account.CreationDate);
-                command.Parameters.AddWithValue("@CreationUserId", account.CreationUserId);
-                command.Parameters.AddWithValue("@CreationUserName", account.CreationUserName);
+                if (rowsAffected > 0)
+                {
+                    return true;
+                }
 
-                //-----------------------------CHANGE-----------------------------------------
-                command.Parameters.AddWithValue("@ChangeDate", account.ChangeDate);
-                command.Parameters.AddWithValue("@ChangeUserId", account.ChangeUserId);
-                command.Parameters.AddWithValue("@ChangeUserName", account.ChangeUserName);
-
-                //----------------------------EXCLUSION--------------------------------------
-                command.Parameters.AddWithValue("@ExclusionDate", (object)account.ExclusionDate ?? DBNull.Value);
-                command.Parameters.AddWithValue("@ExclusionUserId", (object)account.ExclusionUserId ?? DBNull.Value);
-                command.Parameters.AddWithValue("@ExclusionUserName", (object)account.ExclusionUserName ?? DBNull.Value);
-
-                //-----------------------------STATUS----------------------------------------
-                command.Parameters.AddWithValue("@RecordStatus", account.RecordStatus);
-
-                return await command.ExecuteNonQueryAsync() > 0;
+                throw new Exception("Nenhuma linha foi afetada durante a inserção da Account.");
             }
-        }
+            catch (DbException ex)
+            {
+                throw new Exception($"Erro de banco de dados ao criar Account: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro ao criar Account: {ex.Message}", ex);
+            }
+        }         
+        
 
         //---------------------DELETE---------------------//
         public async Task<bool> DeleteAsync(Guid accountId)
         {
-            await using var cn = _connectionProvider.GetConnection();
-            {
-                await cn.OpenAsync();
-                var query = new StringBuilder()
-                    .AppendLine("UPDATE [JAYTECHAPPDB].[DBO].[AccountResult] SET")
-                    .AppendLine("    RecordStatus = 0")
-                    .AppendLine("WHERE Id = @Id");
+            var query = new StringBuilder()
+                .AppendLine("UPDATE [JaytechAppDB].[dbo].[Account] ")
+                .AppendLine(" SET [RecordStatus] = 0 ")
+                .AppendLine(" WHERE [AccountId] = @accountId");
 
-                using var command = new SqlCommand(query.ToString(), cn);
-                command.Parameters.AddWithValue("@Id", accountId);
-                return await command.ExecuteNonQueryAsync() > 0;
+            try
+            {
+                await using var cn = _connectionProvider.GetConnection();
+                await cn.OpenAsync();
+                await using var command = new SqlCommand(query.ToString(), cn);
+
+
+                command.Parameters.AddWithValue("@accountId", accountId);
+               
+                var rowsAffected = await command.ExecuteNonQueryAsync();
+
+                if (rowsAffected > 0)
+                {
+                    return true;
+                }
+
+                throw new Exception("Nenhuma linha foi afetada durante a inserção da Account.");
+            }
+            catch (DbException ex)
+            {
+                throw new Exception($"Erro de banco de dados ao criar Account: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro ao criar Account: {ex.Message}", ex);
             }
         }
 
@@ -277,16 +276,18 @@ namespace ConnectApp.Infrastructure.Accounts
         {
             return new Account
             {
-                Id = reader.GetGuidValue("Id"),
-                Name = reader.GetStringValue("Name"),
+                Id = reader.GetGuidValue("AccountId"),
+                Name = reader.GetStringValue("AccountName"),
                 Ativa = reader.GetBoolean("Ativa"),
+
                 TemaPadrao = reader.GetNullableString("TemaPadrao"),
                 UrlLogo = reader.GetNullableString("UrlLogo"),
                 UrlIcone = reader.GetNullableString("UrlIcone"),
                 UrlImagemLogin = reader.GetNullableString("UrlImagemLogin"),
                 UrlImagemDashboard = reader.GetNullableString("UrlImagemDashboard"),
-                CreationDate = (DateTime)reader.GetNullableDateTime("CreationDate"),
-                CreationUserId = (Guid)reader.GetNullableGuid("CreationUserId"),
+
+                CreationDate = reader.GetNullableDateTime("CreationDate"),
+                CreationUserId = reader.GetNullableGuid("CreationUserId"),
                 CreationUserName = reader.GetNullableString("CreationUserName"),
                 ChangeDate = reader.GetNullableDateTime("ChangeDate"),
                 ChangeUserId = reader.GetNullableGuid("ChangeUserId"),
@@ -295,32 +296,39 @@ namespace ConnectApp.Infrastructure.Accounts
                 ExclusionUserId = reader.GetNullableGuid("ExclusionUserId"),
                 ExclusionUserName = reader.GetNullableString("ExclusionUserName"),
 
+                RecordStatus = reader.GetBoolean("RecordStatus")
+
             };
         }
         private static void SetCommand(Account account, SqlCommand command)
         {
-            command.Parameters.AddWithValue("@Id", account.Id);
-            command.Parameters.AddWithValue("@Name", account.Name);
+
+            command.Parameters.AddWithValue("@AccountId", account.Id);
+            command.Parameters.AddWithValue("@AccountName", account.Name);
+
             command.Parameters.AddWithValue("@Ativa", account.Ativa);
-            command.Parameters.AddWithValue("@TemaPadrao", (object)account.TemaPadrao ?? DBNull.Value);
-            command.Parameters.AddWithValue("@UrlLogo", (object)account.UrlLogo ?? DBNull.Value);
-            command.Parameters.AddWithValue("@UrlIcone", (object)account.UrlIcone ?? DBNull.Value);
-            command.Parameters.AddWithValue("@UrlImagemLogin", (object)account.UrlImagemLogin ?? DBNull.Value);
-            command.Parameters.AddWithValue("@UrlImagemDashboard", (object)account.UrlImagemDashboard ?? DBNull.Value);
-            command.Parameters.AddWithValue("@CreationDate", (object)account.CreationDate ?? DBNull.Value);
-            command.Parameters.AddWithValue("@CreationUserId", (object)account.CreationUserId ?? DBNull.Value);
-            command.Parameters.AddWithValue("@CreationUserName", (object)account.CreationUserName ?? DBNull.Value);
-            command.Parameters.AddWithValue("@ChangeDate", (object)account.ChangeDate ?? DBNull.Value);
-            command.Parameters.AddWithValue("@ChangeUserId", (object)account.ChangeUserId ?? DBNull.Value);
-            command.Parameters.AddWithValue("@ChangeUserName", (object)account.ChangeUserName ?? DBNull.Value);
-            command.Parameters.AddWithValue("@ExclusionDate", (object)account.ExclusionDate ?? DBNull.Value);
-            command.Parameters.AddWithValue("@ExclusionUserId", (object)account.ExclusionUserId ?? DBNull.Value);
-            command.Parameters.AddWithValue("@ExclusionUserName", (object)account.ExclusionUserName! ?? DBNull.Value);
+            command.Parameters.AddWithValue("@TemaPadrao", (object?)account.TemaPadrao ?? DBNull.Value);
+            command.Parameters.AddWithValue("@UrlLogo", (object?)account.UrlLogo ?? DBNull.Value);
+            command.Parameters.AddWithValue("@UrlIcone", (object?)account.UrlIcone ?? DBNull.Value);
+            command.Parameters.AddWithValue("@UrlImagemLogin", (object?)account.UrlImagemLogin ?? DBNull.Value);
+            command.Parameters.AddWithValue("@UrlImagemDashboard", (object?)account.UrlImagemDashboard ?? DBNull.Value);
+
+
+            command.Parameters.AddWithValue("@CreationDate", (object?)account.CreationDate ?? DBNull.Value);
+            command.Parameters.AddWithValue("@CreationUserId", (object?)account.CreationUserId ?? DBNull.Value);
+            command.Parameters.AddWithValue("@CreationUserName", (object?)account.CreationUserName ?? DBNull.Value);
+            command.Parameters.AddWithValue("@ChangeDate", (object?)account.ChangeDate ?? DBNull.Value);
+            command.Parameters.AddWithValue("@ChangeUserId", (object?)account.ChangeUserId ?? DBNull.Value);
+            command.Parameters.AddWithValue("@ChangeUserName", (object?)account.ChangeUserName ?? DBNull.Value);
+            command.Parameters.AddWithValue("@ExclusionDate", (object?)account.ExclusionDate ?? DBNull.Value);
+            command.Parameters.AddWithValue("@ExclusionUserId", (object?)account.ExclusionUserId ?? DBNull.Value);
+            command.Parameters.AddWithValue("@ExclusionUserName", (object?)account.ExclusionUserName ?? DBNull.Value);
+
             command.Parameters.AddWithValue("@RecordStatus", account.RecordStatus);
         }
 
-       
-        
+
+
     }
 }
 
@@ -617,4 +625,32 @@ namespace ConnectApp.Infrastructure.Accounts
         }
        
  
+  command.Parameters.AddWithValue("@Id", account.Id);
+                command.Parameters.AddWithValue("@Name", account.Name);
+                command.Parameters.AddWithValue("@Ativa", account.Ativa);
+                command.Parameters.AddWithValue("@TemaPadrao", account.TemaPadrao);
+                command.Parameters.AddWithValue("@UrlLogo", (object)account.UrlLogo ?? DBNull.Value);
+                command.Parameters.AddWithValue("@UrlIcone", (object)account.UrlIcone ?? DBNull.Value);
+                command.Parameters.AddWithValue("@UrlImagemLogin", (object)account.UrlImagemLogin ?? DBNull.Value);
+                command.Parameters.AddWithValue("@UrlImagemDashboard", (object)account.UrlImagemDashboard ?? DBNull.Value);
+
+                //-----------------------------CREATE-----------------------------------------
+                command.Parameters.AddWithValue("@CreationDate", account.CreationDate);
+                command.Parameters.AddWithValue("@CreationUserId", account.CreationUserId);
+                command.Parameters.AddWithValue("@CreationUserName", account.CreationUserName);
+
+                //-----------------------------CHANGE-----------------------------------------
+                command.Parameters.AddWithValue("@ChangeDate", account.ChangeDate);
+                command.Parameters.AddWithValue("@ChangeUserId", account.ChangeUserId);
+                command.Parameters.AddWithValue("@ChangeUserName", account.ChangeUserName);
+
+                //----------------------------EXCLUSION--------------------------------------
+                command.Parameters.AddWithValue("@ExclusionDate", (object)account.ExclusionDate ?? DBNull.Value);
+                command.Parameters.AddWithValue("@ExclusionUserId", (object)account.ExclusionUserId ?? DBNull.Value);
+                command.Parameters.AddWithValue("@ExclusionUserName", (object)account.ExclusionUserName ?? DBNull.Value);
+
+                //-----------------------------STATUS----------------------------------------
+                command.Parameters.AddWithValue("@RecordStatus", account.RecordStatus);
+
+
  */

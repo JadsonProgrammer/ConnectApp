@@ -240,10 +240,7 @@ namespace ConnectApp.Infrastructure.Repositories.Users
 
             try
             {
-                if (user == null)
-                    throw new ArgumentNullException(nameof(user), "O objeto User é nulo.");
-
-                await using var cn = _connectionProvider.GetConnection();
+               await using var cn = _connectionProvider.GetConnection();
                 await cn.OpenAsync();
                 await using var cm = cn.CreateCommand();
                 cm.CommandText = commandText.ToString();
@@ -301,8 +298,8 @@ namespace ConnectApp.Infrastructure.Repositories.Users
 
             try
             {
-                if (user == null)
-                    throw new ArgumentNullException(nameof(user), "O objeto User é nulo.");
+                //if (user == null)
+                //    throw new ArgumentNullException(nameof(user), "O objeto User é nulo.");
 
                 await using var cn = _connectionProvider.GetConnection();
                 await cn.OpenAsync();

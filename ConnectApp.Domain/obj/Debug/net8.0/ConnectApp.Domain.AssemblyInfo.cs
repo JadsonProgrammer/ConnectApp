@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ConnectApp.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+73d3014ba1faf3d89ffe899a526a15b91e955e39")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+34ecbc5d110b0ead5607eabc22d80473dc0c830f")]
 [assembly: System.Reflection.AssemblyProductAttribute("ConnectApp.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ConnectApp.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

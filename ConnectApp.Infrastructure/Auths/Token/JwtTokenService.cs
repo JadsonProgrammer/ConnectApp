@@ -24,58 +24,28 @@ namespace ConnectApp.Infrastructure.Auths.Token
         public string GenerateToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var now = DateTime.UtcNow;
+            var key = Encoding.ASCII.GetBytes(_settings.Secret);
+            var expires = DateTime.UtcNow.AddHours(_settings.ExpiryInHours);
 
-            var key = Encoding.UTF8.GetBytes(_settings.Secret);
-
+            // 💡 Onde o erro estava: a lista de claims deve incluir Issuer e Audience
             var claims = new List<Claim>
-        {
-
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new Claim("userId", user.Id.ToString()),
-
-
-
-
-
-
-        };
-            if (user.AccountId.HasValue)
             {
-                claims.Add(new Claim("accountId", user.AccountId.Value.ToString()));
-            }
-
-            if (!string.IsNullOrEmpty(user.AccountName))
-            {
-                claims.Add(new Claim("accountName", user.AccountName));
-            }
-
-            /*if (user.Roles != null && user.Roles.Any())
-            {
-                foreach (var role in user.Roles)
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, role));
-                }
-            }
-            */
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                NotBefore = now,
-                Expires = now.AddHours(_settings.ExpiryInHours),
-
-                Issuer = _settings.Issuer,
-                Audience = _settings.Audience,
-                SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha512Signature)
+                new("UserId", user.Id.ToString()),
+                new(JwtRegisteredClaimNames.Aud, _settings.Audience),
+                new(JwtRegisteredClaimNames.Iss, _settings.Issuer)
             };
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var descriptor = new SecurityTokenDescriptor
+            {
+                
+                Subject = new ClaimsIdentity(claims),
+                Expires = expires,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(descriptor);
             return tokenHandler.WriteToken(token);
         }
-    
 
 
         public string HashPassword(string password)
@@ -93,68 +63,45 @@ namespace ConnectApp.Infrastructure.Auths.Token
         }
     }
 
-    //public class JwtTokenService : IJwtTokenService
-    //{
-    //    private readonly JwtSettings _jwtSettings;
 
-    //    public JwtTokenService(JwtSettings jwtSettings)
-    //    {
-    //        _jwtSettings = jwtSettings;
-    //    }
-
-    //    public string GenerateToken(User user)
-    //    {
-    //        var tokenHandler = new JwtSecurityTokenHandler();
-    //        var now = DateTime.UtcNow;
-
-    //        var key = Encoding.UTF8.GetBytes(_jwtSettings.Secret);
-
-    //        var claims = new List<Claim>
-    //    {
-
-    //        new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-    //        new Claim("userId", user.Id.ToString()),
-
-
-
-
-
-
-    //    };
-    //        if (user.Id.HasValue)
-    //        {
-    //            claims.Add(new Claim("accountId", user.Id.Value.ToString()));
-    //        }
-
-    //        if (!string.IsNullOrEmpty(user.Name))
-    //        {
-    //            claims.Add(new Claim("accountName", user.Name));
-    //        }
-
-    //        /*if (user.Roles != null && user.Roles.Any())
-    //        {
-    //            foreach (var role in user.Roles)
-    //            {
-    //                claims.Add(new Claim(ClaimTypes.Role, role));
-    //            }
-    //        }
-    //        */
-
-    //        var tokenDescriptor = new SecurityTokenDescriptor
-    //        {
-    //            Subject = new ClaimsIdentity(claims),
-    //            NotBefore = now,
-    //            Expires = now.AddHours(_jwtSettings.ExpiryInHours),
-
-    //            Issuer = _jwtSettings.Issuer,
-    //            Audience = _jwtSettings.Audience,
-    //            SigningCredentials = new SigningCredentials(
-    //                new SymmetricSecurityKey(key),
-    //                SecurityAlgorithms.HmacSha512Signature)
-    //        };
-
-    //        var token = tokenHandler.CreateToken(tokenDescriptor);
-    //        return tokenHandler.WriteToken(token);
-    //    }
-    //}
 }
+/*
+
+
+  var tokenHandler = new JwtSecurityTokenHandler();
+            var now = DateTime.UtcNow;
+
+            var key = Encoding.UTF8.GetBytes(_settings.Secret);
+
+            var claims = new List<Claim>
+        {
+
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new Claim("userId", user.Id.ToString()),
+
+
+
+
+
+
+        };
+           
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                NotBefore = now,
+                Expires = now.AddHours(_settings.ExpiryInHours),
+
+                Issuer = _settings.Issuer,
+                Audience = _settings.Audience,
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha512Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+
+/**/

@@ -71,6 +71,21 @@ namespace ConnectApp.Api.Controllers.Accounts
                 return await CreateExceptionResponse(e);
             }
         }
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAccountById(Guid id)
+        {
+            try
+            {
+                var accountResult = await _accountService.DeleteAccountByIdAsync(id);
+                return await CreateGetResponse(accountResult);
+            }
+            catch (Exception e)
+            {
+                return await CreateExceptionResponse(e);
+            }
+        }
     }
 }
 /*

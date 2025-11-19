@@ -62,6 +62,7 @@ namespace ConnectApp.Api.Controllers.Auths
 
 
         [HttpPost("check-login")]
+        [AllowAnonymous]
         public async Task<IActionResult> CheckLogin([FromBody] AuthCheck request)
         {
 

@@ -2,7 +2,7 @@
 {
     public partial class Account
     {
-        public Guid Id { get; set; } 
+        public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public bool Ativa { get; set; }
 
@@ -27,87 +27,122 @@
 
         public Account() { }
 
-        
-        //public static Account Create(
-        //    string Name,
-        //    Guid creationUserId,
-        //    string? creationUserName,
-        //    string? temaPadrao,
-        //    string? urlLogo ,
-        //    string? urlIcone,
-        //    string? urlImagemLogin,
-        //    string? urlImagemDashboard)
-        //{
-        //    if (string.IsNullOrWhiteSpace(Name))
-        //        throw new ArgumentException("O nome da conta é obrigatório.");
 
-        //    //if (creationUserId == Guid.Empty)
-        //    //    throw new ArgumentException("O usuário de criação é obrigatório.");
-
-        //    return new Account
-        //    {
-        //        Id = Guid.NewGuid(),
-        //        Name =Name.Trim(),
-        //        Ativa = true,
-        //        TemaPadrao = string.IsNullOrWhiteSpace(temaPadrao) ? "default" : temaPadrao,
-        //        UrlLogo = urlLogo,
-        //        UrlIcone = urlIcone,
-        //        UrlImagemLogin = urlImagemLogin,
-        //        UrlImagemDashboard = urlImagemDashboard,
-        //        CreationDate = DateTime.UtcNow,
-        //        CreationUserId = creationUserId != Guid.Empty ? creationUserId : GetSystemUserId(),
-        //        CreationUserName = GetCreationUserName(creationUserName),
-        //        RecordStatus = true
-
-        //    };
-        //}
-        //private static Guid GetSystemUserId()
-        //{
+        public static Account Create(
+        string Name,
+        Guid creationUserId,
+        string? creationUserName,
+        string? temaPadrao,
+        string? urlLogo,
+        string? urlIcone,
+        string? urlImagemLogin,
+        string? urlImagemDashboard)
+        {
             
-        //    return Guid.Parse("00000000-0000-0000-0000-000000000000");
-        //}
-        //private static string GetCreationUserName(string? creationUserName)
-        //{
-        //    if (string.IsNullOrWhiteSpace(creationUserName))
-        //        return "Sistema";
+            if (string.IsNullOrWhiteSpace(Name))
+                throw new Exception("O nome da conta é obrigatório."); 
 
-        //    return creationUserName.Trim();
-        //}
+            
+            if (creationUserId == Guid.Empty)
+                
+                throw new ArgumentException("O ID do usuário de criação é obrigatório.");
 
-        //public void Update(
-        //    string Name,
-        //    string? temaPadrao,
-        //    string? urlLogo,
-        //    string? urlIcone,
-        //    string? urlImagemLogin,
-        //    string? urlImagemDashboard,
-        //    Guid changeUserId,
-        //    string? changeUserName)
-        //{
-        //    if (string.IsNullOrWhiteSpace(Name))
-        //        throw new ArgumentException("O nome da conta é obrigatório para atualização.");
+            
+            if (string.IsNullOrWhiteSpace(creationUserName))
+                throw new Exception("O nome do usuário de criação é obrigatório."); 
 
-        //    Name = Name.Trim();
-        //    TemaPadrao = temaPadrao;
-        //    UrlLogo = urlLogo;
-        //    UrlIcone = urlIcone;
-        //    UrlImagemLogin = urlImagemLogin;
-        //    UrlImagemDashboard = urlImagemDashboard;
-        //    ChangeDate = DateTime.UtcNow;
-        //    ChangeUserId = changeUserId;
-        //    ChangeUserName = changeUserName;
-        //}
+            var account = new Account
+            {
+                Id = Guid.NewGuid(),
+                Name = Name.Trim(),
+                Ativa = true,
+                
+                TemaPadrao = string.IsNullOrWhiteSpace(temaPadrao) ? "default" : temaPadrao,
+                UrlLogo = urlLogo,
+                UrlIcone = urlIcone,
+                UrlImagemLogin = urlImagemLogin,
+                UrlImagemDashboard = urlImagemDashboard,
 
-        //public void Deactivate(Guid userId, string userName)
-        //{
-        //    if (userId == Guid.Empty)
-        //        throw new ArgumentException("Usuário inválido para exclusão.");
+                
+                CreationDate = DateTime.UtcNow,
+                
+                CreationUserId = creationUserId,
+                CreationUserName = creationUserName.Trim(),
 
-        //    Ativa = false;
-        //    RecordStatus = false;
-        //    ExclusionDate = DateTime.UtcNow;
-        //    ExclusionUserId = userId;
-        //    ExclusionUserName = userName;
-        //}
+                
+                RecordStatus = true
+            };
+
+            
+            // account.ValidateForCreation(); 
+
+            return account;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
+    
 }
+            //}
+            //private static Guid GetSystemUserId()
+            //{
+
+            //    return Guid.Parse("00000000-0000-0000-0000-000000000000");
+            //}
+            //private static string GetCreationUserName(string? creationUserName)
+            //{
+            //    if (string.IsNullOrWhiteSpace(creationUserName))
+            //        return "Sistema";
+
+            //    return creationUserName.Trim();
+            //}
+
+            //public void Update(
+            //    string Name,
+            //    string? temaPadrao,
+            //    string? urlLogo,
+            //    string? urlIcone,
+            //    string? urlImagemLogin,
+            //    string? urlImagemDashboard,
+            //    Guid changeUserId,
+            //    string? changeUserName)
+            //{
+            //    if (string.IsNullOrWhiteSpace(Name))
+            //        throw new ArgumentException("O nome da conta é obrigatório para atualização.");
+
+            //    Name = Name.Trim();
+            //    TemaPadrao = temaPadrao;
+            //    UrlLogo = urlLogo;
+            //    UrlIcone = urlIcone;
+            //    UrlImagemLogin = urlImagemLogin;
+            //    UrlImagemDashboard = urlImagemDashboard;
+            //    ChangeDate = DateTime.UtcNow;
+            //    ChangeUserId = changeUserId;
+            //    ChangeUserName = changeUserName;
+            //}
+
+            //public void Deactivate(Guid userId, string userName)
+            //{
+            //    if (userId == Guid.Empty)
+            //        throw new ArgumentException("Usuário inválido para exclusão.");
+
+            //    Ativa = false;
+            //    RecordStatus = false;
+            //    ExclusionDate = DateTime.UtcNow;
+            //    ExclusionUserId = userId;
+            //    ExclusionUserName = userName;
+            //}
+        
+

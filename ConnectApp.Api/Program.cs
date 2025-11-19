@@ -1,10 +1,14 @@
+using ConnectApp.Application.Interfaces.Accounts;
 using ConnectApp.Application.Interfaces.Auths;
 using ConnectApp.Application.Interfaces.Users;
+using ConnectApp.Application.Services.Accounts;
 using ConnectApp.Application.Services.Auths;
 using ConnectApp.Application.Services.Users;
+using ConnectApp.Domain.Interfaces.Accounts;
 using ConnectApp.Domain.Interfaces.Auths;
 using ConnectApp.Domain.Interfaces.Auths.Tokens;
 using ConnectApp.Domain.Interfaces.Users;
+using ConnectApp.Infrastructure.Accounts;
 using ConnectApp.Infrastructure.Auths;
 using ConnectApp.Infrastructure.Auths.Token;
 using ConnectApp.Infrastructure.Repositories.Auths;
@@ -25,6 +29,8 @@ public class Program
 
         // Carrega configurações do appsettings.json
         builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+
 
         // Lê as configurações JWT e registra diretamente no DI
         var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>()
@@ -50,7 +56,9 @@ public class Program
         //builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
 
-      
+        // ---------------Account---------------
+        builder.Services.AddScoped<IAccountService, AccountService>();
+        builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
         // -----------------User-------------------
         builder.Services.AddScoped<IUserService, UserService>();
@@ -59,7 +67,7 @@ public class Program
         builder.Services.Configure<JwtSettings>(
             builder.Configuration.GetSection("JwtSettings"));
 
-       // builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+        // builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
 
 
@@ -89,7 +97,7 @@ public class Program
 
         //-------------------Auth------------------
         builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-       builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+        builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<IGetCredential, GetCredential>();
@@ -139,7 +147,7 @@ public class Program
     {
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     });
-        
+
         builder.Services.AddCors(options =>
         {
             options.AddPolicy("MyPolicy", policy =>
@@ -194,7 +202,7 @@ public class Program
 
         {
 
-       
+
             builder.Services.AddAuthorizationBuilder()
                 .AddPolicy("Admin", policy => policy.RequireRole("manager"))
                 .AddPolicy("Employee", policy => policy.RequireRole("employee"));
@@ -218,56 +226,3 @@ public class Program
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
- * var builder = WebApplication.CreateBuilder(args);
-
-
-
-
-
-
-
-
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
-/*/

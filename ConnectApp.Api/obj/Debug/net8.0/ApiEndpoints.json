@@ -95,6 +95,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ConnectApp.Api.Controllers.Accounts.AccountController",
+    "Method": "DeleteAccountById",
+    "RelativePath": "sign-up/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ConnectApp.Api.Controllers.Users.UserController",
     "Method": "CreateUserAsync",
     "RelativePath": "users",

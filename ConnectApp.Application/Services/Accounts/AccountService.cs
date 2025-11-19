@@ -127,7 +127,7 @@ namespace ConnectApp.Application.Services.Accounts
                 if (!validationResult.IsValid)
                     return Failure<AccountResult>(validationResult.ErrorMessage);
 
-                if (accountParams.Id == null)
+                if (accountParams.AccountId == null)
                     return Failure<AccountResult>("ID da conta é obrigatório.");
 
                 var updated = await _repository.UpdateAsync(account, id);
@@ -163,7 +163,7 @@ namespace ConnectApp.Application.Services.Accounts
             }
         }
 
-        public async Task<Result<AccountResult>> DeleteAccountAsync(Guid id)
+        public async Task<Result<AccountResult>> DeleteAccountByIdAsync(Guid id)
         {
             try
             {
@@ -176,7 +176,7 @@ namespace ConnectApp.Application.Services.Accounts
                 if (account == null)
                     return Failure<AccountResult>("Conta não encontrada.");
 
-                var deleted = await _repository.UpdateAsync(account, id);
+                var deleted = await _repository.DeleteAsync(id);
                 if (deleted == false)
                 {
                     return Failure<AccountResult>("Erro ao desativar a conta.");
@@ -265,13 +265,13 @@ namespace ConnectApp.Application.Services.Accounts
             if (@params == null)
                 return ValidationResult.Invalid("Parâmetros não podem ser nulos.");
 
-            if (string.IsNullOrWhiteSpace(@params.Name))
+            if (string.IsNullOrWhiteSpace(@params.AccountName))
                 return ValidationResult.Invalid("O nome da conta é obrigatório.");
 
             if (@params.UserId == Guid.Empty)
                 return ValidationResult.Invalid("O ID do usuário é obrigatório.");
 
-            if (!Account.AccountSetParams.IsValidAccountName(@params.Name))
+            if (!Account.AccountSetParams.IsValidAccountName(@params.AccountName))
                 return ValidationResult.Invalid("Nome da conta deve ter entre 2 e 100 caracteres.");
 
             if (!string.IsNullOrWhiteSpace(@params.TemaPadrao) &&
@@ -284,7 +284,7 @@ namespace ConnectApp.Application.Services.Accounts
         private static Account CreateAccountFromParams(AccountParams @params)
         {
             return Account.AccountSetParams.Create(
-                accountName: @params.Name!,
+                accountName: @params.AccountName!,
                 creationUserId: @params.UserId,
                 creationUserName: @params.UserName,
                 temaPadrao: @params.TemaPadrao,
@@ -299,7 +299,7 @@ namespace ConnectApp.Application.Services.Accounts
         {
             Account.AccountSetParams.Update(
                 account: account,
-                accountName: dto.Name,
+                accountName: dto.AccountName,
                 temaPadrao: dto.TemaPadrao,
                 urlLogo: dto.UrlLogo,
                 urlIcone: dto.UrlIcone,

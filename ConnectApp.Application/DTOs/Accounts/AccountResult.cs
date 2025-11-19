@@ -5,8 +5,8 @@ namespace ConnectApp.Application.DTOs.Accounts
     public class AccountResult {
         public bool Successo { get; set; }
         public string? Message { get; set; }
-        public Guid Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public Guid AccountId { get; set; }
+        public string AccountName { get; set; } = string.Empty;
         public bool Ativa { get; set; }
 
         // Personalização

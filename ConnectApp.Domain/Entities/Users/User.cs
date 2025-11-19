@@ -2,17 +2,17 @@
 {
     public partial class User
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } 
         public int Code { get; set; }
         public string Name { get; set; } = string.Empty;
         public string? CPF { get; set; }
         public string AccessKey { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
 
-        //public IList<string> Roles { get; set; } = new List<string> { "User" };
-        //public IList<Phone> Phones { get; set; } = new List<Phone>();
-        //public IList<Address> Addresses { get; set; } = new List<Address>();
-        //public IList<Email> Emails { get; set; } = [];
+        public IList<string> Roles { get; set; } = [];
+        public IList<Phone> Phones { get; set; } = [];
+        public IList<Address> Addresses { get; set; } = [];
+        public IList<Email> Emails { get; set; } = [];
 
         public int? TypeCode { get; set; }
         public string? TypeName { get; set; }
@@ -28,24 +28,24 @@
         public string? Note { get; set; }
 
         // Audit
-        public Guid? BrokerId { get; set; }
-        public Guid? AccountId { get; set; }
-        public string AccountName { get; set; } = string.Empty;
+        public Guid? BrokerId { get; set; } = Guid.Empty;
+        public Guid? AccountId { get; set; } = Guid.Empty;
+        public string? AccountName { get; set; } = string.Empty;
         public DateTime? CreationDate { get; set; }
-        public Guid? CreationUserId { get; set; }
+        public Guid? CreationUserId { get; set; } = Guid.Empty;
         public string? CreationUserName { get; set; }
         public DateTime? ChangeDate { get; set; }
-        public Guid? ChangeUserId { get; set; }
+        public Guid? ChangeUserId { get; set; } = Guid.Empty;
         public string? ChangeUserName { get; set; }
         public DateTime? ExclusionDate { get; set; }
-        public Guid? ExclusionUserId { get; set; }
+        public Guid? ExclusionUserId { get; set; } = Guid.Empty;
         public string? ExclusionUserName { get; set; }
 
         public User() { }
 
         public static User Create(
             string name,
-            string? cpf,
+            string cpf,
             string accessKey,
             string password,
             IList<Phone>? phones,
@@ -57,10 +57,10 @@
             Guid accountId,
             string accountName)
         {
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Nome é obrigatório.");
-            if (string.IsNullOrWhiteSpace(accessKey)) throw new ArgumentException("AccessKey é obrigatória.");
-            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Password é obrigatória.");
-
+            if (string.IsNullOrWhiteSpace(name)) throw new Exception("Nome é obrigatório.");
+            if (string.IsNullOrWhiteSpace(accessKey)) throw new Exception("AccessKey é obrigatória.");
+            if (string.IsNullOrWhiteSpace(password)) throw new Exception("Password é obrigatória.");
+            if (string.IsNullOrWhiteSpace(cpf)) throw new Exception("CPF é obrigatório");
             var user = new User
             {
                 Id = Guid.NewGuid(),
@@ -68,9 +68,9 @@
                 CPF = cpf?.Trim(),
                 AccessKey = accessKey,
                 Password = password,
-                //Phones = phones ?? new List<Phone>(),
-                //Addresses = addresses ?? new List<Address>(),
-                //Emails = emails ?? new List<Email>(),
+                Phones = phones ?? [],
+                Addresses = addresses ?? [],
+                Emails = emails ?? [],
                 //Roles = roles != null && roles.Any() ? roles : new List<string> { "User" },
                 AccountId = accountId,
                 AccountName = accountName,
@@ -160,7 +160,7 @@
             if (CreationDate == null)
                 errors.Add("CreationDate é obrigatório.");
 
-            if (errors.Any())
+            if (errors.Count != 0)
                 throw new ArgumentException($"Erros de validação na criação: {string.Join(" ", errors)}");
         }
 
@@ -180,7 +180,7 @@
             if (string.IsNullOrWhiteSpace(ChangeUserName))
                 errors.Add("ChangeUserName é obrigatório.");
 
-            if (errors.Any())
+            if (errors.Count != 0)
                 throw new ArgumentException($"Erros de validação na atualização: {string.Join(" ", errors)}");
         }
 
@@ -197,7 +197,7 @@
             if (ExclusionDate == null)
                 errors.Add("ExclusionDate é obrigatório.");
 
-            if (errors.Any())
+            if (errors.Count != 0)
                 throw new ArgumentException($"Erros de validação na desativação: {string.Join(" ", errors)}");
         }
 
@@ -245,7 +245,7 @@
             //if (Roles == null || !Roles.Any())
             //    errors.Add("Pelo menos uma role é obrigatória.");
 
-            if (errors.Any())
+            if (errors.Count != 0)
                 throw new ArgumentException($"Erros de validação completa da entidade: {string.Join(" ", errors)}");
         }
 

@@ -21,9 +21,39 @@ namespace ConnectApp.Infrastructure.Repositories.Auths
         public async Task<bool> GetByUsernameAsync(string login)
         {
             var commandText = new StringBuilder()
-                .AppendLine("SELECT * FROM ")
-                .AppendLine("[JAYTECHAPPDB].[DBO].[USER] ")
-                .AppendLine("WHERE [AccessKey] COLLATE SQL_Latin1_General_CP1_CS_AS  = @AccessKey  ");
+                .AppendLine("SELECT")
+                .AppendLine("    [Id]  ")
+                .AppendLine("    ,[Code]  ")
+                .AppendLine("    ,[Name]  ")
+                .AppendLine("    ,[CPF]  ")
+                .AppendLine("    ,[AccessKey]  ")
+                .AppendLine("    ,[Password]  ")
+                .AppendLine("    ,[TypeCode]  ")
+                .AppendLine("    ,[TypeName]  ")
+                .AppendLine("    ,[ProfileCode]  ")
+                .AppendLine("    ,[ProfileName]  ")
+                .AppendLine("    ,[StatusCode]  ")
+                .AppendLine("    ,[StatusName]  ")
+                .AppendLine("    ,[LastAccess]  ")
+                .AppendLine("    ,[AccessCount]  ")
+                .AppendLine("    ,[Avatar]  ")
+                .AppendLine("    ,[Note]  ")
+                .AppendLine("    ,[BrokerId]  ")
+                .AppendLine("    ,[AccountId]  ")
+                .AppendLine("    ,[AccountName]  ")
+                .AppendLine("    ,[CreationDate]  ")
+                .AppendLine("    ,[CreationUserId]  ")
+                .AppendLine("    ,[CreationUserName]  ")
+                .AppendLine("    ,[ChangeDate]  ")
+                .AppendLine("    ,[ChangeUserId]  ")
+                .AppendLine("    ,[ChangeUserName]  ")
+                .AppendLine("    ,[ExclusionDate]  ")
+                .AppendLine("    ,[ExclusionUserId]  ")
+                .AppendLine("    ,[ExclusionUserName] ")
+                .AppendLine("    ,[RecordStatus] ")
+                .AppendLine("    ,[IS_ACTIVE] ")
+                .AppendLine("     FROM [JAYTECHAPPDB].[DBO].[USER] ")
+                .AppendLine("     WHERE [AccessKey] COLLATE SQL_Latin1_General_CP1_CS_AS  = @AccessKey  ");
 
             await using var cn = _connectionProvider.GetConnection();
             await cn.OpenAsync();
@@ -40,39 +70,38 @@ namespace ConnectApp.Infrastructure.Repositories.Auths
             var verification = auth;
             var commandText = new StringBuilder()
                 .AppendLine("SELECT")
-                .AppendLine("    [Id],")
-                .AppendLine("    [Code],")
-                .AppendLine("    [Name],")
-                .AppendLine("    [AccessKey],")
-                .AppendLine("    [Password],")
-                .AppendLine("    [Email],")
-                .AppendLine("    [Phone],")
-                .AppendLine("    [TypeCode],")
-                .AppendLine("    [TypeName],")
-                .AppendLine("    [ProfileCode],")
-                .AppendLine("    [ProfileName],")
-                .AppendLine("    [StatusCode],")
-                .AppendLine("    [StatusName],")
-                .AppendLine("    [LastAccess],")
-                .AppendLine("    [AccessCount],")
-                .AppendLine("    [Avatar],")
-                .AppendLine("    [Note],")
-                .AppendLine("    [BrokerId],")
-                .AppendLine("    [Id],")
-                .AppendLine("    [CreationDate],")
-                .AppendLine("    [CreationUserId],")
-                .AppendLine("    [CreationUserName],")
-                .AppendLine("    [ChangeDate],")
-                .AppendLine("    [ChangeUserId],")
-                .AppendLine("    [ChangeUserName],")
-                .AppendLine("    [ExclusionDate],")
-                .AppendLine("    [ExclusionUserId],")
-                .AppendLine("    [ExclusionUserName],")
-                .AppendLine("    [RecordStatus],")
-                .AppendLine("    [CPF],")
-                .AppendLine("    [IS_ACTIVE]")
-                .AppendLine(" FROM [JAYTECHAPPDB].[DBO].[USER]")
-                .AppendLine("WHERE [AccessKey] COLLATE SQL_Latin1_General_CP1_CS_AS  = @AccessKey  ");
+                .AppendLine("    [Id]  ")
+                .AppendLine("    ,[Code]  ")
+                .AppendLine("    ,[Name]  ")
+                .AppendLine("    ,[CPF]  ")
+                .AppendLine("    ,[AccessKey]  ")
+                .AppendLine("    ,[Password]  ")
+                .AppendLine("    ,[TypeCode]  ")
+                .AppendLine("    ,[TypeName]  ")
+                .AppendLine("    ,[ProfileCode]  ")
+                .AppendLine("    ,[ProfileName]  ")
+                .AppendLine("    ,[StatusCode]  ")
+                .AppendLine("    ,[StatusName]  ")
+                .AppendLine("    ,[LastAccess]  ")
+                .AppendLine("    ,[AccessCount]  ")
+                .AppendLine("    ,[Avatar]  ")
+                .AppendLine("    ,[Note]  ")
+                .AppendLine("    ,[BrokerId]  ")
+                .AppendLine("    ,[AccountId]  ")
+                .AppendLine("    ,[AccountName]  ")
+                .AppendLine("    ,[CreationDate]  ")
+                .AppendLine("    ,[CreationUserId]  ")
+                .AppendLine("    ,[CreationUserName]  ")
+                .AppendLine("    ,[ChangeDate]  ")
+                .AppendLine("    ,[ChangeUserId]  ")
+                .AppendLine("    ,[ChangeUserName]  ")
+                .AppendLine("    ,[ExclusionDate]  ")
+                .AppendLine("    ,[ExclusionUserId]  ")
+                .AppendLine("    ,[ExclusionUserName] ")
+                .AppendLine("    ,[RecordStatus] ")
+                .AppendLine("    ,[IS_ACTIVE] ")
+                .AppendLine("     FROM [JAYTECHAPPDB].[DBO].[USER] ")
+                .AppendLine("     WHERE [AccessKey] COLLATE SQL_Latin1_General_CP1_CS_AS  = @AccessKey  ");
 
 
             await using var cn = _connectionProvider.GetConnection();
@@ -86,8 +115,8 @@ namespace ConnectApp.Infrastructure.Repositories.Auths
 
             if (await reader.ReadAsync())
             {
-                var x = GetDataRecord(reader);
-                return x;
+                return GetDataRecord(reader);
+                 
 
             }
             return null;
@@ -97,7 +126,41 @@ namespace ConnectApp.Infrastructure.Repositories.Auths
         {
             var commandText = new StringBuilder()
 
-                .AppendLine("SELECT * FROM [JAYTECHAPPDB].[DBO].[USER] WHERE [id] = @id;");
+
+                .AppendLine("SELECT")
+                .AppendLine("    [Id]  ")
+                .AppendLine("    ,[Code]  ")
+                .AppendLine("    ,[Name]  ")
+                .AppendLine("    ,[CPF]  ")
+                .AppendLine("    ,[AccessKey]  ")
+                .AppendLine("    ,[Password]  ")
+                .AppendLine("    ,[TypeCode]  ")
+                .AppendLine("    ,[TypeName]  ")
+                .AppendLine("    ,[ProfileCode]  ")
+                .AppendLine("    ,[ProfileName]  ")
+                .AppendLine("    ,[StatusCode]  ")
+                .AppendLine("    ,[StatusName]  ")
+                .AppendLine("    ,[LastAccess]  ")
+                .AppendLine("    ,[AccessCount]  ")
+                .AppendLine("    ,[Avatar]  ")
+                .AppendLine("    ,[Note]  ")
+                .AppendLine("    ,[BrokerId]  ")
+                .AppendLine("    ,[AccountId]  ")
+                .AppendLine("    ,[AccountName]  ")
+                .AppendLine("    ,[CreationDate]  ")
+                .AppendLine("    ,[CreationUserId]  ")
+                .AppendLine("    ,[CreationUserName]  ")
+                .AppendLine("    ,[ChangeDate]  ")
+                .AppendLine("    ,[ChangeUserId]  ")
+                .AppendLine("    ,[ChangeUserName]  ")
+                .AppendLine("    ,[ExclusionDate]  ")
+                .AppendLine("    ,[ExclusionUserId]  ")
+                .AppendLine("    ,[ExclusionUserName] ")
+                .AppendLine("    ,[RecordStatus] ")
+                .AppendLine("    ,[IS_ACTIVE] ")
+                .AppendLine("     FROM [JAYTECHAPPDB].[DBO].[USER] ")
+                .AppendLine("     WHERE [id] = @id;");
+
             await using var cn = _connectionProvider.GetConnection();
             await cn.OpenAsync();
             await using var cm = cn.CreateCommand();
@@ -113,43 +176,47 @@ namespace ConnectApp.Infrastructure.Repositories.Auths
         private static User GetDataRecord(SqlDataReader reader)
         {
 
-            var x = new User
+            return new User
             {
                 Id = reader.GetGuidValue("Id"),
-                Code = reader.GetInt32("Code"),
+                Code = reader.GetNullableInt("Code") ?? 0,
                 Name = reader.GetStringValue("Name"),
+                CPF = reader.GetNullableString("CPF"),
                 AccessKey = reader.GetStringValue("AccessKey"),
                 Password = reader.GetStringValue("Password"),
-                //Emails = reader.GetStringValue("Email"),
-                //Phone = reader.GetStringValue("Phone"),
+
                 TypeCode = reader.GetNullableInt("TypeCode"),
-                TypeName = reader.GetStringValue("TypeName"),
+                TypeName = reader.GetNullableString("TypeName"),
                 ProfileCode = reader.GetNullableInt("ProfileCode"),
-                ProfileName = reader.GetStringValue("ProfileName"),
+                ProfileName = reader.GetNullableString("ProfileName"),
                 StatusCode = reader.GetNullableInt("StatusCode"),
-                StatusName = reader.GetStringValue("StatusName"),
+                StatusName = reader.GetNullableString("StatusName"),
+
                 LastAccess = reader.GetNullableDateTime("LastAccess"),
                 AccessCount = reader.GetNullableInt("AccessCount"),
-                Avatar = reader.GetStringValue("Avatar"),
-                Note = reader.GetStringValue("Note"),
+
+                Avatar = reader.GetNullableString("Avatar"),
+                Note = reader.GetNullableString("Note"),
+
                 BrokerId = reader.GetNullableGuid("BrokerId"),
-                AccountId = reader.GetNullableGuid("Id"),
+                AccountId = reader.GetNullableGuid("AccountId"),
+                AccountName = reader.GetNullableString("AccountName"),
+
                 CreationDate = reader.GetNullableDateTime("CreationDate"),
                 CreationUserId = reader.GetNullableGuid("CreationUserId"),
-                CreationUserName = reader.GetStringValue("CreationUserName"),
+                CreationUserName = reader.GetNullableString("CreationUserName"),
+
                 ChangeDate = reader.GetNullableDateTime("ChangeDate"),
                 ChangeUserId = reader.GetNullableGuid("ChangeUserId"),
-                ChangeUserName = reader.GetStringValue("ChangeUserName"),
+                ChangeUserName = reader.GetNullableString("ChangeUserName"),
+
                 ExclusionDate = reader.GetNullableDateTime("ExclusionDate"),
                 ExclusionUserId = reader.GetNullableGuid("ExclusionUserId"),
-                ExclusionUserName = reader.GetStringValue("ExclusionUserName"),
+                ExclusionUserName = reader.GetNullableString("ExclusionUserName"),
+
                 RecordStatus = reader.GetBoolean("RecordStatus"),
-                CPF = reader.GetStringValue("CPF"),
                 IsActive = reader.GetBoolean("IS_ACTIVE")
             };
-
-
-            return x;
 
         }
 
@@ -163,20 +230,6 @@ namespace ConnectApp.Infrastructure.Repositories.Auths
 
 
 
-        /*
-        public Task<User?> GetByUserAsync(string login, string password)
-
-
-
-
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<User?> GetByUserAsync(Auth auth)
-        {
-            throw new NotImplementedException();
-        }
-        */
+      
     }
 }

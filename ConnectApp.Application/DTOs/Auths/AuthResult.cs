@@ -44,5 +44,14 @@
                 UserId = userId,
                 UserName = userName
             };
+
+        public static AuthResult Success(string message = "")
+            => new()
+            {
+                
+                Message = message,
+                Error = false
+                
+            };
     }
 }
