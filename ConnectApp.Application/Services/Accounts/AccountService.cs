@@ -31,8 +31,8 @@ namespace ConnectApp.Application.Services.Accounts
                 var dto = new AccountResult
                 {
                     Successo = true,
-                    Id = account.Id,
-                    Name = account.Name,
+                    AccountId = account.Id,
+                    AccountName = account.Name,
                     Ativa = account.Ativa,
                     TemaPadrao = account.TemaPadrao,
                     UrlLogo = account.UrlLogo,
@@ -64,8 +64,8 @@ namespace ConnectApp.Application.Services.Accounts
                 var dtos = accounts.Select(account => new AccountResult
                 {
                     Successo = true,
-                    Id = account.Id,
-                    Name = account.Name,
+                    AccountId = account.Id,
+                    AccountName = account.Name,
                     Ativa = account.Ativa,
                     TemaPadrao = account.TemaPadrao,
                     UrlLogo = account.UrlLogo,
@@ -98,8 +98,8 @@ namespace ConnectApp.Application.Services.Accounts
                 return Success(new AccountResult
                 {
                     Successo = true,
-                    Id = account.Id,
-                    Name = account.Name,
+                    AccountId = account.Id,
+                    AccountName = account.Name,
                     Ativa = account.Ativa,
                     TemaPadrao = account.TemaPadrao,
                     UrlLogo = account.UrlLogo,
@@ -139,8 +139,8 @@ namespace ConnectApp.Application.Services.Accounts
                 return Success(new AccountResult
                 {
                     Successo = true,
-                    Id = account.Id,
-                    Name = account.Name,
+                    AccountId = account.Id,
+                    AccountName = account.Name,
                     Ativa = account.Ativa,
                     TemaPadrao = account.TemaPadrao,
                     UrlLogo = account.UrlLogo,
@@ -155,7 +155,7 @@ namespace ConnectApp.Application.Services.Accounts
             }
             catch (ArgumentException ex)
             {
-                return Failure<AccountResult>("Erro ao criar a conta");
+                return Failure<AccountResult>($"Erro ao criar a conta! {ex.Message}");
             }
             catch (Exception ex)
             {
@@ -184,8 +184,8 @@ namespace ConnectApp.Application.Services.Accounts
                 return Success(new AccountResult
                 {
                     Successo = true,
-                    Id = account.Id,
-                    Name = account.Name,
+                    AccountId = account.Id,
+                    AccountName = account.Name,
                     Ativa = account.Ativa,
                     TemaPadrao = account.TemaPadrao,
                     UrlLogo = account.UrlLogo,
@@ -242,8 +242,8 @@ namespace ConnectApp.Application.Services.Accounts
             return [.. accounts.Select(account => new AccountResult
             {
                 Successo = true,
-                Id = account.Id,
-                Name = account.Name,
+                AccountId = account.Id,
+                AccountName = account.Name,
                 Ativa = account.Ativa,
                 TemaPadrao = account.TemaPadrao,
                 UrlLogo = account.UrlLogo,

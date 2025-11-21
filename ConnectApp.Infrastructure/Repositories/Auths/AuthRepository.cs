@@ -51,7 +51,7 @@ namespace ConnectApp.Infrastructure.Repositories.Auths
                 .AppendLine("    ,[ExclusionUserId]  ")
                 .AppendLine("    ,[ExclusionUserName] ")
                 .AppendLine("    ,[RecordStatus] ")
-                .AppendLine("    ,[IS_ACTIVE] ")
+                
                 .AppendLine("     FROM [JAYTECHAPPDB].[DBO].[USER] ")
                 .AppendLine("     WHERE [AccessKey] COLLATE SQL_Latin1_General_CP1_CS_AS  = @AccessKey  ");
 
@@ -99,7 +99,7 @@ namespace ConnectApp.Infrastructure.Repositories.Auths
                 .AppendLine("    ,[ExclusionUserId]  ")
                 .AppendLine("    ,[ExclusionUserName] ")
                 .AppendLine("    ,[RecordStatus] ")
-                .AppendLine("    ,[IS_ACTIVE] ")
+                
                 .AppendLine("     FROM [JAYTECHAPPDB].[DBO].[USER] ")
                 .AppendLine("     WHERE [AccessKey] COLLATE SQL_Latin1_General_CP1_CS_AS  = @AccessKey  ");
 
@@ -157,7 +157,7 @@ namespace ConnectApp.Infrastructure.Repositories.Auths
                 .AppendLine("    ,[ExclusionUserId]  ")
                 .AppendLine("    ,[ExclusionUserName] ")
                 .AppendLine("    ,[RecordStatus] ")
-                .AppendLine("    ,[IS_ACTIVE] ")
+                
                 .AppendLine("     FROM [JAYTECHAPPDB].[DBO].[USER] ")
                 .AppendLine("     WHERE [id] = @id;");
 
@@ -215,7 +215,7 @@ namespace ConnectApp.Infrastructure.Repositories.Auths
                 ExclusionUserName = reader.GetNullableString("ExclusionUserName"),
 
                 RecordStatus = reader.GetBoolean("RecordStatus"),
-                IsActive = reader.GetBoolean("IS_ACTIVE")
+                
             };
 
         }

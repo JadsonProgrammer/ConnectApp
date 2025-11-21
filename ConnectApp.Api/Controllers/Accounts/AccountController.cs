@@ -1,6 +1,7 @@
 ﻿using ConnectApp.Api.Controllers.Base;
 using ConnectApp.Application.DTOs.Accounts;
 using ConnectApp.Application.Interfaces.Accounts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConnectApp.Api.Controllers.Accounts
@@ -59,6 +60,7 @@ namespace ConnectApp.Api.Controllers.Accounts
         }
 
         [HttpPost("")]
+        [AllowAnonymous]
         public async Task<IActionResult> CreateAccountAsync([FromBody] AccountParams account)
         {
             try

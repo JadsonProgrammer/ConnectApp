@@ -41,7 +41,7 @@
 
             user.RecordStatus = true;
 
-            user.IsActive = true;
+            
 
 
 

@@ -359,6 +359,10 @@
           "userName": {
             "type": "string",
             "nullable": true
+          },
+          "recordStatus": {
+            "type": "boolean",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -369,6 +373,22 @@
           "id": {
             "type": "string",
             "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "accountName": {
+            "type": "string",
+            "nullable": true
           },
           "tipo": {
             "type": "string",
@@ -408,10 +428,6 @@
           },
           "isPrimary": {
             "type": "boolean"
-          },
-          "value": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -443,6 +459,90 @@
       "Email": {
         "type": "object",
         "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "isPrimary": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "enderecoEletronico": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "recordStatus": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "brokerId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "accountId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "accountName": {
+            "type": "string",
+            "nullable": true
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "creationUserId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
+          "changeDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "changeUserId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "changeUserName": {
+            "type": "string",
+            "nullable": true
+          },
+          "exclusionDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "exclusionUserId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "exclusionUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "value": {
             "type": "string",
             "nullable": true,
@@ -454,7 +554,94 @@
       "Phone": {
         "type": "object",
         "properties": {
-          "number": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ddd": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "telefone": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "isPrimary": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isWhatsApp": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "recordStatus": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "accountName": {
+            "type": "string",
+            "nullable": true
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "creationUserId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
+          "changeDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "changeUserId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "changeUserName": {
+            "type": "string",
+            "nullable": true
+          },
+          "exclusionDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "exclusionUserId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "exclusionUserName": {
             "type": "string",
             "nullable": true
           }

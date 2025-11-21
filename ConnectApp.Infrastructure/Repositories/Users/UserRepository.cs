@@ -358,7 +358,7 @@ namespace ConnectApp.Infrastructure.Repositories.Users
             cm.Parameters.AddWithValue("@CreationUserName", user.CreationUserName ?? (object)DBNull.Value);
 
             cm.Parameters.AddWithValue("@RecordStatus", user.RecordStatus);
-            cm.Parameters.AddWithValue("@IS_ACTIVE", user.IsActive);
+                                                          
         }
 
         private static void AddUserUpdateParameters(SqlCommand cm, User user)
@@ -392,7 +392,7 @@ namespace ConnectApp.Infrastructure.Repositories.Users
             cm.Parameters.AddWithValue("@ChangeUserName", user.ChangeUserName ?? (object)DBNull.Value);
 
             cm.Parameters.AddWithValue("@RecordStatus", user.RecordStatus);
-            cm.Parameters.AddWithValue("@IS_ACTIVE", user.IsActive);
+            
         }
 
         private static User GetDataRecord(SqlDataReader reader)
@@ -436,7 +436,7 @@ namespace ConnectApp.Infrastructure.Repositories.Users
                 ExclusionUserName = reader.GetNullableString("ExclusionUserName"),
 
                 RecordStatus = reader.GetBoolean("RecordStatus"),
-                IsActive = reader.GetBoolean("IS_ACTIVE")
+                
             };
         }
 

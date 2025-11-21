@@ -16,4 +16,8 @@
     <ProjectReference Include="..\ConnectApp.Shared\ConnectApp.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\Users\Mapper\" />
+  </ItemGroup>
+
 </Project>

@@ -625,7 +625,7 @@ namespace ConnectApp.Infrastructure.Repositories.Users
 
                 cm.Parameters.AddWithValue("@RecordStatus", user.RecordStatus);
                 cm.Parameters.AddWithValue("@CPF", string.IsNullOrWhiteSpace(user.CPF) ? DBNull.Value : user.CPF);
-                cm.Parameters.AddWithValue("@IS_ACTIVE", user.IsActive);
+                
             }
 
 
@@ -648,7 +648,7 @@ namespace ConnectApp.Infrastructure.Repositories.Users
                     StatusCode = reader.GetNullableInt("StatusCode") ?? 0,
                     AccessCount = reader.GetNullableInt("AccessCount") ?? 0,
                     RecordStatus = reader.GetBoolean("RecordStatus"),
-                    IsActive = reader.GetBoolean("IS_ACTIVE"),
+                    ,
                     //Emails = reader.GetNullableString("Emails"),
                     //Phones = reader.GetNullableString("Phones"),
                     TypeName = reader.GetNullableString("TypeName"),
@@ -713,7 +713,7 @@ namespace ConnectApp.Infrastructure.Repositories.Users
                 cm.Parameters.AddWithValue("@ExclusionUserName", user.ExclusionUserName ?? (object)DBNull.Value);
                 cm.Parameters.AddWithValue("@RecordStatus", user.RecordStatus);
                 cm.Parameters.AddWithValue("@CPF", user.CPF ?? (object)DBNull.Value);
-                cm.Parameters.AddWithValue("@IS_ACTIVE", user.IsActive);
+                
                 cm.Parameters.AddWithValue("@Name", user.AccountName ?? (object)DBNull.Value);
 
 

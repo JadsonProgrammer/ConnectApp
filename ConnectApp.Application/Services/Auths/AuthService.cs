@@ -20,8 +20,8 @@ namespace ConnectApp.Application.Services.Auths
         public AuthService(
             IJwtTokenService tokenService,
             IUserRepository userRepository,
-            IAuthRepository authRepository,
-            ILogger<AuthService> logger)
+            IAuthRepository authRepository)
+            //ILogger<AuthService> logger)
         {
             _tokenService = tokenService;
             _userRepository = userRepository;
@@ -75,8 +75,6 @@ namespace ConnectApp.Application.Services.Auths
                 }
 
                 
-                if (!existingUser.IsActive)
-                    return Failure<AuthResult>("Usuário inativo");
 
                 if (!existingUser.RecordStatus)
                     return Failure<AuthResult>("Usuário excluído");
@@ -98,7 +96,7 @@ namespace ConnectApp.Application.Services.Auths
                     userId: existingUser.Id,
                     userName: existingUser.Name,
                     accountId: existingUser.AccountId,
-                    accountName: existingUser.AccountName,
+                    accountName: existingUser.AccountName!,
                     message: "Login realizado com sucesso"
                 ));
             }

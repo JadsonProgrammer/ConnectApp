@@ -1,8 +1,10 @@
-﻿namespace ConnectApp.Domain.Entities.Users
+﻿using ConnectApp.Shared.Helpers;
+
+namespace ConnectApp.Domain.Entities.Users
 {
     public partial class User
     {
-        public Guid Id { get; set; } 
+        public Guid Id { get; set; }
         public int Code { get; set; }
         public string Name { get; set; } = string.Empty;
         public string? CPF { get; set; }
@@ -24,7 +26,6 @@
         public int? AccessCount { get; set; }
         public string? Avatar { get; set; }
         public bool RecordStatus { get; set; }
-        public bool IsActive { get; set; }
         public string? Note { get; set; }
 
         // Audit
@@ -43,7 +44,14 @@
 
         public User() { }
 
-        public static User Create(
+    }
+}
+
+
+
+
+/*
+    public static User Create(
             string name,
             string cpf,
             string accessKey,
@@ -74,7 +82,7 @@
                 //Roles = roles != null && roles.Any() ? roles : new List<string> { "User" },
                 AccountId = accountId,
                 AccountName = accountName,
-                IsActive = true,
+                
                 RecordStatus = true,
                 CreationDate = DateTime.UtcNow,
                 CreationUserId = creationUserId,
@@ -115,7 +123,7 @@
         public void Deactivate(Guid exclusionUserId, string exclusionUserName)
         {
             RecordStatus = false;
-            IsActive = false;
+            
             ExclusionDate = DateTime.UtcNow;
             ExclusionUserId = exclusionUserId;
             ExclusionUserName = exclusionUserName;
@@ -136,7 +144,7 @@
             if (string.IsNullOrWhiteSpace(Password))
                 errors.Add("Password é obrigatória.");
 
-            if (!string.IsNullOrWhiteSpace(CPF) && !IsValidCpf(CPF))
+            if (!string.IsNullOrWhiteSpace(CPF) && !Validation.CPFValido(CPF))
                 errors.Add("CPF inválido.");
 
             if (AccessKey.Length < 3)
@@ -171,8 +179,11 @@
             if (string.IsNullOrWhiteSpace(Name))
                 errors.Add("Nome é obrigatório.");
 
-            if (!string.IsNullOrWhiteSpace(CPF) && !IsValidCpf(CPF))
+            if (!string.IsNullOrWhiteSpace(CPF) && !Validation.CPFValido(CPF))
                 errors.Add("CPF inválido.");
+
+            if(DateTime.Now < ChangeDate)
+                errors.Add("ChangeDate não pode ser uma data futura.");
 
             if (ChangeUserId == Guid.Empty || ChangeUserId == null)
                 errors.Add("ChangeUserId é obrigatório.");
@@ -205,7 +216,7 @@
         {
             var errors = new List<string>();
 
-            // Valida todas as propriedades
+            
             if (Id == Guid.Empty)
                 errors.Add("Id é obrigatório.");
 
@@ -221,11 +232,9 @@
             if (string.IsNullOrWhiteSpace(Password))
                 errors.Add("Password é obrigatória.");
 
-            if (!string.IsNullOrWhiteSpace(CPF) && !IsValidCpf(CPF))
+            if (!string.IsNullOrWhiteSpace(CPF) && !Validation.CPFValido(CPF))
                 errors.Add("CPF inválido.");
-
-            if (!RecordStatus && IsActive)
-                errors.Add("Registro não pode estar inativo e ativo ao mesmo tempo.");
+                       
 
             if (AccountId == Guid.Empty || AccountId == null)
                 errors.Add("AccountId é obrigatório.");
@@ -249,40 +258,11 @@
                 throw new ArgumentException($"Erros de validação completa da entidade: {string.Join(" ", errors)}");
         }
 
-        private static bool IsValidCpf(string cpf)
+        public enum UserStatus
         {
-            if (string.IsNullOrWhiteSpace(cpf)) return false;
-
-            cpf = new string(cpf.Where(char.IsDigit).ToArray());
-
-            if (cpf.Length != 11) return false;
-            if (cpf.Distinct().Count() == 1) return false;
-
-            int[] multiplicador1 = { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
-            int[] multiplicador2 = { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
-
-            string tempCpf = cpf[..9];
-            int soma = 0;
-
-            for (int i = 0; i < 9; i++)
-                soma += int.Parse(tempCpf[i].ToString()) * multiplicador1[i];
-
-            int resto = soma % 11;
-            resto = resto < 2 ? 0 : 11 - resto;
-
-            string digito = resto.ToString();
-            tempCpf += digito;
-
-            soma = 0;
-            for (int i = 0; i < 10; i++)
-                soma += int.Parse(tempCpf[i].ToString()) * multiplicador2[i];
-
-            resto = soma % 11;
-            resto = resto < 2 ? 0 : 11 - resto;
-
-            digito += resto.ToString();
-
-            return cpf.EndsWith(digito);
+            Pending = 0,
+            Active = 1,
+            Disabled = 2
         }
-    }
-}
+
+/**/

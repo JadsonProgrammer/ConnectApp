@@ -1,4 +1,4 @@
-﻿using ConnectApp.Application.DTOs.Users;
+﻿    using ConnectApp.Application.DTOs.Users;
 using ConnectApp.Application.Interfaces.Users;
 using ConnectApp.Domain.Entities.Users;
 using ConnectApp.Domain.Interfaces.Auths.Tokens;
@@ -22,6 +22,42 @@ namespace ConnectApp.Application.Services.Users
             _httpContextAccessor = httpContextAccessor;
         }
         //-----------------------CREATE USER-----------------------//
+        public async Task<Result<UserResult>> CreatesUserByAccountAsync(UserParams userParams)
+        {
+            var userId = _httpContextAccessor.GetUserId();
+            var userName = _httpContextAccessor.GetUserName();
+            var accountId = _httpContextAccessor.GetAccountId();
+            var accountName = _httpContextAccessor.GetAccountName();
+
+            try
+            {
+                var user = User.Create(
+                    name: userParams.Name,
+                    cpf: userParams.CPF!,
+                    accessKey: userParams.AccessKey,
+                    password: _tokenService.HashPassword(userParams.Password),
+                    phones: userParams.Phones,
+                    addresses: userParams.Addresses,
+                    emails: userParams.Emails,
+                    roles: userParams.Roles,
+                    creationUserId: userId,
+                    creationUserName: userName,
+                    accountId: accountId,
+                    accountName: accountName
+                );
+
+                var createdUser = await _userRepository.CreateUserAsync(user);
+
+                var dto = new UserResult { Id = createdUser.Id, Nome = createdUser.Name };
+                return Success(dto, ""); // mensagem em branco => BaseController irá gerar padrão
+            }
+            catch (Exception ex)
+            {
+                return Failure<UserResult>("Erro ao criar usuário", ex.Message);
+            }
+
+
+        }
         public async Task<Result<UserResult>> CreatesUserAsync(UserParams userParams)
         {
             var userId = _httpContextAccessor.GetUserId();
@@ -123,6 +159,7 @@ namespace ConnectApp.Application.Services.Users
         //-----------------------DELETE USER-----------------------//
         public async Task<Result<bool>> DeleteUserByIdAsync(Guid id)
         {
+            
             try
             {
                 var existing = await _userRepository.GetUserByIdAsync(id);

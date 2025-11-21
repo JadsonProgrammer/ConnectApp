@@ -9,23 +9,23 @@ namespace ConnectApp.Application.Services.Users
 {
     public class UserValidationService
     {
-        public static (bool isValid, string message) ValidateCreate(UserParams p)
+        public static (bool isValid, string message) ValidateCreate(UserParams @params)
         {
-            if (string.IsNullOrWhiteSpace(p.Name))
+            if (string.IsNullOrWhiteSpace(@params.Name))
                 return (false, "Nome é obrigatório.");
 
-            if (string.IsNullOrWhiteSpace(p.AccessKey))
+            if (string.IsNullOrWhiteSpace(@params.AccessKey))
                 return (false, "AccessKey é obrigatória.");
 
-            if (string.IsNullOrWhiteSpace(p.Password))
+            if (string.IsNullOrWhiteSpace(@params.Password))
                 return (false, "Senha é obrigatória.");
 
             return (true, string.Empty);
         }
 
-        public (bool isValid, string message) ValidateUpdate(UserParams p)
+        public static (bool isValid, string message) ValidateUpdate(UserParams @params)
         {
-            if (string.IsNullOrWhiteSpace(p.Name))
+            if (string.IsNullOrWhiteSpace(@params.Name))
                 return (false, "Nome é obrigatório.");
 
             return (true, string.Empty);

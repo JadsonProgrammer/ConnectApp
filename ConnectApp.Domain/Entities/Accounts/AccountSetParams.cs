@@ -34,10 +34,10 @@ namespace ConnectApp.Domain.Entities.Accounts
                     Name = accountName.Trim(),
                     Ativa = true,
                     TemaPadrao = ValidateAndFormatTemaPadrao(temaPadrao),
-                    UrlLogo = ValidateAndFormatUrl(urlLogo),
-                    UrlIcone = ValidateAndFormatUrl(urlIcone),
-                    UrlImagemLogin = ValidateAndFormatUrl(urlImagemLogin),
-                    UrlImagemDashboard = ValidateAndFormatUrl(urlImagemDashboard),
+                    UrlLogo = urlLogo,
+                    UrlIcone = urlIcone,
+                    UrlImagemLogin = urlImagemLogin,
+                    UrlImagemDashboard = urlImagemDashboard,
                     CreationDate = DateTime.UtcNow,
                     CreationUserId = creationUserId != Guid.Empty ? creationUserId : SystemUserId,
                     CreationUserName = FormatUserName(creationUserName),
@@ -61,10 +61,10 @@ namespace ConnectApp.Domain.Entities.Accounts
 
                 account.Name = accountName.Trim();
                 account.TemaPadrao = ValidateAndFormatTemaPadrao(temaPadrao);
-                account.UrlLogo = ValidateAndFormatUrl(urlLogo);
-                account.UrlIcone = ValidateAndFormatUrl(urlIcone);
-                account.UrlImagemLogin = ValidateAndFormatUrl(urlImagemLogin);
-                account.UrlImagemDashboard = ValidateAndFormatUrl(urlImagemDashboard);
+                account.UrlLogo = urlLogo;
+                account.UrlIcone = urlIcone;
+                account.UrlImagemLogin = urlImagemLogin;
+                account.UrlImagemDashboard = urlImagemDashboard;
                 account.ChangeDate = DateTime.UtcNow;
                 account.ChangeUserId = changeUserId;
                 account.ChangeUserName = FormatUserName(changeUserName);
@@ -89,17 +89,17 @@ namespace ConnectApp.Domain.Entities.Accounts
                 return accountId;
             }
 
-            internal static void ValidateAccountName(string accountName)
+            public static void ValidateAccountName(string accountName)
             {
                 if (string.IsNullOrWhiteSpace(accountName))
                     throw new ArgumentException("O nome da conta é obrigatório.", nameof(accountName));
 
-                var trimmedName = accountName.Trim();
+                var VerifyAccountName = accountName.Trim();
 
-                if (trimmedName.Length < AccountNameMinLength)
+                if (VerifyAccountName.Length < AccountNameMinLength)
                     throw new ArgumentException($"O nome da conta deve ter pelo menos {AccountNameMinLength} caracteres.", nameof(accountName));
 
-                if (trimmedName.Length > AccountNameMaxLength)
+                if (VerifyAccountName.Length > AccountNameMaxLength)
                     throw new ArgumentException($"O nome da conta não pode exceder {AccountNameMaxLength} caracteres.", nameof(accountName));
             }
 
@@ -114,33 +114,33 @@ namespace ConnectApp.Domain.Entities.Accounts
                 if (string.IsNullOrWhiteSpace(temaPadrao))
                     return "default";
 
-                var trimmedTema = temaPadrao.Trim();
+                var ToCheckTema = temaPadrao.Trim();
 
-                if (trimmedTema.Length > TemaMaxLength)
+                if (ToCheckTema.Length > TemaMaxLength)
                     throw new ArgumentException($"O tema padrão não pode exceder {TemaMaxLength} caracteres.", nameof(temaPadrao));
 
-                if (!TemasPermitidos.Contains(trimmedTema.ToLower()))
-                    throw new ArgumentException($"Tema '{trimmedTema}' não é suportado.", nameof(temaPadrao));
+                if (!TemasPermitidos.Contains(ToCheckTema.ToLower()))
+                    throw new ArgumentException($"Tema '{ToCheckTema}' não é suportado.", nameof(temaPadrao));
 
-                return trimmedTema;
+                return ToCheckTema;
             }
 
-            private static string? ValidateAndFormatUrl(string? url)
-            {
-                if (string.IsNullOrWhiteSpace(url))
-                    return null;
+            //private static string? ValidateAndFormatUrl(string? url)
+            //{
+            //    if (string.IsNullOrWhiteSpace(url))
+            //        return null;
 
-                var trimmedUrl = url.Trim();
+            //    var trimmedUrl = url.Trim();
 
-                if (trimmedUrl.Length > UrlMaxLength)
-                    throw new ArgumentException($"A URL não pode exceder {UrlMaxLength} caracteres.");
+            //    if (trimmedUrl.Length > UrlMaxLength)
+            //        throw new ArgumentException($"A URL não pode exceder {UrlMaxLength} caracteres.");
 
-                if (!Uri.TryCreate(trimmedUrl, UriKind.Absolute, out var uriResult) ||
-                    (uriResult.Scheme != Uri.UriSchemeHttp && uriResult.Scheme != Uri.UriSchemeHttps))
-                    throw new ArgumentException("A URL deve ser válida (http ou https).");
+            //    if (!Uri.TryCreate(trimmedUrl, UriKind.Absolute, out var uriResult) ||
+            //        (uriResult.Scheme != Uri.UriSchemeHttp && uriResult.Scheme != Uri.UriSchemeHttps))
+            //        throw new ArgumentException("A URL deve ser válida (http ou https).");
 
-                return trimmedUrl;
-            }
+            //    return trimmedUrl;
+            //}
 
             private static string FormatUserName(string? userName)
             {
@@ -175,18 +175,18 @@ namespace ConnectApp.Domain.Entities.Accounts
                 }
             }
 
-            public static bool IsValidUrl(string url)
-            {
-                try
-                {
-                    ValidateAndFormatUrl(url);
-                    return true;
-                }
-                catch
-                {
-                    return false;
-                }
-            }
+            //public static bool IsValidUrl(string url)
+            //{
+            //    try
+            //    {
+            //        ValidateAndFormatUrl(url);
+            //        return true;
+            //    }
+            //    catch
+            //    {
+            //        return false;
+            //    }
+            //}
 
             public static string[] GetTemasPermitidos() => TemasPermitidos;
 
